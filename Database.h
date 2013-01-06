@@ -1,0 +1,61 @@
+//
+//  Database.h
+//  ovb3
+//
+//  Created by Jesus Renero Quintero on 28/12/11.
+//  Copyright 2011 Telefonica I+D. All rights reserved.
+//
+
+#import <Cocoa/Cocoa.h>
+#import "Entry.h"
+#import "Prefs.h"
+#import "Match.h"
+#import "DBCategory.h"
+#import "DBEntry.h"
+
+/**
+#define ENTRY_ENTITYNAME	"Entry";
+#define FECHAO				@"fechaOperacion";
+#define FECHAV				@"fechaValor";
+#define CONCEPTO			@"concepto";
+#define IMPORTE				@"importe";
+#define SALDO				@"saldo";
+**/
+
+@interface Database : NSObject {
+
+}
+
+- (BOOL) matchesExistingEntry:(Entry *)line managedObjectContext:(NSManagedObjectContext *)moc;
+- (BOOL) matchesExistingCategory:(NSString *)catName managedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (BOOL) arrayContainsEntry:(NSArray*)array Entry:(Entry*)line;
+- (DBCategory *)findCategory:(NSString *)catName managedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+
+- (int)  fastImportLog:(NSMutableArray *)log managedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (int)  categorizeAllEntries:(NSManagedObjectContext *)managedObjectContext 
+				  preferences:(Prefs *)prefs 
+				 conflictsSet:(NSMutableSet *)conflictsSet
+				 overrideFlag:(BOOL)override 
+		   solveConflictsFlag:(BOOL)solveConflict
+				  verboseFlag:(BOOL)verbose;
+
+- (NSManagedObject*) entryToDBEntry:(Entry*)line inManagedObjectContext:(NSManagedObjectContext*)moc;
+- (Entry *)dbEntryToEntry:(NSManagedObject *)object;
+- (int) updateCategoriesInDatabase:(NSManagedObject *)dbEntry fromEntry:(Entry *)entry 
+			  managedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (int) storeEntryInDatabase:(Entry *)entry managedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (int) storeCategoriesInDatabase:(NSArray *)categoryNames 
+			 managedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+
+- (NSArray *)findDatesInterval:(NSManagedObjectContext *)managedObjectContext;
+- (NSDictionary *) computeAggregatedCategories:(NSManagedObjectContext *)moc fromDate:(NSDate *)fromDate toDate:(NSDate *)toDate;
+
+- (NSDate*) stringToNSDate:(NSString *)string;
+- (NSDate*) dateWithNoTime:(NSDate *)date;
+
+- (NSArray*)loadTableToArray:(NSManagedObjectContext*)moc;
+- (void) dumpDatabase:(NSManagedObjectContext *)moc number:(NSNumber *)importe;
+
++ (NSNumber *)abs:(NSNumber *)input;
+
+@end
