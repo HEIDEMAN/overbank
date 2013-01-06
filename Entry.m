@@ -3,7 +3,7 @@
 //  FileExample
 //
 //  Created by Jesus Renero Quintero on 24/12/10.
-//  Copyright 2010 Telefonica I+D. All rights reserved.
+//  Copyright 2013 Jesus Renero Quintero. All rights reserved.
 //
 
 #import "Entry.h"

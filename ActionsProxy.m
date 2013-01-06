@@ -3,7 +3,7 @@
 //  Overbank
 //
 //  Created by Jesus Renero Quintero on 23/10/11.
-//  Copyright 2011 Telefonica I+D. All rights reserved.
+//  Copyright 2013 Jesus Renero Quintero. All rights reserved.
 //
 
 #import "ActionsProxy.h"

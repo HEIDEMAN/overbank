@@ -3,7 +3,7 @@
 //  NSUserDefaults
 //
 //  Created by Jesus Renero Quintero on 27/2/11.
-//  Copyright 2011 Telefonica I+D. All rights reserved.
+//  Copyright 2013 Jesus Renero Quintero. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>

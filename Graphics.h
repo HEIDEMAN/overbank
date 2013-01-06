@@ -3,7 +3,7 @@
 //  ovb3
 //
 //  Created by Jesus Renero Quintero on 1/1/12.
-//  Copyright 2012 Telefonica I+D. All rights reserved.
+//  Copyright 2013 Jesus Renero Quintero. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>

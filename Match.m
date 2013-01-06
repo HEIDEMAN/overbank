@@ -3,7 +3,7 @@
 //  Banking
 //
 //  Created by Jesus Renero Quintero on 16/7/11.
-//  Copyright 2011 Jesus Renero. All rights reserved.
+//  Copyright 2013 Jesus Renero Quintero. All rights reserved.
 //
 
 #import "Match.h"
