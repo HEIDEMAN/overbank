@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'overbank' target in the 'overbank' project
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+#endif

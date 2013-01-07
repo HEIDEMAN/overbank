@@ -283,7 +283,7 @@ NSPoint makeTextStartingPoint( NSSize textSize, NSRect bounds , float angle, int
 	segmentValuesArray = [aggregated allValues];
 	segmentNamesArray = [aggregated allKeys];
 	
-	NSLog(@"Added %d elements", [segmentValuesArray count]);
+	NSLog(@"Added %ld elements", [segmentValuesArray count]);
 	NSLog(@"Calling generateDrawingInformation");
 	[self generateDrawingInformation];
 	[self display];

@@ -112,7 +112,7 @@
 	
 	// Relleno el Match para que no se quede vacio y asi no estropee la ejecución de la 
 	// TableView.
-	newEntry.matchingCategory.categoryMatched = [NSString stringWithString:@""];
+	newEntry.matchingCategory.categoryMatched = @"";
 	[newEntry.matchingCategory.tagsMatched addObject:(NSString *)@""];
 	newEntry.matchingCategory.votes = 0;
 							 

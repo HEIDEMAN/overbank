@@ -30,7 +30,9 @@
 	
 	IBOutlet NSDatePicker *fromDatePick;
 	IBOutlet NSDatePicker *toDatePick;
-	
+    
+    IBOutlet NSSearchField *searchFieldOutlet;
+    	
 	// XXX Experimental
 	IBOutlet Graphics *graphicsView;
 }

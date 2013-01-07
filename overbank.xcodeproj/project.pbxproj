@@ -16,6 +16,10 @@
 		AA6DE0BF14C830DD002B873A /* DBEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6DE0BC14C830DD002B873A /* DBEntry.m */; };
 		AA6DE0C014C830DD002B873A /* DBCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6DE0BE14C830DD002B873A /* DBCategory.m */; };
 		AAC5218E14AF5982007FC279 /* tableColorTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = AAC5218D14AF5982007FC279 /* tableColorTransformer.m */; };
+		AAD8F8EF169B0335005BEF53 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F8EE169B0335005BEF53 /* SenTestingKit.framework */; };
+		AAD8F8F1169B0335005BEF53 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F8F0169B0335005BEF53 /* Cocoa.framework */; };
+		AAD8F8F7169B0335005BEF53 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AAD8F8F5169B0335005BEF53 /* InfoPlist.strings */; };
+		AAD8F8FA169B0335005BEF53 /* overbank.m in Sources */ = {isa = PBXBuildFile; fileRef = AAD8F8F9169B0335005BEF53 /* overbank.m */; };
 		AADCA32B14B20C2A0065FAF7 /* stringToArrayTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = AADCA32914B20C2A0065FAF7 /* stringToArrayTransformer.m */; };
 		AAE180B814B07A2E00D972D7 /* Graphics.m in Sources */ = {isa = PBXBuildFile; fileRef = AAE180B714B07A2E00D972D7 /* Graphics.m */; };
 		AAFAD04114AB311D00457F9B /* ActionsProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = AAFAD04014AB311D00457F9B /* ActionsProxy.m */; };
@@ -47,19 +51,27 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		2F7446980DB6B7EA00F9684A /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		32CA4F630368D1EE00C91783 /* ovb3_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ovb3_Prefix.pch; sourceTree = "<group>"; };
+		32CA4F630368D1EE00C91783 /* overbank_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = overbank_Prefix.pch; sourceTree = "<group>"; };
 		770B37EC0679A11B001EADE2 /* ovb3_DataModel.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = ovb3_DataModel.xcdatamodel; sourceTree = "<group>"; };
 		77C82804067257F0000B614F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		77C8280B06725ACE000B614F /* ovb3_AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ovb3_AppDelegate.h; sourceTree = "<group>"; };
 		77C8280C06725ACE000B614F /* ovb3_AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ovb3_AppDelegate.m; sourceTree = "<group>"; };
-		8D1107310486CEB800E47090 /* ovb3-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist.xml; fileEncoding = 4; path = "ovb3-Info.plist"; sourceTree = "<group>"; };
-		8D1107320486CEB800E47090 /* ovb3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ovb3.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D1107310486CEB800E47090 /* overbank-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist.xml; fileEncoding = 4; path = "overbank-Info.plist"; sourceTree = "<group>"; };
+		8D1107320486CEB800E47090 /* overbank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = overbank.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA6DE0BB14C830DD002B873A /* DBEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBEntry.h; sourceTree = "<group>"; };
 		AA6DE0BC14C830DD002B873A /* DBEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBEntry.m; sourceTree = "<group>"; };
 		AA6DE0BD14C830DD002B873A /* DBCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBCategory.h; sourceTree = "<group>"; };
 		AA6DE0BE14C830DD002B873A /* DBCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBCategory.m; sourceTree = "<group>"; };
 		AAC5218C14AF5982007FC279 /* tableColorTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tableColorTransformer.h; sourceTree = "<group>"; };
 		AAC5218D14AF5982007FC279 /* tableColorTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tableColorTransformer.m; sourceTree = "<group>"; };
+		AAD8F8ED169B0335005BEF53 /* overbank.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = overbank.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAD8F8EE169B0335005BEF53 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		AAD8F8F0169B0335005BEF53 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		AAD8F8F4169B0335005BEF53 /* overbank-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "overbank-Info.plist"; sourceTree = "<group>"; };
+		AAD8F8F6169B0335005BEF53 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		AAD8F8F8169B0335005BEF53 /* overbank.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = overbank.h; sourceTree = "<group>"; };
+		AAD8F8F9169B0335005BEF53 /* overbank.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = overbank.m; sourceTree = "<group>"; };
+		AAD8F8FB169B0335005BEF53 /* overbank-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "overbank-Prefix.pch"; sourceTree = "<group>"; };
 		AADCA32914B20C2A0065FAF7 /* stringToArrayTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = stringToArrayTransformer.m; sourceTree = "<group>"; };
 		AADCA32A14B20C2A0065FAF7 /* stringToArrayTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stringToArrayTransformer.h; sourceTree = "<group>"; };
 		AAE180B614B07A2E00D972D7 /* Graphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Graphics.h; sourceTree = "<group>"; };
@@ -88,6 +100,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AAD8F8E9169B0335005BEF53 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AAD8F8EF169B0335005BEF53 /* SenTestingKit.framework in Frameworks */,
+				AAD8F8F1169B0335005BEF53 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,7 +161,8 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8D1107320486CEB800E47090 /* ovb3.app */,
+				8D1107320486CEB800E47090 /* overbank.app */,
+				AAD8F8ED169B0335005BEF53 /* overbank.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -153,6 +175,7 @@
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
+				AAD8F8F2169B0335005BEF53 /* overbankTests */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
@@ -164,7 +187,7 @@
 			children = (
 				AAFAD05F14AB346C00457F9B /* Levenshtein.h */,
 				AAFAD06014AB346C00457F9B /* Levenshtein.m */,
-				32CA4F630368D1EE00C91783 /* ovb3_Prefix.pch */,
+				32CA4F630368D1EE00C91783 /* overbank_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 			);
 			name = "Other Sources";
@@ -173,7 +196,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				8D1107310486CEB800E47090 /* ovb3-Info.plist */,
+				8D1107310486CEB800E47090 /* overbank-Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				2F7446970DB6B7EA00F9684A /* MainMenu.xib */,
 			);
@@ -184,6 +207,8 @@
 			isa = PBXGroup;
 			children = (
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				AAD8F8EE169B0335005BEF53 /* SenTestingKit.framework */,
+				AAD8F8F0169B0335005BEF53 /* Cocoa.framework */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
@@ -212,6 +237,27 @@
 			name = ValueTransformers;
 			sourceTree = "<group>";
 		};
+		AAD8F8F2169B0335005BEF53 /* overbankTests */ = {
+			isa = PBXGroup;
+			children = (
+				AAD8F8F8169B0335005BEF53 /* overbank.h */,
+				AAD8F8F9169B0335005BEF53 /* overbank.m */,
+				AAD8F8F3169B0335005BEF53 /* Supporting Files */,
+			);
+			name = overbankTests;
+			path = overbank;
+			sourceTree = "<group>";
+		};
+		AAD8F8F3169B0335005BEF53 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				AAD8F8F4169B0335005BEF53 /* overbank-Info.plist */,
+				AAD8F8F5169B0335005BEF53 /* InfoPlist.strings */,
+				AAD8F8FB169B0335005BEF53 /* overbank-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -231,8 +277,26 @@
 			name = ovb3;
 			productInstallPath = "$(HOME)/Applications";
 			productName = ovb3;
-			productReference = 8D1107320486CEB800E47090 /* ovb3.app */;
+			productReference = 8D1107320486CEB800E47090 /* overbank.app */;
 			productType = "com.apple.product-type.application";
+		};
+		AAD8F8EC169B0335005BEF53 /* overbank */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AAD8F8FE169B0335005BEF53 /* Build configuration list for PBXNativeTarget "overbank" */;
+			buildPhases = (
+				AAD8F8E8169B0335005BEF53 /* Sources */,
+				AAD8F8E9169B0335005BEF53 /* Frameworks */,
+				AAD8F8EA169B0335005BEF53 /* Resources */,
+				AAD8F8EB169B0335005BEF53 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = overbank;
+			productName = overbank;
+			productReference = AAD8F8ED169B0335005BEF53 /* overbank.octest */;
+			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
 
@@ -242,7 +306,7 @@
 			attributes = {
 				LastUpgradeCheck = 0450;
 			};
-			buildConfigurationList = 26FC0A880875C7B200E6366F /* Build configuration list for PBXProject "ovb3" */;
+			buildConfigurationList = 26FC0A880875C7B200E6366F /* Build configuration list for PBXProject "overbank" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
@@ -251,12 +315,14 @@
 				Japanese,
 				French,
 				German,
+				en,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* ovb3 */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* ovb3 */,
+				AAD8F8EC169B0335005BEF53 /* overbank */,
 			);
 		};
 /* End PBXProject section */
@@ -271,7 +337,31 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AAD8F8EA169B0335005BEF53 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AAD8F8F7169B0335005BEF53 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		AAD8F8EB169B0335005BEF53 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8D11072C0486CEB800E47090 /* Sources */ = {
@@ -297,6 +387,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AAD8F8E8169B0335005BEF53 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AAD8F8FA169B0335005BEF53 /* overbank.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
@@ -316,6 +414,14 @@
 			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
+		AAD8F8F5169B0335005BEF53 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AAD8F8F6169B0335005BEF53 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -330,10 +436,11 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = ovb3_Prefix.pch;
-				INFOPLIST_FILE = "ovb3-Info.plist";
+				GCC_PREFIX_HEADER = overbank_Prefix.pch;
+				INFOPLIST_FILE = "overbank-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				PRODUCT_NAME = ovb3;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = overbank;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -346,10 +453,11 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = ovb3_Prefix.pch;
-				INFOPLIST_FILE = "ovb3-Info.plist";
+				GCC_PREFIX_HEADER = overbank_Prefix.pch;
+				INFOPLIST_FILE = "overbank-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				PRODUCT_NAME = ovb3;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = overbank;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -379,6 +487,64 @@
 			};
 			name = Release;
 		};
+		AAD8F8FC169B0335005BEF53 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "overbank/overbank-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				INFOPLIST_FILE = "overbank/overbank-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		AAD8F8FD169B0335005BEF53 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "overbank/overbank-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				INFOPLIST_FILE = "overbank/overbank-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -391,7 +557,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		26FC0A880875C7B200E6366F /* Build configuration list for PBXProject "ovb3" */ = {
+		26FC0A880875C7B200E6366F /* Build configuration list for PBXProject "overbank" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				26FC0A890875C7B200E6366F /* Debug */,
@@ -399,6 +565,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		AAD8F8FE169B0335005BEF53 /* Build configuration list for PBXNativeTarget "overbank" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AAD8F8FC169B0335005BEF53 /* Debug */,
+				AAD8F8FD169B0335005BEF53 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
