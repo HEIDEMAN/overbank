@@ -35,4 +35,6 @@
 +(void)listSet:(NSMutableSet *)set :(NSString *)name;
 +(void)listConflictSet:(NSMutableSet *)set;
 
++(void)sayHello;
+
 @end

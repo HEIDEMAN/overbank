@@ -84,7 +84,6 @@
 							<string key="NSFrame">{{13, 10}, {1058, 740}}</string>
 							<reference key="NSSuperview" ref="823886803"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="657486811"/>
 							<string key="NSReuseIdentifierKey">_NS:559</string>
 							<object class="NSMutableArray" key="NSTabViewItems">
 								<bool key="EncodedWithXMLCoder">YES</bool>
@@ -194,7 +193,7 @@
 																<string key="NSFrameSize">{1002, 490}</string>
 																<reference key="NSSuperview" ref="586746310"/>
 																<reference key="NSWindow"/>
-																<reference key="NSNextKeyView" ref="852275689"/>
+																<reference key="NSNextKeyView" ref="211253552"/>
 																<bool key="NSEnabled">YES</bool>
 																<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 																<bool key="NSControlAllowsExpansionToolTips">YES</bool>
@@ -633,7 +632,7 @@
 												<string key="NSFrame">{{17, 153}, {1004, 508}}</string>
 												<reference key="NSSuperview" ref="657486811"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView" ref="211253552"/>
+												<reference key="NSNextKeyView" ref="586746310"/>
 												<int key="NSsFlags">133170</int>
 												<reference key="NSVScroller" ref="931237046"/>
 												<reference key="NSHScroller" ref="852275689"/>
@@ -876,7 +875,6 @@
 																<string key="NSFrame">{{872, 17}, {52, 19}}</string>
 																<reference key="NSSuperview" ref="56013897"/>
 																<reference key="NSWindow"/>
-																<reference key="NSNextKeyView"/>
 																<bool key="NSEnabled">YES</bool>
 																<object class="NSTextFieldCell" key="NSCell" id="230512866">
 																	<int key="NSCellFlags">341835776</int>
@@ -1885,7 +1883,7 @@
 					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="249212449"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1920, 1178}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1440, 900}}</string>
 				<string key="NSMinSize">{1084, 778}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<bool key="NSWindowIsRestorable">YES</bool>
@@ -2591,6 +2589,22 @@
 						<reference key="destination" ref="456034081"/>
 					</object>
 					<int key="connectionID">965</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">tableEntriesController</string>
+						<reference key="source" ref="612578685"/>
+						<reference key="destination" ref="490491758"/>
+					</object>
+					<int key="connectionID">1024</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">tableView</string>
+						<reference key="source" ref="612578685"/>
+						<reference key="destination" ref="48367190"/>
+					</object>
+					<int key="connectionID">1025</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -4743,7 +4757,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">1002</int>
+			<int key="maxID">1025</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -4820,6 +4834,8 @@
 							<string>graphicsView</string>
 							<string>searchFieldOutlet</string>
 							<string>tabView</string>
+							<string>tableEntriesController</string>
+							<string>tableView</string>
 							<string>toDatePick</string>
 							<string>window</string>
 						</object>
@@ -4829,6 +4845,8 @@
 							<string>Graphics</string>
 							<string>NSSearchField</string>
 							<string>NSTabView</string>
+							<string>NSArrayController</string>
+							<string>NSTableView</string>
 							<string>NSDatePicker</string>
 							<string>NSWindow</string>
 						</object>
@@ -4841,6 +4859,8 @@
 							<string>graphicsView</string>
 							<string>searchFieldOutlet</string>
 							<string>tabView</string>
+							<string>tableEntriesController</string>
+							<string>tableView</string>
 							<string>toDatePick</string>
 							<string>window</string>
 						</object>
@@ -4861,6 +4881,14 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">tabView</string>
 								<string key="candidateClassName">NSTabView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">tableEntriesController</string>
+								<string key="candidateClassName">NSArrayController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">tableView</string>
+								<string key="candidateClassName">NSTableView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">toDatePick</string>

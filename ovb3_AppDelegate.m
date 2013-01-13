@@ -22,7 +22,7 @@ strrchr("/" __FILE__, '/') + 1, __LINE__, __PRETTY_FUNCTION__, ## __VA_ARGS__)
 NSString * const MDFirstRunKey = @"MDFirstRun";
 
 @implementation ovb3_AppDelegate
-@synthesize window, tabView, matchingEnabled, fromDatePick, toDatePick;
+@synthesize window, tabView, matchingEnabled, fromDatePick, toDatePick, tableEntriesController, tableView;
 
 
 #pragma mark APP INITIALIZATION
@@ -107,6 +107,12 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 	
 	[tabView selectFirstTabViewItem:NULL];
 
+    // start listening for selection changes in our NSTableView's array controller
+    [tableEntriesController addObserver: self
+                             forKeyPath: @"selectionIndexes"
+                                options: NSKeyValueObservingOptionNew
+                                context: NULL];
+
 	
 	NSLog(@"--");
 }
@@ -132,9 +138,15 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 	}	
 }		
 
+#pragma mark COCOA OVERRIDES
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    NSLog(@"Table section changed: keyPath = %@, %@", keyPath, [object selectionIndexes]);
+}
 
 #pragma mark CORE DATA INITIALIZATIONS
+
 
 /**
  Returns the support directory for the application, used to store the Core Data
@@ -305,6 +317,11 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 	NSLog(@"Leaving doOpen");
 }
 
+
+- (void)tableViewSelectionDidChange:(NSNotification *)aNotification {
+    NSLog(@"NOTIFICATION NAME: %@", [aNotification name]);
+}
+
 /*
  
  Tengo que conseguir una referencia al Array Controller para saber que elemento
@@ -322,6 +339,11 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 	NSMenuItem *menuItem = [(NSPopUpButtonCell *)cell selectedItem];
 	NSLog(@"Item selected <%@>: %@", [menuItem class], menuItem);
 	NSLog(@"Title: %@", [menuItem title]);
+    
+    NSArray *array = [tableEntriesController selectedObjects];
+    NSLog(@"Returned %ld elements, 0th one is: %@",sizeof(array), array[0]);
+    
+    [Match sayHello];
 	NSLog(@"#################");
 }
 

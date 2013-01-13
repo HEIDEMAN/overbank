@@ -19,6 +19,8 @@
     NSManagedObjectModel *managedObjectModel;
     NSManagedObjectContext *managedObjectContext;
 	
+    NSMutableDictionary *tableEntriesDictionary;
+
 	// Actions Proxy
 	ActionsProxy* sendAction;
 	
@@ -35,6 +37,8 @@
     	
 	// XXX Experimental
 	IBOutlet Graphics *graphicsView;
+    IBOutlet NSArrayController *tableEntriesController;
+    IBOutlet NSTableView *tableView;
 }
 
 @property (nonatomic, retain) IBOutlet NSWindow *window;
@@ -49,7 +53,12 @@
 @property (nonatomic, retain) IBOutlet NSDatePicker *fromDatePick;
 @property (nonatomic, retain) IBOutlet NSDatePicker *toDatePick;
 
+@property (nonatomic, retain) IBOutlet NSArrayController *tableEntriesController;
+@property (nonatomic, retain) IBOutlet NSTableView *tableView;
+
 - (void) applicationDidFinishLaunching:(NSNotification *)aNotification;
+
+- (NSMutableDictionary *)tableEntriesDictionary;
 
 - (IBAction) saveAction:(id)sender;
 - (IBAction) openAction:(id)sender;
