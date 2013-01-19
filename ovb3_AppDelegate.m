@@ -108,12 +108,8 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 	[tabView selectFirstTabViewItem:NULL];
 
     // start listening for selection changes in our NSTableView's array controller
-    [tableEntriesController addObserver: self
-                             forKeyPath: @"selectionIndexes"
-                                options: NSKeyValueObservingOptionNew
-                                context: NULL];
-
-	
+    [tableEntriesController addObserver: self forKeyPath: @"selectionIndexes"
+                                options: NSKeyValueObservingOptionNew context: NULL];
 	NSLog(@"--");
 }
 
@@ -140,9 +136,28 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 
 #pragma mark COCOA OVERRIDES
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+/*
+    This method is triggered upon NSArrayController selection changes. To achieve that
+    an observer is added when the application launches (search "addObserver").
+    Based on the value of boolean "tablePopUpCellChanged" this method knows whether the
+    user only selected a different cell in the NSTableView, or also changed the value
+    of the "Category" field in the table. 
+    In the later case, this method calls for trying to apply the change in the categorization
+    of that entry to the rest of the entries in the database, by accessing the proper
+    Match object methods.
+ */
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(NSArrayController *)object change:(NSDictionary *)change context:(void *)context
 {
-    NSLog(@"Table section changed: keyPath = %@, %@", keyPath, [object selectionIndexes]);
+    NSUInteger row = [[object selectionIndexes] firstIndex];
+    NSLog(@"Table selection changed, selected Row: %ld", row);
+    if (tablePopUpCellChanged) {
+        NSLog(@"  -> tablePopUpCell changed\n%@",
+              [[object selectedObjects] objectAtIndex:0]);
+        [Match sayHello];
+    } else {
+        NSLog(@"  -> Ignoring table selection change.");
+    }
+    tablePopUpCellChanged = false;
 }
 
 #pragma mark CORE DATA INITIALIZATIONS
@@ -318,9 +333,9 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 }
 
 
-- (void)tableViewSelectionDidChange:(NSNotification *)aNotification {
-    NSLog(@"NOTIFICATION NAME: %@", [aNotification name]);
-}
+//- (void)tableViewSelectionDidChange:(NSNotification *)aNotification {
+//    NSLog(@"tableViewSelectionDidChange -> NOTIFICATION NAME: %@", [aNotification name]);
+//}
 
 /*
  
@@ -330,21 +345,19 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
  */
 - (IBAction)selectPopUpCellAction:(id)sender
 {
-	NSLog(@"#################");
-	NSLog(@"sender <%@> = %@", [sender class], sender);
+    tablePopUpCellChanged = true;
+    
 	NSInteger row = [sender selectedRow];
-    NSLog(@"the user just clicked on row %ld", row);
-	NSCell *cell = [(NSTableView *)sender selectedCell];
-	NSLog(@"Cell selected <%@>: %@", [cell class], cell);
-	NSMenuItem *menuItem = [(NSPopUpButtonCell *)cell selectedItem];
-	NSLog(@"Item selected <%@>: %@", [menuItem class], menuItem);
-	NSLog(@"Title: %@", [menuItem title]);
-    
-    NSArray *array = [tableEntriesController selectedObjects];
-    NSLog(@"Returned %ld elements, 0th one is: %@",sizeof(array), array[0]);
-    
-    [Match sayHello];
-	NSLog(@"#################");
+    NSLog(@"IBAction -> The user updated a cell on row: %ld", row);
+//	NSCell *cell = [(NSTableView *)sender selectedCell];
+//	NSLog(@"Cell selected <%@>: %@", [cell class], cell);
+//	NSMenuItem *menuItem = [(NSPopUpButtonCell *)cell selectedItem];
+//	NSLog(@"Item selected <%@>: %@", [menuItem class], menuItem);
+//	NSLog(@"Title: %@", [menuItem title]);
+//    
+//    NSArray *array = [tableEntriesController selectedObjects];
+//    NSLog(@"Returned %ld elements, 0th one is: %@",[array count], array[0]);
+//    
 }
 
 

@@ -10,7 +10,7 @@
 #import "ActionsProxy.h"
 #import "Graphics.h"
 
-@interface ovb3_AppDelegate : NSObject <NSTabViewDelegate>
+@interface ovb3_AppDelegate : NSObject <NSTabViewDelegate, NSTableViewDataSource>
 {
     NSWindow *window;
 	NSTabView *tabView;
@@ -26,6 +26,9 @@
 	
 	// Menu flags to control activation
 	BOOL matchingEnabled;
+    
+    // Controls whether Category popupcell in Table has changed
+    BOOL tablePopUpCellChanged;
 	
 	// Flag to control whether it is the first time the app executes.
 	BOOL MDFirstRun;
@@ -49,6 +52,7 @@
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 
 @property (assign) BOOL matchingEnabled;
+@property (assign) BOOL tablePopUpcellChanged;
 
 @property (nonatomic, retain) IBOutlet NSDatePicker *fromDatePick;
 @property (nonatomic, retain) IBOutlet NSDatePicker *toDatePick;

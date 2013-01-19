@@ -573,6 +573,7 @@
 				AAD8F8FD169B0335005BEF53 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
