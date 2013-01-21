@@ -107,6 +107,20 @@
 	return rc;
 }
 
+/*
+    This method calls the class database to learn from a new categorization that
+    the user has provoked by manually selecting the proper category for an entry.
+ */
+- (int) actionLearnMatchFromUserCategorization:(NSManagedObjectContext *)moc dbentry:(DBEntry *)dbentry
+{
+    int rc = [db learnCategorizationFromUserAction:moc
+                                           dbentry:dbentry
+                                      conflictsSet:conflicts
+                                       preferences:prefs];
+    return rc;
+}
+
+
 /**
 	This function sets up the preferences from a default set, by the first time the program executes.
 	Once set, the preferences are stored in disk to be recovered from there now on.

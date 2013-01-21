@@ -47,7 +47,7 @@
 	Match *winner = [Match getWinnerCategory:matchesSet];
 	if ( winner == nil )
 	{
-		NSLog (@"   CONFLICT");
+		NSLog (@"  CONFLICT: Multiple categorizations possible");
 		
 		// Ahora he detectado un conflicto. Lo que tengo que hacer 
 		// es comprobar que no haya otro igual almacenado, en cuyo 
@@ -55,7 +55,7 @@
 		// usuario como solucionarlo.
 		if ( (winner = [Match getConflictResolved:matchesSet :conflictSet]) != nil )
 		{
-			NSLog (@"   Solved: %@", winner.categoryMatched);
+			NSLog (@"    Solved: %@", winner.categoryMatched);
 		}
 		else
 		{
@@ -66,9 +66,11 @@
 			
 			winner = [Match markWinnerCategory:matchesSet :catNum];
 			*/
+            
 			// Tengo que marcar la categoria ganadora con un voto más que el resto...
 			// Añado el conflicto si no existe ya...
 			[self addConflict:conflictSet newConflict:matchesSet];
+            
 			//[conflictSet addObject:matchesSet];
 			/*
 			NSLog (@"   Resolved");
@@ -76,6 +78,37 @@
 		}
 	} 
 	else 
+	{
+		NSLog (@" Winner: %@", winner.categoryMatched);
+	}
+	
+	return winner;
+}
+
+
++ (Match *)solveConflictWithUserAction:(NSMutableSet *)matchesSet :(NSMutableSet *)conflictSet :(NSString *)userSelectedCategory
+{
+	Match *winner = [Match getWinnerCategory:matchesSet];
+	if ( winner == nil )
+	{
+		NSLog (@"  CONFLICT: Multiple categorizations possible");
+		
+		// Ahora he detectado un conflicto. Lo que tengo que hacer
+		// es comprobar que no haya otro igual almacenado, en cuyo
+		// caso es posible resolverlo, para guardarlo y preguntar al
+		// usuario como solucionarlo.
+		if ( (winner = [Match getConflictResolved:matchesSet :conflictSet]) != nil )
+		{
+			NSLog (@"    Solved: %@", winner.categoryMatched);
+		}
+		else
+		{
+            // A winner is marked with one additional vote, from the user selection.
+            winner = [Match markWinnerCategory:matchesSet :userSelectedCategory];
+            [self addConflict:conflictSet newConflict:matchesSet];
+		}
+	}
+	else
 	{
 		NSLog (@" Winner: %@", winner.categoryMatched);
 	}
@@ -94,23 +127,25 @@
 	Match *element, *winner=nil;
 	BOOL tie = FALSE;
 	int maxTags = -1;
+    int maxVotes = -1;
 	
 	for (element in matchesSet)
 	{
 		int numTagsMatched = [element.tagsMatched count];
-		if ( numTagsMatched >= maxTags) 
+		if ( numTagsMatched >= maxTags ) 
 		{
 			if ((winner == nil) || (numTagsMatched > maxTags)) 
 			{
 				//NSLog(@"      $ Setting winner (%@) with %d tags.",element.categoryMatched,numTagsMatched);
 				winner = element;
 				maxTags = numTagsMatched;
+                maxVotes = element.votes;
 				tie = FALSE;
 			} 
 			else if (numTagsMatched == maxTags)
 			{
-				//NSLog (@"      $ Setting tie as numTags (%d) == maxTags (%d)", numTagsMatched, maxTags);
-				tie = TRUE;
+                //NSLog (@"      $ Setting tie as numTags (%d) == maxTags (%d)", numTagsMatched, maxTags);
+                tie = TRUE;
 			}
 		}
 	}
@@ -150,13 +185,13 @@
 		}
 		
 		// Compruebo si los dos sets son iguales - igual conjunto de categorias dentro.
-		allesOK = [self compareTwoSets:matchesSet :conflict :NO];
+		allesOK = ([self compareTwoSets:matchesSet :conflict :NO] == NSOrderedSame);
 		
 		// Si tienen el mismo numero de categorias, ahora toca comprobar que tengan los 
 		// mismos tags dentro los dos sets.
 		if (allesOK == YES) 
 		{
-			allesOK = [self compareTwoSets:matchesSet :conflict :YES];
+			allesOK = ([self compareTwoSets:matchesSet :conflict :YES] == NSOrderedSame);
 			/*
 			if (!allesOK) {
 				NSLog (@"    Both sets are equal BUT tags are NOT the same.. :-(");
@@ -188,7 +223,7 @@
  Para cada coincidencia del conflicto que ha aparecido, busco entre los que 
  tengo almacenados, uno que sea igual.
  */
-+(BOOL) compareTwoSets:(NSMutableSet *)setA :(NSMutableSet *)setB :(BOOL)goDeepToCompareTags
++(NSComparisonResult) compareTwoSets:(NSMutableSet *)setA :(NSMutableSet *)setB :(BOOL)goDeepToCompareTags
 {
 	BOOL flag=YES;
 	for(Match *matchA in setA) 
@@ -217,7 +252,10 @@
 			break;
 	}
 	
-	return flag;
+    if (flag == YES)
+        return NSOrderedSame;
+    else
+        return NSOrderedDescending;
 }
 
 /*
@@ -253,30 +291,29 @@
 	BOOL doesNotExist = YES;
 	NSMutableSet *set;
 	for (set in conflictSet) {
-		if ([self compareTwoSets:set :matchesSet :YES] == YES)
+		if ([self compareTwoSets:set :matchesSet :YES] == NSOrderedSame)
 			doesNotExist = NO;
 	}
 	if (doesNotExist) {
-		NSLog(@"Adding the conflict.");
+		NSLog(@"    Conflict added.");
 		[conflictSet addObject:matchesSet];
 	} else {
-		NSLog(@"NOT Adding the conflict.");
+		NSLog(@"    NOT Adding the conflict.");
 	}
 	return doesNotExist;
 }
 
-
 /*
  Esta funcion marca una de las categorias de un Match como ganadora de un conflicto.
  */
-+(Match *)markWinnerCategory:(NSMutableSet *)set :(int)numCat;
++(Match *)markWinnerCategory:(NSMutableSet *)set :(NSString *)userSelectedCategory
 {
 	int i=0;
 	BOOL found = NO;
 	Match *m;
 	for (m in set) {
 		i++;
-		if (i == numCat) {
+		if ([m.categoryMatched caseInsensitiveCompare:userSelectedCategory] == NSOrderedSame) {
 			NSLog(@"  Setting Winner category for %@", m.categoryMatched);
 			m.votes++;
 			found = YES;
@@ -287,6 +324,30 @@
 		return m;
 	}
 	return nil;
+}
+
+// Loop through the sets in conflictSet to find which one
+// is the one which represents the match and then mark it
+// with the winning category.
++(int)markWinnerCategoryInConflict:(NSMutableSet *)matchesSet :(NSMutableSet *)conflictSet :(NSString *)userSelectedCategory
+{
+	BOOL doesExist = NO;
+    NSMutableSet *set;
+    
+    for (set in conflictSet) {
+        if ([self compareTwoSets:set :matchesSet :YES] == NSOrderedSame) {
+            doesExist = YES;
+            break;
+        }
+    }
+    
+	if (doesExist == NO) {
+        NSLog(@"Impossible to mark conflict.");
+        return 1;
+    } else {
+        [self markWinnerCategory:set :userSelectedCategory];
+	}
+    return 0;
 }
 
 /*
@@ -322,7 +383,10 @@
 }
 
 +(void)listConflictSet:(NSMutableSet *)set
-{	
+{
+	NSLog(@"-------------------------");
+    NSLog(@"Listing Conflicts Set");
+    
 	if ( [set count] == 0) {
 		NSLog(@"WARNING: Empty dictionary");
 		return;
@@ -330,7 +394,6 @@
 	
 	NSMutableSet *subset;
 	int i=0;
-	NSLog(@"-------------------------");
 	NSLog(@"Found %04lu conflict sets.", [set count] );
 	NSLog(@"-------------------------");
 	for ( subset in set ) {

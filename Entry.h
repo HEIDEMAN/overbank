@@ -26,7 +26,7 @@
 @property (nonatomic,retain) NSNumber* saldo;
 @property (nonatomic,retain) Match*    matchingCategory;
 
-- (void) printEntry:(Entry *)entry;
+- (void) printEntry;
 - (BOOL) equals:(Entry *)entry;
 
 @end

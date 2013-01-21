@@ -42,9 +42,9 @@
 @property (retain) NSMutableSet *conflicts;
 
 - (BOOL) fileSelected;
-//- (int)  processAction:(int)actionMenuCode sender:(id)obj;
 - (int)  actionOpenFile:(NSString *)nameOfFile managedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 - (int)  actionMatchDatabaseEntries:(NSManagedObjectContext *)managedObjectContext;
+- (int)  actionLearnMatchFromUserCategorization:(NSManagedObjectContext *)moc dbentry:(DBEntry *)dbentry;
 - (int)  actionReadExistingPreferences;
 - (int)  actionSetDefaultPreferences:(NSManagedObjectContext *)managedObjectContext;
 

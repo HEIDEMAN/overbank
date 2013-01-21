@@ -31,13 +31,16 @@
 - (BOOL) arrayContainsEntry:(NSArray*)array Entry:(Entry*)line;
 - (DBCategory *)findCategory:(NSString *)catName managedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 
-- (int)  fastImportLog:(NSMutableArray *)log managedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 - (int)  categorizeAllEntries:(NSManagedObjectContext *)managedObjectContext 
 				  preferences:(Prefs *)prefs 
 				 conflictsSet:(NSMutableSet *)conflictsSet
 				 overrideFlag:(BOOL)override 
 		   solveConflictsFlag:(BOOL)solveConflict
 				  verboseFlag:(BOOL)verbose;
+- (int) learnCategorizationFromUserAction:(NSManagedObjectContext *)moc
+                                  dbentry:(DBEntry *)dbentry
+                             conflictsSet:(NSMutableSet *)conflictsSet
+                              preferences:(Prefs *)prefs;
 
 - (NSManagedObject*) entryToDBEntry:(Entry*)line inManagedObjectContext:(NSManagedObjectContext*)moc;
 - (Entry *)dbEntryToEntry:(NSManagedObject *)object;
@@ -53,8 +56,11 @@
 - (NSDate*) stringToNSDate:(NSString *)string;
 - (NSDate*) dateWithNoTime:(NSDate *)date;
 
+- (int)  fastImportLog:(NSMutableArray *)log managedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 - (NSArray*)loadTableToArray:(NSManagedObjectContext*)moc;
 - (void) dumpDatabase:(NSManagedObjectContext *)moc number:(NSNumber *)importe;
+
+- (void) printDBEntry:(DBEntry *)record;
 
 + (NSNumber *)abs:(NSNumber *)input;
 

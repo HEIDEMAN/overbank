@@ -24,11 +24,15 @@
 @property (nonatomic) NSInteger votes;
 
 +(Match *)solveConflict:(NSMutableSet *)matchesSet :(NSMutableSet *)conflictSet;
++(Match *)solveConflictWithUserAction:(NSMutableSet *)matchesSet
+                                     :(NSMutableSet *)conflictSet
+                                     :(NSString *)userSelectedCategory;
 +(Match *)getWinnerCategory:(NSMutableSet *)matchesSet;
 +(Match *)getConflictResolved:(NSMutableSet *)matchesSet :(NSMutableSet *)conflictsSet;
-+(Match *)markWinnerCategory:(NSMutableSet *)set :(int)numCat;
++(Match *)markWinnerCategory:(NSMutableSet *)set :(NSString *)userSelectedCategory;
++(int)markWinnerCategoryInConflict:(NSMutableSet *)matchesSet :(NSMutableSet *)conflictSet :(NSString *)userSelectedCategory;
 +(Match *)getWinnerCategoryInConflict:(NSMutableSet *)set;
-+(BOOL) compareTwoSets:(NSMutableSet *)setA :(NSMutableSet *)setB :(BOOL)goDeepToCompareTags;
++(NSComparisonResult) compareTwoSets:(NSMutableSet *)setA :(NSMutableSet *)setB :(BOOL)goDeepToCompareTags;
 +(BOOL) compareTagsOfTwoMatches:(Match *)matchA :(Match *)matchB;
 +(BOOL) addConflict:(NSMutableSet *)conflictSet newConflict:(NSMutableSet *)matchesSet;
 

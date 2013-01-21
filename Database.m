@@ -10,7 +10,9 @@
 
 @implementation Database
 
+
 #pragma mark Import Entry objects into the database.
+
 
 /**
  Take the log from memory and import it into the database, avoiding duplicates. 
@@ -124,15 +126,14 @@
 		   solveConflictsFlag:(BOOL)solveConflict
 				  verboseFlag:(BOOL)verbose
 {
-	Entry *entry;
-	NSMutableSet *matchesSet;
-	NSError *error;
-	
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	NSEntityDescription *entity  = [NSEntityDescription 
-								    entityForName:@"DBEntry" inManagedObjectContext:managedObjectContext];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"DBEntry"
+                                              inManagedObjectContext:managedObjectContext];
 	
+    [Match listConflictSet:conflictsSet];
+    
 	// Get ALL the objects in entity.
+	NSError *error;
 	[fetchRequest setEntity:entity];
 	NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
 	
@@ -140,7 +141,7 @@
 	for (NSManagedObject *line in fetchedObjects) 
 	{
 		// Convert the object returned by the fetch request to Core Data into a valid Entry object
-		entry = [self dbEntryToEntry:line];
+		Entry *entry = [self dbEntryToEntry:line];
 		
 		// If the line is already categorized, I re-do the process only if the override flag is set
 		if ( [entry.matchingCategory.categoryMatched length] != 0) {
@@ -148,9 +149,9 @@
 			continue;
 		}
 		
-		Match *winner=nil;
 		// Busco a que categorias puede pertenecer esta entrada bancaria.
-		matchesSet = [prefs matchTag:[entry concepto]];
+		Match *winner=nil;
+		NSMutableSet *matchesSet = [prefs matchTag:[entry concepto]];
 		if (matchesSet.count == 0) {
 			if (verbose) NSLog (@"-- MISMATCH -- Entry doesn't match any category!!");
 			if (verbose) NSLog (@"   '%@'", entry.concepto);
@@ -159,11 +160,14 @@
 		else 
 		{
 			NSLog (@"ENTRY: '%@'.", [entry concepto]);
+            
 			// Recorro todas las categorias con las que ha habido "match"
 			int j=0;
-			for (Match *match in matchesSet) {
+			for (Match *match in matchesSet)
+            {
 				// Pinto cada categoria del Set.
-				if (verbose) NSLog (@"  > MATCH (%d/%lu): '%@'", j+1, matchesSet.count, match.categoryMatched);
+				if (verbose) NSLog (@"  > MATCH (%d/%lu): '%@' #%ld votes", j+1,
+                                    matchesSet.count, match.categoryMatched, match.votes);
 				
 				// Pinto las etiquetas que han producido el match.
 				for (int k=0;((verbose) && (k<[match.tagsMatched count]));k++) {
@@ -171,10 +175,10 @@
 				}
 				j++;
 			}
-			
-			
+						
 			// Si hay mas de una categoria tenemos un conflicto.
-			if ( matchesSet.count > 1 ) { 
+			if ( matchesSet.count > 1 )
+            {
 				if (solveConflict) // Soluciono el conflicto de manera interactiva, o...
 				{
 					winner = [Match solveConflict:matchesSet :conflictsSet];
@@ -193,14 +197,17 @@
 				}
 			}
 			// Si solo hay una, sacamos el elemento del set y ese es el winner.
-			else if ( matchesSet.count == 1 ) {
+			else if ( matchesSet.count == 1 )
+            {
 				NSEnumerator *e = [matchesSet objectEnumerator];
 				winner = [e nextObject];
 			}
 		}
 		// And the WINNER catgoy is...
 		entry.matchingCategory = winner;
-		if (verbose) NSLog(@">> \"%@\" CATEGORIZED AS %@", entry.concepto, entry.matchingCategory.categoryMatched );
+		if (verbose) {
+            NSLog(@">> \"%@\" CATEGORIZED AS %@", entry.concepto, entry.matchingCategory.categoryMatched );
+        }
 		
 		// Now, it's time to grab it down into the DB, in case there's a winner.
 		if ( (matchesSet.count != 0) && (winner != nil) ) {
@@ -224,8 +231,6 @@
 	
 	dbEntry.categoryMatched = entry.matchingCategory.categoryMatched;
 	
-	/*******************************/
-	/**  XXX JASON EXPERIMENTAL!! **/
 	NSLog(@" ~~~> Entering the creation of the relationship: %@", entry.matchingCategory.categoryMatched);
 	// create the entities (you could fetch these instead, if they already exist)
 	DBCategory *dbcategory = [self findCategory:entry.matchingCategory.categoryMatched 
@@ -240,8 +245,6 @@
 		NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
 	}
 	NSLog(@" ~~~> Leaving.");
-	/**  XXX JASON EXPERIMENTAL!! **/
-	/*******************************/
 	
 	
 	// Extract the array of tags into a concatenated string.
@@ -257,6 +260,98 @@
 		rc = 1;
 	}
 	return rc;
+}
+
+
+- (int) learnCategorizationFromUserAction:(NSManagedObjectContext *)moc
+                                  dbentry:(DBEntry *)dbentry
+                             conflictsSet:(NSMutableSet *)conflictsSet
+                              preferences:(Prefs *)prefs
+{
+    NSLog(@"Entering 'learn from action'...\n");
+    Entry *entry = [self dbEntryToEntry:dbentry];
+    
+    // If the entry the user manually updated was NULL, then I try to learn,
+    // Otherwise, I dont do anything.
+    if ([entry.matchingCategory.categoryMatched length] != 0) {
+        NSLog(@"  This entry was already categorized. Nothing to learn.");
+        return 1;
+    }
+    
+    [entry printEntry];
+    [self printDBEntry:dbentry];
+    
+    // Now, I must update de Entry object with the contents of the DBEntry object
+    // obtanined from the managedObjectContext. I also must update the conflicts
+    // set adding a vote to the category newly matched. And then, run the matching
+    // again to check if I can learn something from that.
+    
+    // Busco a que categorias puede pertenecer esta entrada bancaria.
+    Match *winner=nil;
+    NSMutableSet *matchesSet = [prefs matchTag:[entry concepto]];
+    if (matchesSet.count == 0) {
+        NSLog (@"-- MISMATCH -- Entry doesn't match any category!!");
+        NSLog (@"   '%@'", entry.concepto);
+        winner = nil;
+    }
+    else
+    {
+        NSLog (@"ENTRY: '%@' matches 1 or more categories!", [entry concepto]);
+        
+        // Recorro todas las categorias con las que ha habido "match"
+        int j=0;
+        for (Match *match in matchesSet)
+        {
+            // Loop through the matching categories...
+            // If I found the category that the user manually selected, and I have
+            // a potential conflict here, then I assign one more vote to it.
+            /*
+            BOOL thereIsAConflict = ([matchesSet count] > 1);
+            if (thereIsAConflict &&
+                ([match.categoryMatched caseInsensitiveCompare:dbentry.category.name] == NSOrderedSame) ) {
+                match.votes++;
+            }
+             */
+
+            // Pinto cada categoria del Set.
+            NSLog (@"  > CATEGORY MATCH (%d/%lu): '%@' [#%ld]", j+1, matchesSet.count, match.categoryMatched, match.votes);
+            
+            for (int k=0;(k<[match.tagsMatched count]);k++) {
+                NSLog (@"    > Tag#%d - '%@'",k+1, [match.tagsMatched objectAtIndex:k]);
+            }
+            j++;
+        }
+        
+        // Si hay mas de una categoria tenemos un conflicto.
+        if ( matchesSet.count > 1 ) {
+            winner = [Match solveConflictWithUserAction:matchesSet :conflictsSet :dbentry.category.name];
+        }
+        // Si solo hay una, sacamos el elemento del set y ese es el winner.
+        else if ( matchesSet.count == 1 )
+        {
+            NSEnumerator *e = [matchesSet objectEnumerator];
+            winner = [e nextObject];
+        }
+    }
+    // And the WINNER catgoy is...
+    entry.matchingCategory = winner;
+    [Match markWinnerCategoryInConflict:matchesSet :conflictsSet :winner.categoryMatched];
+    NSLog(@">> \"%@\" CATEGORIZED AS %@", entry.concepto, entry.matchingCategory.categoryMatched );
+    NSLog(@"--endoflearnedlesson--");
+    [Match listConflictSet:conflictsSet];
+    NSLog(@"--endoflearnedlesson--");
+    
+    // Ask the user if wants to apply the new learning to the rest of the table.
+    NSInteger returnValue = NSRunAlertPanel(@"Apply...",
+                    @"Do you want to apply the selection to entire table?",
+                    @"OK", @"Cancel", nil);
+    if (returnValue == NSAlertDefaultReturn) {
+        NSLog(@"\nExtending the learned lessons\n");
+        [self categorizeAllEntries:moc preferences:prefs conflictsSet:conflictsSet
+                      overrideFlag:NO solveConflictsFlag:YES verboseFlag:YES];
+    }
+
+    return 0;
 }
 
 
@@ -613,22 +708,6 @@
 
 - (void) dumpDatabase:(NSManagedObjectContext *)moc number:(NSNumber *)importe 
 {
-    /*
-    // Set up the object that connects to the entity in Core Data to perform the fetch
-    NSEntityDescription *entityDescription = [NSEntityDescription  entityForName:@"DBEntry" inManagedObjectContext:moc];
-    NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
-	[fetchRequest setEntity:entityDescription];
-	
-    //[fetchRequest setPredicate:@"*"];    	
-    // You can add sorting like this
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"fechaOperacion" ascending:YES];
-    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
-	[fetchRequest setSortDescriptors:sortDescriptors];
-	
-    NSError *error = nil;
-    NSArray *array = [moc executeFetchRequest:fetchRequest error:&error];
-    */
-    
     NSArray *array = [self loadTableToArray:moc];
     if (array == nil) {
         NSLog(@"NO Results Back. Failed Fetch!!");
@@ -638,6 +717,13 @@
         NSLog(@"%@|%30@|%6@ [%d]", [self dateWithNoTime:record.fechaOperacion], record.concepto, record.importe,
               [record.importe floatValue] == [importe floatValue]);
     }
+}
+
+- (void) printDBEntry:(DBEntry *)record
+{
+    NSLog(@"DBEntry:");
+    NSLog(@"%@|%30@|%6@", [self dateWithNoTime:record.fechaOperacion], record.concepto, record.importe);
+    NSLog(@"  > %@", record.category.name);
 }
 
 

@@ -146,14 +146,17 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
     of that entry to the rest of the entries in the database, by accessing the proper
     Match object methods.
  */
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(NSArrayController *)object change:(NSDictionary *)change context:(void *)context
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(NSArrayController *)object
+                        change:(NSDictionary *)change
+                       context:(void *)context
 {
     NSUInteger row = [[object selectionIndexes] firstIndex];
     NSLog(@"Table selection changed, selected Row: %ld", row);
     if (tablePopUpCellChanged) {
-        NSLog(@"  -> tablePopUpCell changed\n%@",
-              [[object selectedObjects] objectAtIndex:0]);
-        [Match sayHello];
+        NSLog(@"  -> tablePopUpCell changed\n%@", [[object selectedObjects] objectAtIndex:0]);
+        [sendAction actionLearnMatchFromUserCategorization:managedObjectContext
+                                                   dbentry:(DBEntry *)[[object selectedObjects] objectAtIndex:0]];
     } else {
         NSLog(@"  -> Ignoring table selection change.");
     }

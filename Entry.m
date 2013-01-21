@@ -38,14 +38,27 @@
     return (cond1 && cond2 && cond3);
 }
 
-
-- (void)printEntry:(Entry *)entry 
+- (void)printEntry
 {
-	NSLog(@" fechaOperacion: %@\n", entry.fechaOperacion); 
-	NSLog(@"     fechaValor: %@\n", entry.fechaValor); 
-	NSLog(@"       concepto: %@\n", entry.concepto);
-	NSLog(@"        importe: %@\n", entry.importe);
-	NSLog(@"          saldo: %@\n", entry.saldo);
+    NSLog(@"Entry:");
+    NSLog(@"%@|%30@|%6@", fechaOperacion, concepto, importe);
+    NSLog(@"  > %@ (%ld)", matchingCategory.categoryMatched,
+          (matchingCategory.categoryMatched != nil) ? matchingCategory.votes : 0);
+
+    /*
+	NSLog(@" fechaOperacion: %@\n", fechaOperacion);
+	NSLog(@"     fechaValor: %@\n", fechaValor);
+	NSLog(@"       concepto: %@\n", concepto);
+	NSLog(@"        importe: %@\n", importe);
+	NSLog(@"          saldo: %@\n", saldo);
+    NSLog(@"      >category: %@\n", matchingCategory.categoryMatched);
+    NSLog(@"         >votes: %lu\n",matchingCategory.votes);
+    for (int i=0; i<[matchingCategory.tagsMatched count]; i++)
+    {
+        NSLog(@"           >tag: %@", [matchingCategory.tagsMatched objectAtIndex:i]);
+    }
+     */
+
 }
 
 @end

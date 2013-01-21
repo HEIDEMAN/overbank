@@ -214,11 +214,4 @@
 	LogIt(@"\nTOTAL %@: %.0f.€", category, money);
 }
 
-
-
-
-
-
-
-
 @end
