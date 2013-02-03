@@ -11,10 +11,10 @@
 #define PI 3.14159265358979323846
 #define FLOAT(x) [NSNumber numberWithFloat:x]
 
-NSPoint makeTextStartingPoint( NSSize textSize, NSRect bounds , float angle, int offset );
-
+//NSPoint makeTextStartingPoint( NSSize textSize, NSRect bounds , float angle, int offset );
 
 @implementation Graphics
+@synthesize segmentNamesArray, segmentValuesArray, segmentPathsArray, segmentTextsArray;
 
 - (id)initWithFrame:(NSRect)frame {
     self = [super initWithFrame:frame];
@@ -30,15 +30,6 @@ NSPoint makeTextStartingPoint( NSSize textSize, NSRect bounds , float angle, int
     }
     return self;
 }
-
-/**
- - (void)drawRect:(NSRect)dirtyRect {
- // Drawing code here.
- NSRect myRect = NSMakeRect(21, 21, 210, 210);
- [[NSColor blueColor] set];
- NSRectFill(myRect);
- }
- */
 
 
 /*
@@ -283,7 +274,7 @@ NSPoint makeTextStartingPoint( NSSize textSize, NSRect bounds , float angle, int
 	segmentValuesArray = [aggregated allValues];
 	segmentNamesArray = [aggregated allKeys];
 	
-	NSLog(@"Added %ld elements", [segmentValuesArray count]);
+	NSLog(@"Added %lu elements", [segmentValuesArray count]);
 	NSLog(@"Calling generateDrawingInformation");
 	[self generateDrawingInformation];
 	[self display];
@@ -333,114 +324,5 @@ NSPoint makeTextStartingPoint( NSSize textSize, NSRect bounds , float angle, int
 	
 	[super dealloc];
 }
-
-
-
-/********  UNUSED CODE  **********
- 
- 
- - (void)drawRect2:(NSRect)dirtyRect 
- {
- int size_x = 1000;
- int size_y = 640;
- float perc = 0.4;
- float mid_angle = perc * 360;
- NSBezierPath *greenPath = [NSBezierPath bezierPath] ;
- NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
- [NSFont fontWithName:@"Helvetica" size:12], 
- NSFontAttributeName,[NSColor blackColor], 
- NSForegroundColorAttributeName, nil];
- 
- NSAttributedString * currentText=[[NSAttributedString alloc] 
- initWithString: @"some text" 
- attributes: attributes];
- 
- [greenPath setLineWidth: 2 ] ;
- // move to the center so that we have a closed slice
- // size_x and size_y are the height and width of the view
- [greenPath moveToPoint: NSMakePoint( size_x/2, size_y/2 ) ] ;
- 
- // draw an arc (perc is a certain percentage ; something between 0 and 1
- [greenPath appendBezierPathWithArcWithCenter:NSMakePoint( size_x/2, size_y/2) radius:50 startAngle:0 endAngle: 360 * perc ] ;
- 
- // close the slice , by drawing a line to the center
- [greenPath lineToPoint: NSMakePoint(size_x/2, size_y/2) ] ;
- [greenPath stroke] ;
- 
- [[NSColor greenColor] set] ;
- // and fill it
- [greenPath fill] ; 
- 
- greenPath = [NSBezierPath bezierPath] ;
- [[NSColor blackColor] set] ;
- [greenPath setLineWidth: 2 ] ;
- 
- // draw the second slice, now exploded from the original center
- 
- // so to get it exploded I move (10,7) points from the original center
- // but on the imaginary circle (thats why the cos and the sin)
- // note mide_angle is the angle halve way from the arc, you can experiment with multiple
- // angles, note also that the angle is in degrees
- [greenPath moveToPoint: NSMakePoint(size_x/2 - 10 * cos ( PI * mid_angle / 180 ) , 
- size_y/2 - 7 * sin ( PI * mid_angle / 180 )) ] ;
- 
- // and now draw the other slice
- [greenPath appendBezierPathWithArcWithCenter:NSMakePoint( size_x/2 - 10 * cos ( PI * mid_angle / 180 ) , 
- size_y/2 - 7 * sin ( PI * mid_angle / 180 )) 
- radius:50 startAngle:360 * perc endAngle:360 ] ;
- 
- // close the slice
- [greenPath lineToPoint: NSMakePoint( size_x/2 - 10 * cos ( PI * mid_angle / 180 ) , 
- size_y/2 - 7 * sin ( PI * mid_angle / 180 ) ) ] ;
- [greenPath stroke] ;
- [[NSColor blueColor] set] ;
- 
- [greenPath fill] ;
- 
- //Then you need to figure out where you will put the text :
- NSPoint dot = NSMakePoint( size_x/2 + cos (PI * mid_angle / 180 ) * 50 , size_y/2 + sin ( PI * mid_angle / 180 ) * 50 ) ;
- [greenPath appendBezierPathWithArcWithCenter: dot radius: 2 startAngle: 0 endAngle: 360 ] ;
- 
- // (This is the dot you see in the picture above)
- // The mid_angle is the angle of slice divided by 2
- // Then you draw the text :
- NSPoint textStartPoint = makeTextStartingPoint( [currentText size], [self bounds] , mid_angle, 50 ) ;
- [currentText drawAtPoint:textStartPoint];
- }
- 
- NSPoint makeTextStartingPoint( NSSize textSize, NSRect bounds , float angle, int offset )
- {
- NSPoint textStartPoint ;
- float size_x = bounds.size.width ;
- float size_y = bounds.size.height ;
- float angle_radian = PI * angle / 180 ;
- 
- if ( angle <= 90 )
- {
- textStartPoint = NSMakePoint( size_x/2 + cos (angle_radian) * offset + 5 , size_y/2 + sin (angle_radian ) * offset ) ;
- }
- if ( angle > 90 && angle <= 180)
- 
- {
- textStartPoint = NSMakePoint( size_x/2 + cos ( angle_radian ) * offset - textSize.width - 5 , 
- size_y/2 + sin (angle_radian ) * offset ) ;
- 
- }
- if ( angle > 180 && angle <= 270 )
- {
- textStartPoint = NSMakePoint( size_x/2 + cos ( angle_radian ) * offset - textSize.width - 5, 
- size_y/2 + sin ( angle_radian ) * offset - textSize.height ) ;
- }
- if ( angle > 270 )
- {
- textStartPoint = NSMakePoint( size_x/2 + cos ( angle_radian ) * offset + 8 , 
- size_y/2 + sin (angle_radian ) * offset - textSize.height ) ;
- }
- 
- return textStartPoint ;
- }
- 
- ************************* UNUSED **********************/
-
 
 @end

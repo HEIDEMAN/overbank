@@ -34,13 +34,16 @@
 - (int)  categorizeAllEntries:(NSManagedObjectContext *)managedObjectContext 
 				  preferences:(Prefs *)prefs 
 				 conflictsSet:(NSMutableSet *)conflictsSet
-				 overrideFlag:(BOOL)override 
 		   solveConflictsFlag:(BOOL)solveConflict
 				  verboseFlag:(BOOL)verbose;
 - (int) learnCategorizationFromUserAction:(NSManagedObjectContext *)moc
                                   dbentry:(DBEntry *)dbentry
                              conflictsSet:(NSMutableSet *)conflictsSet
                               preferences:(Prefs *)prefs;
+- (int) recategorizeRelatedEntries:(NSArray *)moc
+                       preferences:(Prefs *)prefs
+                      conflictsSet:(NSMutableSet *)conflictsSet
+              ManagedObjectContext:(NSManagedObjectContext *)moc;
 
 - (NSManagedObject*) entryToDBEntry:(Entry*)line inManagedObjectContext:(NSManagedObjectContext*)moc;
 - (Entry *)dbEntryToEntry:(NSManagedObject *)object;

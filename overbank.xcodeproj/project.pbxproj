@@ -17,7 +17,6 @@
 		AA6DE0C014C830DD002B873A /* DBCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6DE0BE14C830DD002B873A /* DBCategory.m */; };
 		AAC5218E14AF5982007FC279 /* tableColorTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = AAC5218D14AF5982007FC279 /* tableColorTransformer.m */; };
 		AAD8F8EF169B0335005BEF53 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F8EE169B0335005BEF53 /* SenTestingKit.framework */; };
-		AAD8F8F1169B0335005BEF53 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F8F0169B0335005BEF53 /* Cocoa.framework */; };
 		AAD8F8F7169B0335005BEF53 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AAD8F8F5169B0335005BEF53 /* InfoPlist.strings */; };
 		AAD8F8FA169B0335005BEF53 /* overbank.m in Sources */ = {isa = PBXBuildFile; fileRef = AAD8F8F9169B0335005BEF53 /* overbank.m */; };
 		AADCA32B14B20C2A0065FAF7 /* stringToArrayTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = AADCA32914B20C2A0065FAF7 /* stringToArrayTransformer.m */; };
@@ -66,7 +65,6 @@
 		AAC5218D14AF5982007FC279 /* tableColorTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tableColorTransformer.m; sourceTree = "<group>"; };
 		AAD8F8ED169B0335005BEF53 /* overbank.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = overbank.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAD8F8EE169B0335005BEF53 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		AAD8F8F0169B0335005BEF53 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		AAD8F8F4169B0335005BEF53 /* overbank-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "overbank-Info.plist"; sourceTree = "<group>"; };
 		AAD8F8F6169B0335005BEF53 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AAD8F8F8169B0335005BEF53 /* overbank.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = overbank.h; sourceTree = "<group>"; };
@@ -108,7 +106,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				AAD8F8EF169B0335005BEF53 /* SenTestingKit.framework in Frameworks */,
-				AAD8F8F1169B0335005BEF53 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -208,7 +205,6 @@
 			children = (
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				AAD8F8EE169B0335005BEF53 /* SenTestingKit.framework */,
-				AAD8F8F0169B0335005BEF53 /* Cocoa.framework */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
@@ -431,6 +427,10 @@
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_MODEL_TUNING = G5;
@@ -450,6 +450,10 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

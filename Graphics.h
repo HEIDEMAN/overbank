@@ -17,6 +17,11 @@
 	NSMutableArray *segmentTextsArray;
 }
 
+@property (nonatomic, retain) NSArray *segmentNamesArray;
+@property (nonatomic, retain) NSArray *segmentValuesArray;
+@property (nonatomic, retain) NSMutableArray *segmentPathsArray;
+@property (nonatomic, retain) NSMutableArray *segmentTextsArray;
+
 - (NSColor *) randomColor;
 - (NSColor *) colorForIndex:(unsigned)index;
 - (NSArray *) segmentPathsArray;

@@ -15,7 +15,7 @@
 
 
 /**
- Take the log from memory and import it into the database, avoiding duplicates. 
+ Take the log from memory and import it into the database, avoiding duplicates.
  */
 - (int)fastImportLog:(NSMutableArray *)log managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
@@ -23,10 +23,10 @@
     
     // Take the table up to memory
     NSArray *array = [self loadTableToArray:managedObjectContext];
-
+    
     // Loop throughout the entire log in memory to insert those lines not
     // already in memory
-	for (Entry *line in log) 
+	for (Entry *line in log)
 	{
 		// Do not consider empty entries.
 		if ( [[line fechaOperacion] length] == 0) continue;
@@ -38,7 +38,7 @@
             NSLog(@"Duplicate entry");
             continue;
         }
-                
+        
         // Now I must search this entry within the previous entries of the array
         // to avoid inserting duplicates.
         // XXX
@@ -56,14 +56,14 @@
         if (doNotInsertFlag) continue;
         
         // Create the MOC that will hold the entry.
-        NSManagedObject *entry = [self entryToDBEntry:line 
+        NSManagedObject *entry = [self entryToDBEntry:line
                                inManagedObjectContext:managedObjectContext];
         if (entry == nil) {
             NSLog(@"  ERROR: Unable to save the entry to database.");
             errorOcurred = TRUE;
             break;
         }
-
+        
         // Insert the line into the DB if previous controls are OK.
         if ([managedObjectContext save:nil] == NO) {
 			NSLog(@"  ERROR: An error occurred while saving entry.");
@@ -99,11 +99,11 @@
 
 - (BOOL)arrayContainsEntry:(NSArray*)array Entry:(Entry*)line
 {
-    for (DBEntry *record in array) {        
+    for (DBEntry *record in array) {
         if ( [line equals:[self dbEntryToEntry:record]] )
             return TRUE;
     }
-             
+    
     return FALSE;
 }
 
@@ -112,17 +112,16 @@
 
 
 /**
- This function list out all the elements in the main entry of the core database to 
+ This function list out all the elements in the main entry of the core database to
  run the matching function over it, trying to pair it with a category.
  If a category is found without conflict, is simply assigned to it.
  If a category is not found, it is left blank.
  If multiple categories are found, a conflict raises, and multiple categories are assigned
  to that entry.
  */
-- (int)  categorizeAllEntries:(NSManagedObjectContext *)managedObjectContext 
-				  preferences:(Prefs *)prefs 
+- (int)  categorizeAllEntries:(NSManagedObjectContext *)managedObjectContext
+				  preferences:(Prefs *)prefs
 				 conflictsSet:(NSMutableSet *)conflictsSet
-				 overrideFlag:(BOOL)override 
 		   solveConflictsFlag:(BOOL)solveConflict
 				  verboseFlag:(BOOL)verbose
 {
@@ -138,7 +137,7 @@
 	NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
 	
 	// Iterate
-	for (NSManagedObject *line in fetchedObjects) 
+	for (NSManagedObject *line in fetchedObjects)
 	{
 		// Convert the object returned by the fetch request to Core Data into a valid Entry object
 		Entry *entry = [self dbEntryToEntry:line];
@@ -156,8 +155,8 @@
 			if (verbose) NSLog (@"-- MISMATCH -- Entry doesn't match any category!!");
 			if (verbose) NSLog (@"   '%@'", entry.concepto);
 			winner = nil;
-		} 
-		else 
+		}
+		else
 		{
 			NSLog (@"ENTRY: '%@'.", [entry concepto]);
             
@@ -166,7 +165,7 @@
 			for (Match *match in matchesSet)
             {
 				// Pinto cada categoria del Set.
-				if (verbose) NSLog (@"  > MATCH (%d/%lu): '%@' #%ld votes", j+1,
+				if (verbose) NSLog (@"  > MATCH (%d/%ld): '%@' #%ld votes", j+1,
                                     matchesSet.count, match.categoryMatched, match.votes);
 				
 				// Pinto las etiquetas que han producido el match.
@@ -175,14 +174,14 @@
 				}
 				j++;
 			}
-						
+            
 			// Si hay mas de una categoria tenemos un conflicto.
 			if ( matchesSet.count > 1 )
             {
 				if (solveConflict) // Soluciono el conflicto de manera interactiva, o...
 				{
 					winner = [Match solveConflict:matchesSet :conflictsSet];
-				} 
+				}
 				else // Rehago el "winner" para que incluya todas las categorias concatenadas.
 				{
 					winner = [[Match alloc] init];
@@ -218,48 +217,9 @@
 		if (winner != nil) [winner release];
 	}
 	
-	// Release the fetch request.
 	[fetchRequest release];
 	
 	return 0;
-}
-
-- (int) updateCategoriesInDatabase:(DBEntry *)dbEntry fromEntry:(Entry *)entry 
-			  managedObjectContext:(NSManagedObjectContext *)managedObjectContext
-{
-	int rc=0;
-	
-	dbEntry.categoryMatched = entry.matchingCategory.categoryMatched;
-	
-	NSLog(@" ~~~> Entering the creation of the relationship: %@", entry.matchingCategory.categoryMatched);
-	// create the entities (you could fetch these instead, if they already exist)
-	DBCategory *dbcategory = [self findCategory:entry.matchingCategory.categoryMatched 
-						   managedObjectContext:managedObjectContext];
-	
-	// set the relationships
-	NSLog(@"Setting Category to: %@", dbcategory.name);
-	[dbEntry setCategory:dbcategory];
-    
-	NSError *error;
-	if (![managedObjectContext save:&error]) {
-		NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
-	}
-	NSLog(@" ~~~> Leaving.");
-	
-	
-	// Extract the array of tags into a concatenated string.
-	NSString *tags = [[[NSString alloc] init] autorelease];
-	for (int i=0;i<[ entry.matchingCategory.tagsMatched count ]; i++) {
-		tags = [tags stringByAppendingFormat:@"%@;", [entry.matchingCategory.tagsMatched objectAtIndex:i] ];
-	}
-	dbEntry.tags = tags;
-	
-	// Save the entry.
-	if ([managedObjectContext save:nil] == NO) {
-		NSLog(@"** An error occurred while saving entry.");
-		rc = 1;
-	}
-	return rc;
 }
 
 
@@ -274,7 +234,8 @@
     // If the entry the user manually updated was NULL, then I try to learn,
     // Otherwise, I dont do anything.
     if ([entry.matchingCategory.categoryMatched length] != 0) {
-        NSLog(@"  This entry was already categorized. Nothing to learn.");
+        NSLog(@"  This entry was already categorized (%@). Nothing to learn.",
+              entry.matchingCategory.categoryMatched);
         return 1;
     }
     
@@ -302,20 +263,9 @@
         int j=0;
         for (Match *match in matchesSet)
         {
-            // Loop through the matching categories...
-            // If I found the category that the user manually selected, and I have
-            // a potential conflict here, then I assign one more vote to it.
-            /*
-            BOOL thereIsAConflict = ([matchesSet count] > 1);
-            if (thereIsAConflict &&
-                ([match.categoryMatched caseInsensitiveCompare:dbentry.category.name] == NSOrderedSame) ) {
-                match.votes++;
-            }
-             */
-
             // Pinto cada categoria del Set.
-            NSLog (@"  > CATEGORY MATCH (%d/%lu): '%@' [#%ld]", j+1, matchesSet.count, match.categoryMatched, match.votes);
-            
+            NSLog (@"  > CATEGORY MATCH (%d/%ld): '%@' [#%ld]", j+1,
+                   matchesSet.count, match.categoryMatched, match.votes);
             for (int k=0;(k<[match.tagsMatched count]);k++) {
                 NSLog (@"    > Tag#%d - '%@'",k+1, [match.tagsMatched objectAtIndex:k]);
             }
@@ -341,21 +291,171 @@
     [Match listConflictSet:conflictsSet];
     NSLog(@"--endoflearnedlesson--");
     
-    // Ask the user if wants to apply the new learning to the rest of the table.
-    NSInteger returnValue = NSRunAlertPanel(@"Apply...",
-                    @"Do you want to apply the selection to entire table?",
-                    @"OK", @"Cancel", nil);
-    if (returnValue == NSAlertDefaultReturn) {
-        NSLog(@"\nExtending the learned lessons\n");
-        [self categorizeAllEntries:moc preferences:prefs conflictsSet:conflictsSet
-                      overrideFlag:NO solveConflictsFlag:YES verboseFlag:YES];
+    // If I can find more unclassified objects, then I ask the user whether
+    // to extend the change applied to the data to the rest of them.
+    NSArray *fetchedObjects = [self selectEntriesMatchingCategory:nil :moc];
+    if ([fetchedObjects count] != 0)
+    {
+        // Ask the user if wants to apply the new learning to the rest of the table.
+        NSInteger returnValue = NSRunAlertPanel(@"Apply...",
+                                                @"Do you want to apply the selection to entire table?",
+                                                @"OK", @"Cancel", nil);
+        if (returnValue == NSAlertDefaultReturn)
+            [self recategorizeRelatedEntries:fetchedObjects preferences:prefs
+                                conflictsSet:conflictsSet ManagedObjectContext:moc];
     }
-
     return 0;
 }
 
 
+/**
+ This function list out all the elements in the main entry of the core database to
+ run the matching function over it, trying to pair it with a category.
+ If a category is found without conflict, is simply assigned to it.
+ If a category is not found, it is left blank.
+ If multiple categories are found, a conflict raises, and multiple categories are assigned
+ to that entry.
+ */
+- (int) recategorizeRelatedEntries:(NSArray *)fetchedObjects
+                       preferences:(Prefs *)prefs
+                      conflictsSet:(NSMutableSet *)conflictsSet
+              ManagedObjectContext:(NSManagedObjectContext *)moc
+{
+    NSLog(@"\nRe-categorization based on user manual change.\n");
+
+	for (NSManagedObject *line in fetchedObjects)
+	{
+		Entry *entry = [self dbEntryToEntry:line];
+        if ( [entry.matchingCategory.categoryMatched length] != 0) {
+			NSLog(@"Skipping entry classification. Already classified.");
+			continue;
+		}
+		
+        NSLog (@"ENTRY: '%@'.", [entry concepto]);
+        
+		// Busco a que categorias puede pertenecer esta entrada bancaria.
+		Match *winner=nil;
+		NSMutableSet *matchesSet = [prefs matchTag:[entry concepto]];
+		if (matchesSet.count == 0) {
+			NSLog (@"-- MISMATCH -- Entry doesn't match any category!!");
+			NSLog (@"   '%@'", entry.concepto);
+			winner = nil;
+		}
+		else
+		{
+			// Recorro todas las categorias con las que ha habido "match"
+			int j=0;
+			for (Match *match in matchesSet)
+            {
+				// Pinto cada categoria del Set.
+				NSLog (@"  > MATCH (%d/%lu): '%@' #%ld votes", j+1,
+                       matchesSet.count, match.categoryMatched, match.votes);
+				
+				// Pinto las etiquetas que han producido el match.
+				for (int k=0;(k<[match.tagsMatched count]);k++) {
+					NSLog (@"    > %d - %@",k+1, [match.tagsMatched objectAtIndex:k]);
+				}
+				j++;
+			}
+            
+			// Si hay mas de una categoria tenemos un conflicto.
+			if ( matchesSet.count > 1 )
+            {
+				winner = [Match solveConflict:matchesSet :conflictsSet];
+				if (winner == nil)
+				{
+					winner = [[Match alloc] init];
+					NSString *allMatches = [[NSString alloc] init];
+					for (Match *m in matchesSet) {
+						allMatches = [allMatches stringByAppendingFormat:@"%@,", m.categoryMatched];
+						for(int i=0;i<[m.tagsMatched count];i++) {
+							[winner.tagsMatched addObject:[ m.tagsMatched objectAtIndex:i ]];
+						}
+					}
+				}
+			}
+			// Si solo hay una, sacamos el elemento del set y ese es el winner.
+			else if ( matchesSet.count == 1 )
+            {
+				NSEnumerator *e = [matchesSet objectEnumerator];
+				winner = [e nextObject];
+			}
+		}
+        
+		// And the WINNER catgoy is...
+		entry.matchingCategory = winner;
+		if ( (matchesSet.count != 0) && (winner != nil) ) {
+			[self updateCategoriesInDatabase:line fromEntry:entry managedObjectContext:moc];
+		}
+        NSLog(@">> \"%@\" CATEGORIZED AS %@", entry.concepto, entry.matchingCategory.categoryMatched );
+		
+		if (winner != nil) [winner release];
+	}
+	
+	return 0;
+}
+
+- (int) updateCategoriesInDatabase:(DBEntry *)dbEntry fromEntry:(Entry *)entry
+			  managedObjectContext:(NSManagedObjectContext *)managedObjectContext
+{
+	int rc=0;
+	
+	dbEntry.categoryMatched = entry.matchingCategory.categoryMatched;
+	
+	NSLog(@" ~~~> Entering the creation of the relationship: %@", entry.matchingCategory.categoryMatched);
+	// create the entities (you could fetch these instead, if they already exist)
+	DBCategory *dbcategory = [self findCategory:entry.matchingCategory.categoryMatched
+						   managedObjectContext:managedObjectContext];
+	
+	// set the relationships
+	NSLog(@"Setting Category to: %@", dbcategory.name);
+	[dbEntry setCategory:dbcategory];
+    
+	NSError *error;
+	if (![managedObjectContext save:&error]) {
+		NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
+	}
+	NSLog(@" ~~~> Leaving.");
+	
+	// Extract the array of tags into a concatenated string.
+	NSString *tags = [[[NSString alloc] init] autorelease];
+	for (int i=0;i<[ entry.matchingCategory.tagsMatched count ]; i++) {
+		tags = [tags stringByAppendingFormat:@"%@;", [entry.matchingCategory.tagsMatched objectAtIndex:i] ];
+	}
+	dbEntry.tags = tags;
+	
+	if ([managedObjectContext save:nil] == NO) {
+		NSLog(@"** An error occurred while saving entry.");
+		rc = 1;
+	}
+	return rc;
+}
+
+
 #pragma mark Matching methods: preventing duplicates.
+
+
+/*
+ Runs a query with a basic predicate where "category" must match the
+ argument passed. It returns the array with the elements.
+ */
+- (NSArray *)selectEntriesMatchingCategory:(NSString *)category :(NSManagedObjectContext *)moc
+{
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"DBEntry"
+                                              inManagedObjectContext:moc];
+	NSError *error;
+	[fetchRequest setEntity:entity];
+    NSPredicate *pr = [NSPredicate predicateWithFormat:@"(category == %@)", category];
+	[fetchRequest setPredicate:pr];
+    
+	NSArray *fetchedObjects = [moc executeFetchRequest:fetchRequest error:&error];
+    NSLog(@"Re-categorization returned %ld elements", [fetchedObjects count]);
+    
+	[fetchRequest release];
+    
+    return fetchedObjects;
+}
 
 
 /**
@@ -395,7 +495,7 @@
     if ([array count] == 0) {
         NSLog(@"ZERO Result. The line is unique");
         NSLog(@"%@", error);
-        return NO;      
+        return NO;
     }
 	
 	// Now go throughout all the elements in the array to compare individual records.
@@ -417,7 +517,7 @@
 	
 	// Set up the object that connects to the entity in Core Data to perform the fetch
 	NSEntityDescription *entityDescription = [NSEntityDescription
-											  entityForName:@"DBCategory" 
+											  entityForName:@"DBCategory"
 											  inManagedObjectContext:managedObjectContext];
 	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
 	[request setEntity:entityDescription];
@@ -455,7 +555,7 @@
 	
 	// Set up the object that connects to the entity in Core Data to perform the fetch
 	NSEntityDescription *entityDescription = [NSEntityDescription
-											  entityForName:@"DBCategory" 
+											  entityForName:@"DBCategory"
 											  inManagedObjectContext:managedObjectContext];
 	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
 	[request setEntity:entityDescription];
@@ -473,7 +573,7 @@
 		NSLog(@"NO Results Back. They line is unique");
 		[request release];
 		return NO;
-	} 
+	}
 	
 	NSLog(@"Found category!");
 	return [array objectAtIndex:0];
@@ -486,12 +586,12 @@
 {
 	// Set up the object that connects to the entity in Core Data to perform the fetch
 	NSEntityDescription *entityDescription = [NSEntityDescription
-											  entityForName:@"DBEntry" 
+											  entityForName:@"DBEntry"
 											  inManagedObjectContext:managedObjectContext];
 	NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
 	[fetchRequest setEntity:entityDescription];
 	
-	//[fetchRequest setPredicate:@"*"];    	
+	//[fetchRequest setPredicate:@"*"];
 	// You can add sorting like this
 	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"fechaOperacion" ascending:YES];
 	NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
@@ -504,10 +604,10 @@
 		NSLog(@"NO Results Back. Failed Fetch!!");
 		[fetchRequest release];
 		return nil;
-	} 
+	}
 	DBEntry *oldest = [array objectAtIndex:0];
 	DBEntry *newest = [array objectAtIndex:[array count]-1];
-	NSLog(@"Retrieved %lu items\n1st one <%@>\nLast one <%@>", [array count], 
+	NSLog(@"Retrieved %ld items\n1st one <%@>\nLast one <%@>", [array count],
 		  oldest.fechaOperacion, newest.fechaOperacion);
     
 	NSArray *fromAndToArray = [[NSArray alloc] initWithObjects:
@@ -516,7 +616,7 @@
 }
 
 /**
- Esta funciona deberá sumar para cada categoria, los importes totales y devolver el porcentaje 
+ Esta funciona deberá sumar para cada categoria, los importes totales y devolver el porcentaje
  que representan con el total.
  */
 - (NSDictionary *) computeAggregatedCategories:(NSManagedObjectContext *)moc fromDate:(NSDate *)fromDate toDate:(NSDate *)toDate
@@ -540,7 +640,7 @@
 	
 	// Set up the object that connects to the entity in Core Data to perform the fetch
 	NSEntityDescription *entityDescription = [NSEntityDescription
-											  entityForName:@"DBEntry" 
+											  entityForName:@"DBEntry"
 											  inManagedObjectContext:moc];
 	[request setEntity:entityDescription];
 	NSLog(@"Context, MgdObj and Fetch request objects created.");
@@ -575,13 +675,13 @@
 	for (DBEntry *line in array) {
 		if (line.category.name == nil) continue;
 		NSString *category = line.category.name;
-		if ([dict valueForKey:category] == nil) 
+		if ([dict valueForKey:category] == nil)
 		{
 			NSNumber *value = [Database abs:line.importe];
 			//[dict setKey:category];
 			[dict setObject:value forKey:category];
-		} 
-		else 
+		}
+		else
 		{
 			NSNumber *accumulated = [NSNumber numberWithFloat:
 									 ([[Database abs:line.importe] floatValue] + [[dict valueForKey:category] floatValue])];
@@ -613,17 +713,17 @@
  This function stores in the "Categories" table the names of the categories, as set in the
  default preferences. It is called only when the program is run for the first time.
  */
-- (int) storeCategoriesInDatabase:(NSArray *)categoryNames 
+- (int) storeCategoriesInDatabase:(NSArray *)categoryNames
 			 managedObjectContext:(NSManagedObjectContext *)moc
 {
 	int rc=0;
 	
-	for (NSString *catName in categoryNames) 
+	for (NSString *catName in categoryNames)
 	{
 		if ( [self matchesExistingCategory:catName managedObjectContext:moc] == NO )
 		{
 			// Set up the object that connects to the entity in Core Data, and place it in an object.
-			NSManagedObject *dbEntry = [NSEntityDescription insertNewObjectForEntityForName:@"DBCategory" 
+			NSManagedObject *dbEntry = [NSEntityDescription insertNewObjectForEntityForName:@"DBCategory"
 																	 inManagedObjectContext:moc];
 			
 			[dbEntry setValue:catName forKey:@"name"];
@@ -641,7 +741,7 @@
 - (NSManagedObject*) entryToDBEntry:(Entry*)line inManagedObjectContext:(NSManagedObjectContext*)moc
 {
     // Set up the object that connects to the entity in Core Data, and place it in an object.
-    NSManagedObject *dbEntry = [NSEntityDescription insertNewObjectForEntityForName:@"DBEntry" 
+    NSManagedObject *dbEntry = [NSEntityDescription insertNewObjectForEntityForName:@"DBEntry"
                                                              inManagedObjectContext:moc];
     
     NSDate *date1 = [self stringToNSDate:line.fechaOperacion];
@@ -650,7 +750,7 @@
     [dbEntry setValue:date2 forKey:@"fechaValor"];
     [dbEntry setValue:line.concepto forKey:@"concepto"];
     [dbEntry setValue:line.importe forKey:@"importe"];
-    [dbEntry setValue:line.saldo forKey:@"saldo"];    
+    [dbEntry setValue:line.saldo forKey:@"saldo"];
     
     return dbEntry;
 }
@@ -666,7 +766,7 @@
 	entry.fechaOperacion = [dateFormatter stringFromDate:[object valueForKey:@"fechaValor"]];
 	
 	entry.concepto = [NSString stringWithString:[object valueForKey:@"concepto"]];
-	entry.importe =	[NSNumber numberWithDouble:[[object valueForKey:@"importe"] doubleValue ]];	
+	entry.importe =	[NSNumber numberWithDouble:[[object valueForKey:@"importe"] doubleValue ]];
 	entry.saldo = [NSNumber numberWithDouble:[[object valueForKey:@"saldo"] doubleValue ]];
 	
 	// Check whether categorization has been done
@@ -688,7 +788,7 @@
     //NSLog(@"Converting <%@>", string);
     // Parameters needed to convert the dates..
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-	[dateFormatter setDateFormat:@"dd-MM-yyyy"];	
+	[dateFormatter setDateFormat:@"dd-MM-yyyy"];
     NSDate *date = [self dateWithNoTime:[dateFormatter dateFromString:string]];
     //NSLog(@"Result <%@>", date);
 	[dateFormatter release];
@@ -706,7 +806,7 @@
 }
 
 
-- (void) dumpDatabase:(NSManagedObjectContext *)moc number:(NSNumber *)importe 
+- (void) dumpDatabase:(NSManagedObjectContext *)moc number:(NSNumber *)importe
 {
     NSArray *array = [self loadTableToArray:moc];
     if (array == nil) {
@@ -735,7 +835,7 @@
 	int rc=0;
 	
 	// Set up the object that connects to the entity in Core Data, and place it in an object.
-	NSManagedObject *dbEntry = [NSEntityDescription insertNewObjectForEntityForName:@"DBEntry" 
+	NSManagedObject *dbEntry = [NSEntityDescription insertNewObjectForEntityForName:@"DBEntry"
 															 inManagedObjectContext:managedObjectContext];
 	[dbEntry setValue:entry.fechaOperacion forKey:@"fechaOperacion"];
 	[dbEntry setValue:entry.fechaValor forKey:@"fechaValor"];

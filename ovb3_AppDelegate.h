@@ -18,30 +18,24 @@
     NSPersistentStoreCoordinator *persistentStoreCoordinator;
     NSManagedObjectModel *managedObjectModel;
     NSManagedObjectContext *managedObjectContext;
-	
     NSMutableDictionary *tableEntriesDictionary;
 
-	// Actions Proxy
+	// Actions Proxy. All the actions detected by the Application delegate
+    // are sent to the actions proxy for proper handling, and avoiding
+    // having too much complexity here.
 	ActionsProxy* sendAction;
 	
 	// Menu flags to control activation
 	BOOL matchingEnabled;
-    
-    // Controls whether Category popupcell in Table has changed
-    BOOL tablePopUpCellChanged;
-	
 	// Flag to control whether it is the first time the app executes.
 	BOOL MDFirstRun;
 	
 	IBOutlet NSDatePicker *fromDatePick;
 	IBOutlet NSDatePicker *toDatePick;
-    
     IBOutlet NSSearchField *searchFieldOutlet;
-    	
-	// XXX Experimental
-	IBOutlet Graphics *graphicsView;
     IBOutlet NSArrayController *tableEntriesController;
     IBOutlet NSTableView *tableView;
+    IBOutlet Graphics *graphicsView;
 }
 
 @property (nonatomic, retain) IBOutlet NSWindow *window;
@@ -51,14 +45,23 @@
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 
+@property (nonatomic, retain) NSMutableDictionary *tableEntriesDictionary;
+@property (nonatomic, retain) ActionsProxy *sendAction;
+
 @property (assign) BOOL matchingEnabled;
-@property (assign) BOOL tablePopUpcellChanged;
+@property (assign) BOOL tablePopUpCellChanged;
+@property (assign) BOOL MDFirstRun;
 
 @property (nonatomic, retain) IBOutlet NSDatePicker *fromDatePick;
 @property (nonatomic, retain) IBOutlet NSDatePicker *toDatePick;
-
+@property (nonatomic, retain) IBOutlet NSSearchField *searchFieldOutlet;
 @property (nonatomic, retain) IBOutlet NSArrayController *tableEntriesController;
 @property (nonatomic, retain) IBOutlet NSTableView *tableView;
+@property (nonatomic, retain) IBOutlet Graphics *graphicsView;
+
+
+// -- METHODS
+
 
 - (void) applicationDidFinishLaunching:(NSNotification *)aNotification;
 

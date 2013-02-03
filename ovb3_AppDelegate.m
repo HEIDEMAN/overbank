@@ -9,21 +9,20 @@
 #import "ovb3_AppDelegate.h"
 #import "tableColorTransformer.h"
 
-#ifdef DEBUG
-#define NSLogDebug(format, ...) \
-NSLog(@"<%s:%d> %s, " format, \
-strrchr("/" __FILE__, '/') + 1, __LINE__, __PRETTY_FUNCTION__, ## __VA_ARGS__)
-#else // ifdef DEBUG
-#define NSLogDebug(format, ...)
-#endif // ifdef DEBUG
 
 // To control the first execution of the App... and do the proper thing
 // with the NSUserPreferences.
 NSString * const MDFirstRunKey = @"MDFirstRun";
 
-@implementation ovb3_AppDelegate
-@synthesize window, tabView, matchingEnabled, fromDatePick, toDatePick, tableEntriesController, tableView;
 
+@implementation ovb3_AppDelegate
+
+@synthesize window, tabView,
+    persistentStoreCoordinator, managedObjectModel, managedObjectContext,
+    tableEntriesDictionary, sendAction,
+    matchingEnabled, MDFirstRun,
+    fromDatePick, toDatePick, searchFieldOutlet, tableEntriesController,
+    tableView, graphicsView;
 
 #pragma mark APP INITIALIZATION
 
@@ -37,15 +36,13 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
  words, when in the code above, I set the first launch key to NO in the 
  applicationDidFinishLaunching: method, that overrides the default value and will 
  be saved to your application's preferences plist file. The values that are saved 
- in the preferences file take precedence over those that you've registered with 
+ in the preferences file take precedence over those that you've registered with
  user defaults in the initialize method.
  */
-+ (void)initialize {
-	
-	// XXX
++ (void)initialize
+{
 	tableColorTransformer *transformer = [[[tableColorTransformer alloc] init] autorelease];
     [NSValueTransformer setValueTransformer:transformer	forName:@"tableColorTransformer"];
-	// XXX
 	
     NSMutableDictionary *defaultValues = [NSMutableDictionary dictionary];
 	
@@ -67,16 +64,6 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 	}
 	return self;
 }
-
-/**
- Sample code for a NSSortDescriptor
- ----------------------------------
- NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc]
- initWithKey:@"keyName" ascending:YES];
- [request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
- [sortDescriptor release]; 
- **/
-
 
 /**
  Application Did Finish Launching
@@ -151,16 +138,7 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
                         change:(NSDictionary *)change
                        context:(void *)context
 {
-    NSUInteger row = [[object selectionIndexes] firstIndex];
-    NSLog(@"Table selection changed, selected Row: %ld", row);
-    if (tablePopUpCellChanged) {
-        NSLog(@"  -> tablePopUpCell changed\n%@", [[object selectedObjects] objectAtIndex:0]);
-        [sendAction actionLearnMatchFromUserCategorization:managedObjectContext
-                                                   dbentry:(DBEntry *)[[object selectedObjects] objectAtIndex:0]];
-    } else {
-        NSLog(@"  -> Ignoring table selection change.");
-    }
-    tablePopUpCellChanged = false;
+    NSLog(@"Observer -> Table selection changed\n%@", [[object selectedObjects] objectAtIndex:0]);
 }
 
 #pragma mark CORE DATA INITIALIZATIONS
@@ -336,31 +314,16 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 }
 
 
-//- (void)tableViewSelectionDidChange:(NSNotification *)aNotification {
-//    NSLog(@"tableViewSelectionDidChange -> NOTIFICATION NAME: %@", [aNotification name]);
-//}
-
 /*
- 
- Tengo que conseguir una referencia al Array Controller para saber que elemento
- ha cambiado su asociacion a traves del Popup y asi poder lanzar la resolucion de conflictos.
- 
+    This method is called when the cell pop up menu is clicked.
+    I control from here, the category update for the record.
  */
 - (IBAction)selectPopUpCellAction:(id)sender
 {
-    tablePopUpCellChanged = true;
+	NSInteger selectedRow = [sender selectedRow];
+    DBEntry *object = [[tableEntriesController arrangedObjects] objectAtIndex:selectedRow];
     
-	NSInteger row = [sender selectedRow];
-    NSLog(@"IBAction -> The user updated a cell on row: %ld", row);
-//	NSCell *cell = [(NSTableView *)sender selectedCell];
-//	NSLog(@"Cell selected <%@>: %@", [cell class], cell);
-//	NSMenuItem *menuItem = [(NSPopUpButtonCell *)cell selectedItem];
-//	NSLog(@"Item selected <%@>: %@", [menuItem class], menuItem);
-//	NSLog(@"Title: %@", [menuItem title]);
-//    
-//    NSArray *array = [tableEntriesController selectedObjects];
-//    NSLog(@"Returned %ld elements, 0th one is: %@",[array count], array[0]);
-//    
+    [sendAction actionLearnMatchFromUserCategorization:managedObjectContext dbentry:object];
 }
 
 

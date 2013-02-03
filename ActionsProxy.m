@@ -99,7 +99,7 @@
 	//Database *db = [[[Database alloc]init]autorelease];
 	
 	int rc = [db categorizeAllEntries:managedObjectContext preferences:prefs conflictsSet:conflicts
-						 overrideFlag:NO solveConflictsFlag:YES verboseFlag:YES];
+						 solveConflictsFlag:YES verboseFlag:YES];
 	
 	[Match listConflictSet:conflicts];
 	
