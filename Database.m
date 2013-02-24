@@ -247,7 +247,7 @@
     // set adding a vote to the category newly matched. And then, run the matching
     // again to check if I can learn something from that.
     
-    // Busco a que categorias puede pertenecer esta entrada bancaria.
+    // Search what categories could match this entry
     Match *winner=nil;
     NSMutableSet *matchesSet = [prefs matchTag:[entry concepto]];
     if (matchesSet.count == 0) {
@@ -321,7 +321,9 @@
                       conflictsSet:(NSMutableSet *)conflictsSet
               ManagedObjectContext:(NSManagedObjectContext *)moc
 {
-    NSLog(@"\nRe-categorization based on user manual change.\n");
+    NSLog(@"");
+    NSLog(@"Re-categorization based on user manual change.\n");
+    NSLog(@"");
 
 	for (NSManagedObject *line in fetchedObjects)
 	{

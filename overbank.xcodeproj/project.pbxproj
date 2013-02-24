@@ -20,7 +20,9 @@
 		AAD8F8F7169B0335005BEF53 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AAD8F8F5169B0335005BEF53 /* InfoPlist.strings */; };
 		AAD8F8FA169B0335005BEF53 /* overbank.m in Sources */ = {isa = PBXBuildFile; fileRef = AAD8F8F9169B0335005BEF53 /* overbank.m */; };
 		AADCA32B14B20C2A0065FAF7 /* stringToArrayTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = AADCA32914B20C2A0065FAF7 /* stringToArrayTransformer.m */; };
-		AAE180B814B07A2E00D972D7 /* Graphics.m in Sources */ = {isa = PBXBuildFile; fileRef = AAE180B714B07A2E00D972D7 /* Graphics.m */; };
+		AAE180B814B07A2E00D972D7 /* PieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = AAE180B714B07A2E00D972D7 /* PieChart.m */; };
+		AAEDE14016BE5DB900FF91F8 /* BarGraph.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEDE13F16BE5DB800FF91F8 /* BarGraph.m */; };
+		AAEDE14116BE5DB900FF91F8 /* BarGraph.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEDE13F16BE5DB800FF91F8 /* BarGraph.m */; };
 		AAFAD04114AB311D00457F9B /* ActionsProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = AAFAD04014AB311D00457F9B /* ActionsProxy.m */; };
 		AAFAD04C14AB32D200457F9B /* BankLog.m in Sources */ = {isa = PBXBuildFile; fileRef = AAFAD04314AB32D200457F9B /* BankLog.m */; };
 		AAFAD04D14AB32D200457F9B /* Entry.m in Sources */ = {isa = PBXBuildFile; fileRef = AAFAD04514AB32D200457F9B /* Entry.m */; };
@@ -72,8 +74,10 @@
 		AAD8F8FB169B0335005BEF53 /* overbank-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "overbank-Prefix.pch"; sourceTree = "<group>"; };
 		AADCA32914B20C2A0065FAF7 /* stringToArrayTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = stringToArrayTransformer.m; sourceTree = "<group>"; };
 		AADCA32A14B20C2A0065FAF7 /* stringToArrayTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stringToArrayTransformer.h; sourceTree = "<group>"; };
-		AAE180B614B07A2E00D972D7 /* Graphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Graphics.h; sourceTree = "<group>"; };
-		AAE180B714B07A2E00D972D7 /* Graphics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Graphics.m; sourceTree = "<group>"; };
+		AAE180B614B07A2E00D972D7 /* PieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieChart.h; sourceTree = "<group>"; };
+		AAE180B714B07A2E00D972D7 /* PieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieChart.m; sourceTree = "<group>"; };
+		AAEDE13E16BE5DB800FF91F8 /* BarGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarGraph.h; sourceTree = "<group>"; };
+		AAEDE13F16BE5DB800FF91F8 /* BarGraph.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BarGraph.m; sourceTree = "<group>"; };
 		AAFAD03F14AB311D00457F9B /* ActionsProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionsProxy.h; sourceTree = "<group>"; };
 		AAFAD04014AB311D00457F9B /* ActionsProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionsProxy.m; sourceTree = "<group>"; };
 		AAFAD04214AB32D200457F9B /* BankLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankLog.h; sourceTree = "<group>"; };
@@ -131,8 +135,10 @@
 				AAFAD04014AB311D00457F9B /* ActionsProxy.m */,
 				77C8280B06725ACE000B614F /* ovb3_AppDelegate.h */,
 				77C8280C06725ACE000B614F /* ovb3_AppDelegate.m */,
-				AAE180B614B07A2E00D972D7 /* Graphics.h */,
-				AAE180B714B07A2E00D972D7 /* Graphics.m */,
+				AAE180B614B07A2E00D972D7 /* PieChart.h */,
+				AAE180B714B07A2E00D972D7 /* PieChart.m */,
+				AAEDE13E16BE5DB800FF91F8 /* BarGraph.h */,
+				AAEDE13F16BE5DB800FF91F8 /* BarGraph.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -376,10 +382,11 @@
 				AAFAD06114AB346C00457F9B /* Levenshtein.m in Sources */,
 				AAFAD0BA14AB3F1400457F9B /* Database.m in Sources */,
 				AAC5218E14AF5982007FC279 /* tableColorTransformer.m in Sources */,
-				AAE180B814B07A2E00D972D7 /* Graphics.m in Sources */,
+				AAE180B814B07A2E00D972D7 /* PieChart.m in Sources */,
 				AADCA32B14B20C2A0065FAF7 /* stringToArrayTransformer.m in Sources */,
 				AA6DE0BF14C830DD002B873A /* DBEntry.m in Sources */,
 				AA6DE0C014C830DD002B873A /* DBCategory.m in Sources */,
+				AAEDE14016BE5DB900FF91F8 /* BarGraph.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -388,6 +395,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AAD8F8FA169B0335005BEF53 /* overbank.m in Sources */,
+				AAEDE14116BE5DB900FF91F8 /* BarGraph.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,7 +8,14 @@
 
 #import <Cocoa/Cocoa.h>
 #import "ActionsProxy.h"
-#import "Graphics.h"
+#import "PieChart.h"
+#import "BarGraph.h"
+
+
+// TAB numbers.
+#define TABLE_TAB 0
+#define MOVEMENTS_TAB 1
+#define PIECHART_TAB 2
 
 @interface ovb3_AppDelegate : NSObject <NSTabViewDelegate, NSTableViewDataSource>
 {
@@ -35,7 +42,8 @@
     IBOutlet NSSearchField *searchFieldOutlet;
     IBOutlet NSArrayController *tableEntriesController;
     IBOutlet NSTableView *tableView;
-    IBOutlet Graphics *graphicsView;
+    IBOutlet PieChart *graphicsView;
+    IBOutlet BarGraph *bargraphView;
 }
 
 @property (nonatomic, retain) IBOutlet NSWindow *window;
@@ -57,8 +65,10 @@
 @property (nonatomic, retain) IBOutlet NSSearchField *searchFieldOutlet;
 @property (nonatomic, retain) IBOutlet NSArrayController *tableEntriesController;
 @property (nonatomic, retain) IBOutlet NSTableView *tableView;
-@property (nonatomic, retain) IBOutlet Graphics *graphicsView;
+@property (nonatomic, retain) IBOutlet PieChart *graphicsView;
+@property (nonatomic, retain) IBOutlet BarGraph *bargraphView;
 
+@property (atomic) int selectedTab;
 
 // -- METHODS
 

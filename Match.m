@@ -86,7 +86,9 @@
 }
 
 
-+ (Match *)solveConflictWithUserAction:(NSMutableSet *)matchesSet :(NSMutableSet *)conflictSet :(NSString *)userSelectedCategory
++ (Match *)solveConflictWithUserAction:(NSMutableSet *)matchesSet
+                                      :(NSMutableSet *)conflictSet
+                                      :(NSString *)userSelectedCategory
 {
 	Match *winner = [Match getWinnerCategory:matchesSet];
 	if ( winner == nil )
@@ -323,6 +325,7 @@
 	if (found) {
 		return m;
 	}
+    NSLog(@"  Ops! Couldn't mark winner category!");
 	return nil;
 }
 

@@ -34,6 +34,7 @@
 	Prefs	 *prefs;
 	NSMutableSet *conflicts;
 	Database *db;
+    int selectedTab;
 }
 
 @property (retain) NSString* fileName; 
@@ -50,5 +51,7 @@
 
 - (int)  actionPrepareGraphicsTab:(NSManagedObjectContext *)moc;
 - (NSDictionary *)  actionDrawPieChart:(NSManagedObjectContext *)moc from:(NSDate *)fromThisDate to:(NSDate *)toThisDate;
+
+- (int) actionPrepareBarGraphTab:(NSManagedObjectContext *)moc;
 
 @end

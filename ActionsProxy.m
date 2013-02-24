@@ -182,6 +182,11 @@
 }
 
 
+- (int) actionPrepareBarGraphTab:(NSManagedObjectContext *)moc
+{
+    return 0;
+}
+
 
 
 //

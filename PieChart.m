@@ -6,14 +6,14 @@
 //  Copyright 2013 Jesus Renero Quintero. All rights reserved.
 //
 
-#import "Graphics.h"
+#import "PieChart.h"
 
 #define PI 3.14159265358979323846
 #define FLOAT(x) [NSNumber numberWithFloat:x]
 
 //NSPoint makeTextStartingPoint( NSSize textSize, NSRect bounds , float angle, int offset );
 
-@implementation Graphics
+@implementation PieChart
 @synthesize segmentNamesArray, segmentValuesArray, segmentPathsArray, segmentTextsArray;
 
 - (id)initWithFrame:(NSRect)frame {

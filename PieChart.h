@@ -9,7 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface Graphics : NSView 
+@interface PieChart : NSView 
 {
 	NSArray *segmentNamesArray;
 	NSArray *segmentValuesArray;

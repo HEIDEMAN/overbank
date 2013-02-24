@@ -18,24 +18,24 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 @implementation ovb3_AppDelegate
 
 @synthesize window, tabView,
-    persistentStoreCoordinator, managedObjectModel, managedObjectContext,
-    tableEntriesDictionary, sendAction,
-    matchingEnabled, MDFirstRun,
-    fromDatePick, toDatePick, searchFieldOutlet, tableEntriesController,
-    tableView, graphicsView;
+persistentStoreCoordinator, managedObjectModel, managedObjectContext,
+tableEntriesDictionary, sendAction,
+matchingEnabled, MDFirstRun,
+fromDatePick, toDatePick, searchFieldOutlet, tableEntriesController,
+tableView, graphicsView, bargraphView;
 
 #pragma mark APP INITIALIZATION
 
 /**
  http://bit.ly/uxcBra
- Basically, you set up all of your default values in your initialize method. 
- (The initialize method is called very early on before init is called, so it 
- provides a convenient place to make sure user defaults all have default values). 
- The registerDefaults: method of NSUserDefaults is special in that the values you 
- pass in only are used if a particular value hasn't already been set. In other 
- words, when in the code above, I set the first launch key to NO in the 
- applicationDidFinishLaunching: method, that overrides the default value and will 
- be saved to your application's preferences plist file. The values that are saved 
+ Basically, you set up all of your default values in your initialize method.
+ (The initialize method is called very early on before init is called, so it
+ provides a convenient place to make sure user defaults all have default values).
+ The registerDefaults: method of NSUserDefaults is special in that the values you
+ pass in only are used if a particular value hasn't already been set. In other
+ words, when in the code above, I set the first launch key to NO in the
+ applicationDidFinishLaunching: method, that overrides the default value and will
+ be saved to your application's preferences plist file. The values that are saved
  in the preferences file take precedence over those that you've registered with
  user defaults in the initialize method.
  */
@@ -56,10 +56,10 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 /**
  init
  */
-- (id)init 
+- (id)init
 {
 	if (self = [super init]) {
-		NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];		
+		NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 		MDFirstRun = [[userDefaults objectForKey:MDFirstRunKey] boolValue];
 	}
 	return self;
@@ -68,7 +68,7 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 /**
  Application Did Finish Launching
  */
-- (void) applicationDidFinishLaunching:(NSNotification *)aNotification 
+- (void) applicationDidFinishLaunching:(NSNotification *)aNotification
 {
 	NSLog(@"--");
 	NSLog(@"-- APP DID FINISH LAUNCHING!");
@@ -84,7 +84,7 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 		// XXX Estp hay que quitarlo, solo puede valer YES, la primera vez.
 		//[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:MDFirstRunKey];
 		[sendAction actionSetDefaultPreferences:managedObjectContext];
-	} 
+	}
 	else {
 		NSLog(@"-- NOT the first time this App runs...");
 		[sendAction actionReadExistingPreferences];
@@ -93,52 +93,79 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 	}
 	
 	[tabView selectFirstTabViewItem:NULL];
-
+    
     // start listening for selection changes in our NSTableView's array controller
     [tableEntriesController addObserver: self forKeyPath: @"selectionIndexes"
                                 options: NSKeyValueObservingOptionNew context: NULL];
 	NSLog(@"--");
+    
+    // Bind the contents of the Array controller column "importe" to the bindable array in
+    // NSView that will be used to represent the bar graph with the total income and outcome.
+    [bargraphView bind:@"amountsArray" toObject:tableEntriesController
+           withKeyPath:@"arrangedObjects.importe" options:nil];
+    
 }
 
 /**
  Esta funcion controla cuando se selecciona un Tab. Me sirve para saber cuando
  tengo que redibujar o rehacer calculos.
  **/
-- (void) tabView: (NSTabView *) inTabView didSelectTabViewItem: (NSTabViewItem *) inTabViewItem 
+- (void) tabView: (NSTabView *) inTabView didSelectTabViewItem: (NSTabViewItem *) inTabViewItem
 {
-	NSLog(@"tabView (did): <%@>, tabViewItem: <%@>", inTabView, [inTabViewItem label]);
-	if ([[inTabViewItem label] isEqualToString:@"Estadisticas"]) {
-		NSLog(@"HE CAMBIADO AL TAB DE ESTADISTICAS!");
-	}
-}		
+    return;
+}
 
-- (void) tabView: (NSTabView *) inTabView willSelectTabViewItem: (NSTabViewItem *) inTabViewItem 
+- (void) tabView: (NSTabView *) inTabView willSelectTabViewItem: (NSTabViewItem *) inTabViewItem
 {
 	NSLog(@"tabView (will): <%@>, tabViewItem: <%@>", inTabView, [inTabViewItem label]);
-	if ([[inTabViewItem label] isEqualToString:@"Estadisticas"]) {
-		NSLog(@"VOY A CAMBIAR AL TAB DE ESTADISTICAS!");
-		[sendAction actionPrepareGraphicsTab:managedObjectContext];
-	}	
-}		
+    if ([[inTabViewItem label] caseInsensitiveCompare:@"Movimientos"] == NSOrderedSame)
+    {
+        [bargraphView setDrawable:NO];
+        NSLog(@"Drawable? %d", [bargraphView drawable]);
+    }
+    if ([[inTabViewItem label] caseInsensitiveCompare:@"Categorias"] == NSOrderedSame)
+    {
+        [bargraphView setDrawable:YES];
+        NSLog(@"Drawable? %d", [bargraphView drawable]);
+    }
+    if ([[inTabViewItem label] caseInsensitiveCompare:@"Estadisticas"] == NSOrderedSame)
+    {
+        [bargraphView setDrawable:NO];
+        NSLog(@"Drawable? %d", [bargraphView drawable]);
+        [sendAction actionPrepareGraphicsTab:managedObjectContext];
+    }
+    
+    /*
+     if ([[inTabViewItem label] isEqualToString:@"Estadisticas"]) {
+     NSLog(@"VOY A CAMBIAR AL TAB DE ESTADISTICAS!");
+     [sendAction actionPrepareGraphicsTab:managedObjectContext];
+     [sendAction setSelectedTab:PIECHART_TAB];
+     }
+     if ([[inTabViewItem label] isEqualToString:@"Categorias"]) {
+     NSLog(@"VOY A CAMBIAR AL TAB DE Categorias!");
+     [sendAction setSelectedTab:MOVEMENTS_TAB];
+     }
+     */
+}
 
 #pragma mark COCOA OVERRIDES
 
 /*
-    This method is triggered upon NSArrayController selection changes. To achieve that
-    an observer is added when the application launches (search "addObserver").
-    Based on the value of boolean "tablePopUpCellChanged" this method knows whether the
-    user only selected a different cell in the NSTableView, or also changed the value
-    of the "Category" field in the table. 
-    In the later case, this method calls for trying to apply the change in the categorization
-    of that entry to the rest of the entries in the database, by accessing the proper
-    Match object methods.
+ This method is triggered upon NSArrayController selection changes. To achieve that
+ an observer is added when the application launches (search "addObserver").
+ Based on the value of boolean "tablePopUpCellChanged" this method knows whether the
+ user only selected a different cell in the NSTableView, or also changed the value
+ of the "Category" field in the table.
+ In the later case, this method calls for trying to apply the change in the categorization
+ of that entry to the rest of the entries in the database, by accessing the proper
+ Match object methods.
  */
 - (void)observeValueForKeyPath:(NSString *)keyPath
                       ofObject:(NSArrayController *)object
                         change:(NSDictionary *)change
                        context:(void *)context
 {
-    NSLog(@"Observer -> Table selection changed\n%@", [[object selectedObjects] objectAtIndex:0]);
+    //NSLog(@"Observer -> Table selection changed\n%@", [[object selectedObjects] objectAtIndex:0]);
 }
 
 #pragma mark CORE DATA INITIALIZATIONS
@@ -159,7 +186,7 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 
 
 /**
- Creates, retains, and returns the managed object model for the application 
+ Creates, retains, and returns the managed object model for the application
  by merging all of the models found in the application bundle.
  */
 
@@ -167,15 +194,15 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 	
     if (managedObjectModel) return managedObjectModel;
 	
-    managedObjectModel = [[NSManagedObjectModel mergedModelFromBundles:nil] retain];    
+    managedObjectModel = [[NSManagedObjectModel mergedModelFromBundles:nil] retain];
     return managedObjectModel;
 }
 
 
 /**
- Returns the persistent store coordinator for the application.  This 
- implementation will create and return a coordinator, having added the 
- store for the application to it.  (The directory for the store is created, 
+ Returns the persistent store coordinator for the application.  This
+ implementation will create and return a coordinator, having added the
+ store for the application to it.  (The directory for the store is created,
  if necessary.)
  */
 
@@ -195,9 +222,9 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
     NSError *error = nil;
     
     if ( ![fileManager fileExistsAtPath:applicationSupportDirectory isDirectory:NULL] ) {
-		if (![fileManager createDirectoryAtPath:applicationSupportDirectory withIntermediateDirectories:NO 
+		if (![fileManager createDirectoryAtPath:applicationSupportDirectory withIntermediateDirectories:NO
 									 attributes:nil error:&error]) {
-            NSAssert(NO, ([NSString stringWithFormat:@"Failed to create App Support directory %@ : %@", 
+            NSAssert(NO, ([NSString stringWithFormat:@"Failed to create App Support directory %@ : %@",
 						   applicationSupportDirectory,error]));
             NSLog(@"Error creating application support directory at %@ : %@",applicationSupportDirectory,error);
             return nil;
@@ -206,22 +233,22 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
     
     NSURL *url = [NSURL fileURLWithPath: [applicationSupportDirectory stringByAppendingPathComponent: @"storedata"]];
     persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: mom];
-    if (![persistentStoreCoordinator addPersistentStoreWithType:NSXMLStoreType 
-												  configuration:nil 
-															URL:url 
-														options:nil 
+    if (![persistentStoreCoordinator addPersistentStoreWithType:NSXMLStoreType
+												  configuration:nil
+															URL:url
+														options:nil
 														  error:&error]){
         [[NSApplication sharedApplication] presentError:error];
         [persistentStoreCoordinator release], persistentStoreCoordinator = nil;
         return nil;
-    }    
+    }
 	
     return persistentStoreCoordinator;
 }
 
 /**
  Returns the managed object context for the application (which is already
- bound to the persistent store coordinator for the application.) 
+ bound to the persistent store coordinator for the application.)
  */
 
 - (NSManagedObjectContext *) managedObjectContext {
@@ -279,7 +306,7 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
  are presented to the user.
  */
 - (IBAction)openAction:(id)sender {
-	NSLog(@"doOpen");	
+	NSLog(@"doOpen");
 	
 	NSArray* fileTypes = [[NSArray alloc] initWithObjects:@"csv", @"CSV", nil];
 	NSOpenPanel *openPanel	= [NSOpenPanel openPanel];
@@ -293,7 +320,7 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 	NSInteger i	= [openPanel runModalForTypes:fileTypes];
 	
 	if(i == NSOKButton){
-     	NSLog(@" we have an OK button");	
+     	NSLog(@" we have an OK button");
 	} else if(i == NSCancelButton) {
      	NSLog(@" we have a Cancel button");
      	return;
@@ -315,8 +342,8 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 
 
 /*
-    This method is called when the cell pop up menu is clicked.
-    I control from here, the category update for the record.
+ This method is called when the cell pop up menu is clicked.
+ I control from here, the category update for the record.
  */
 - (IBAction)selectPopUpCellAction:(id)sender
 {
@@ -328,7 +355,7 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 
 
 /**
- Implementation of the GUI receiver function that takes care of the matching of the 
+ Implementation of the GUI receiver function that takes care of the matching of the
  entries in the database.
  Preconditions: The must be any record in the database for this option to be activated.
  */
@@ -344,7 +371,7 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 }
 
 /**
-	drawPieChartAction: Dibuja el pie chart
+ drawPieChartAction: Dibuja el pie chart
  */
 - (IBAction) drawPieChartAction:(id)sender
 {
@@ -392,21 +419,21 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
     NSError *error = nil;
     if (![managedObjectContext save:&error]) {
 		
-        // This error handling simply presents error information in a panel with an 
-        // "Ok" button, which does not include any attempt at error recovery (meaning, 
-        // attempting to fix the error.)  As a result, this implementation will 
-        // present the information to the user and then follow up with a panel asking 
+        // This error handling simply presents error information in a panel with an
+        // "Ok" button, which does not include any attempt at error recovery (meaning,
+        // attempting to fix the error.)  As a result, this implementation will
+        // present the information to the user and then follow up with a panel asking
         // if the user wishes to "Quit Anyway", without saving the changes.
 		
-        // Typically, this process should be altered to include application-specific 
-        // recovery steps.  
+        // Typically, this process should be altered to include application-specific
+        // recovery steps.
 		
         BOOL result = [sender presentError:error];
         if (result) return NSTerminateCancel;
 		
-        NSString *question = NSLocalizedString(@"Could not save changes while quitting.  Quit anyway?", 
+        NSString *question = NSLocalizedString(@"Could not save changes while quitting.  Quit anyway?",
 											   @"Quit without saves error question message");
-        NSString *info = NSLocalizedString(@"Quitting now will lose any changes you have made since the last successful save", 
+        NSString *info = NSLocalizedString(@"Quitting now will lose any changes you have made since the last successful save",
 										   @"Quit without saves error question info");
         NSString *quitButton = NSLocalizedString(@"Quit anyway", @"Quit anyway button title");
         NSString *cancelButton = NSLocalizedString(@"Cancel", @"Cancel button title");
@@ -428,8 +455,8 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 }
 
 
-/* 
- This method is bound from IB CatPopUpController "Sort Descriptors" submenu to 
+/*
+ This method is bound from IB CatPopUpController "Sort Descriptors" submenu to
  indicate how to sort the contents of the array.
  */
 - (NSArray *)categoriesSortDescriptors {
