@@ -18,11 +18,11 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 @implementation ovb3_AppDelegate
 
 @synthesize window, tabView,
-persistentStoreCoordinator, managedObjectModel, managedObjectContext,
-tableEntriesDictionary, sendAction,
-matchingEnabled, MDFirstRun,
-fromDatePick, toDatePick, searchFieldOutlet, tableEntriesController,
-tableView, graphicsView, bargraphView;
+    persistentStoreCoordinator, managedObjectModel, managedObjectContext,
+    tableEntriesDictionary, sendAction,
+    matchingEnabled, MDFirstRun,
+    fromDatePick, toDatePick, searchFieldOutlet, tableEntriesController,
+    categoriesController, tableView, graphicsView, bargraphView, yearGraphView;
 
 #pragma mark APP INITIALIZATION
 
@@ -95,78 +95,47 @@ tableView, graphicsView, bargraphView;
 	[tabView selectFirstTabViewItem:NULL];
     
     // start listening for selection changes in our NSTableView's array controller
-    [tableEntriesController addObserver: self forKeyPath: @"selectionIndexes"
-                                options: NSKeyValueObservingOptionNew context: NULL];
-	NSLog(@"--");
+    //[tableEntriesController addObserver: self forKeyPath: @"selectionIndexes"
+    //                            options: NSKeyValueObservingOptionNew context: NULL];
+	//NSLog(@"--");
     
     // Bind the contents of the Array controller column "importe" to the bindable array in
     // NSView that will be used to represent the bar graph with the total income and outcome.
     [bargraphView bind:@"amountsArray" toObject:tableEntriesController
            withKeyPath:@"arrangedObjects.importe" options:nil];
     
-}
-
-/**
- Esta funcion controla cuando se selecciona un Tab. Me sirve para saber cuando
- tengo que redibujar o rehacer calculos.
- **/
-- (void) tabView: (NSTabView *) inTabView didSelectTabViewItem: (NSTabViewItem *) inTabViewItem
-{
-    return;
+    // Bind also the whole table array controller to the binding in class YearGraph
+    [yearGraphView bind:@"entriesArray" toObject:tableEntriesController
+            withKeyPath:@"arrangedObjects" options:nil];
+    
+    // The binding to the categories array controller that I need does NOT reference
+    // "arrangedObjects" but ONLY the selected ones. Therefore, I type "selectedObjects".
+    // Cool, ah?
+    [yearGraphView bind:@"categoriesArray" toObject:categoriesController
+            withKeyPath:@"selectedObjects" options:nil];
+    
 }
 
 - (void) tabView: (NSTabView *) inTabView willSelectTabViewItem: (NSTabViewItem *) inTabViewItem
 {
 	NSLog(@"tabView (will): <%@>, tabViewItem: <%@>", inTabView, [inTabViewItem label]);
+    // TODO: Remove static reference.
     if ([[inTabViewItem label] caseInsensitiveCompare:@"Movimientos"] == NSOrderedSame)
     {
         [bargraphView setDrawable:NO];
-        NSLog(@"Drawable? %d", [bargraphView drawable]);
     }
     if ([[inTabViewItem label] caseInsensitiveCompare:@"Categorias"] == NSOrderedSame)
     {
         [bargraphView setDrawable:YES];
-        NSLog(@"Drawable? %d", [bargraphView drawable]);
+        [sendAction actionPrepareBarGraphTab:managedObjectContext];
     }
     if ([[inTabViewItem label] caseInsensitiveCompare:@"Estadisticas"] == NSOrderedSame)
     {
         [bargraphView setDrawable:NO];
-        NSLog(@"Drawable? %d", [bargraphView drawable]);
         [sendAction actionPrepareGraphicsTab:managedObjectContext];
-    }
-    
-    /*
-     if ([[inTabViewItem label] isEqualToString:@"Estadisticas"]) {
-     NSLog(@"VOY A CAMBIAR AL TAB DE ESTADISTICAS!");
-     [sendAction actionPrepareGraphicsTab:managedObjectContext];
-     [sendAction setSelectedTab:PIECHART_TAB];
-     }
-     if ([[inTabViewItem label] isEqualToString:@"Categorias"]) {
-     NSLog(@"VOY A CAMBIAR AL TAB DE Categorias!");
-     [sendAction setSelectedTab:MOVEMENTS_TAB];
-     }
-     */
+    }    
 }
 
-#pragma mark COCOA OVERRIDES
-
-/*
- This method is triggered upon NSArrayController selection changes. To achieve that
- an observer is added when the application launches (search "addObserver").
- Based on the value of boolean "tablePopUpCellChanged" this method knows whether the
- user only selected a different cell in the NSTableView, or also changed the value
- of the "Category" field in the table.
- In the later case, this method calls for trying to apply the change in the categorization
- of that entry to the rest of the entries in the database, by accessing the proper
- Match object methods.
- */
-- (void)observeValueForKeyPath:(NSString *)keyPath
-                      ofObject:(NSArrayController *)object
-                        change:(NSDictionary *)change
-                       context:(void *)context
-{
-    //NSLog(@"Observer -> Table selection changed\n%@", [[object selectedObjects] objectAtIndex:0]);
-}
 
 #pragma mark CORE DATA INITIALIZATIONS
 
@@ -213,7 +182,7 @@ tableView, graphicsView, bargraphView;
     NSManagedObjectModel *mom = [self managedObjectModel];
     if (!mom) {
         NSAssert(NO, @"Managed object model is nil");
-        NSLog(@"%@:%s No model to generate a store from", [self class], _cmd);
+        NSLog(@"%@ No model to generate a store from", [self class]);
         return nil;
     }
 	
@@ -394,9 +363,21 @@ tableView, graphicsView, bargraphView;
 	[graphicsView updatePieData:(NSDictionary *)aggregated];
 }
 
+/**
+ drawYearlyDistributionAction: Draws the monthly distribution across all the years.
+ */
+- (IBAction) drawYearlyDistributionAction:(id)sender {
+	if (!managedObjectContext) {
+		NSLog(@"Amazingly, there's no managedObjectContext...");
+		NSLog(@"Blasting all this untrue comedy... argg...");
+		return;
+	}
+    NSLog(@" -- drawYearlyDistribution action trapped --");
+    [yearGraphView computeYear];
+}
+
 
 #pragma mark APP FINISH
-
 
 
 /**

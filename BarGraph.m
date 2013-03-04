@@ -93,10 +93,9 @@
         outcomeRectangle.origin.y = viewBounds.origin.y + vertPadding;
         outcomeRectangle.size.width = sidePadding * 4.0;
         outcomeRectangle.size.height = maxHeight;
+
+        drawable = NO;
     }
-    
-    drawable = NO;
-    
     return self;
 }
 
@@ -104,9 +103,7 @@
 {
     // Check if the right tab is selected with this boolean
     // flag that is controlled from the main App delegate.
-    NSLog(@">>>");
-    NSLog(@">>> Drawable = %d", drawable);
-    NSLog(@">>>");
+    NSLog(@"Is the bar graph drawable? = %@", (drawable?@"YES":@"NO"));
     if (drawable == FALSE) return;
     
     // Drawing code here.

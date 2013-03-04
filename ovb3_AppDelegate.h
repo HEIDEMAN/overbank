@@ -10,6 +10,7 @@
 #import "ActionsProxy.h"
 #import "PieChart.h"
 #import "BarGraph.h"
+#import "YearGraph.h"
 
 
 // TAB numbers.
@@ -41,9 +42,11 @@
 	IBOutlet NSDatePicker *toDatePick;
     IBOutlet NSSearchField *searchFieldOutlet;
     IBOutlet NSArrayController *tableEntriesController;
+    IBOutlet NSArrayController *categoriesController;
     IBOutlet NSTableView *tableView;
     IBOutlet PieChart *graphicsView;
     IBOutlet BarGraph *bargraphView;
+    IBOutlet YearGraph *yearGraphView;
 }
 
 @property (nonatomic, retain) IBOutlet NSWindow *window;
@@ -64,9 +67,11 @@
 @property (nonatomic, retain) IBOutlet NSDatePicker *toDatePick;
 @property (nonatomic, retain) IBOutlet NSSearchField *searchFieldOutlet;
 @property (nonatomic, retain) IBOutlet NSArrayController *tableEntriesController;
+@property (nonatomic, retain) IBOutlet NSArrayController *categoriesController;
 @property (nonatomic, retain) IBOutlet NSTableView *tableView;
 @property (nonatomic, retain) IBOutlet PieChart *graphicsView;
 @property (nonatomic, retain) IBOutlet BarGraph *bargraphView;
+@property (nonatomic, retain) IBOutlet YearGraph *yearGraphView;
 
 @property (atomic) int selectedTab;
 
@@ -80,6 +85,7 @@
 - (IBAction) saveAction:(id)sender;
 - (IBAction) openAction:(id)sender;
 - (IBAction) drawPieChartAction:(id)sender;
+- (IBAction) drawYearlyDistributionAction:(id)sender;
 
 - (IBAction) doMatchDatabaseEntries:(id)sender;
 - (IBAction) selectPopUpCellAction:(id)sender;
