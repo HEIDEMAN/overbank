@@ -9,6 +9,11 @@
 
 #import "BarGraph.h"
 
+#define LightGreen 0
+#define DarkGreen  1
+#define LightRed   2
+#define DarkRed    3
+
 @implementation BarGraph
 @synthesize amountsArray,
     incomeRectangle,
@@ -107,11 +112,10 @@
     if (drawable == FALSE) return;
     
     // Drawing code here.
-    [[NSColor colorWithSRGBRed:130.0/255.f
-                         green:213.0/255.f
-                          blue:138.0/255.f
-                         alpha:1.0] set];
+    NSGradient *gradient = [self createGradient:LightGreen :DarkGreen];
     NSRectFill (incomeRectangle);
+    [gradient drawInRect:incomeRectangle angle:90.0];
+    
     NSPoint incomePoint, outcomePoint;
     incomePoint = NSMakePoint((float)incomeRectangle.origin.x,
                               (float)incomeRectangle.origin.y-20.0);
@@ -134,9 +138,43 @@
                          green:63.0/255.f
                           blue:52.0/255.f
                          alpha:1.0] set];
+    gradient = [self createGradient:LightRed :DarkRed];
     NSRectFill(outcomeRectangle);
-    
+    [gradient drawInRect:outcomeRectangle angle:90.0];    
 }
+
+
+- (NSGradient *) createGradient:(int)fromColor :(int)toColor
+{
+    NSGradient* aGradient = [[NSGradient alloc] initWithStartingColor:
+                             [self giveMeColor:fromColor] endingColor:[self giveMeColor:toColor]];
+    
+    return aGradient;
+}
+
+- (NSColor *)giveMeColor:(int)color
+{
+    NSColor *yourColor = [[NSColor alloc] init];
+    switch (color) {
+        case LightGreen:
+            yourColor = [NSColor colorWithSRGBRed:160.0/255 green:202.0/255 blue:74.0/255 alpha:1.0];
+            break;
+        case DarkGreen:
+            yourColor = [NSColor colorWithSRGBRed:220.0/255 green:255.0/255 blue:159.0/255 alpha:1.0];
+            break;
+        case LightRed:
+            yourColor = [NSColor colorWithSRGBRed:210.0/255 green:65.0/255 blue:61.0/255 alpha:1.0];
+            break;
+        case DarkRed:
+            yourColor = [NSColor colorWithSRGBRed:254.0/255 green:152.0/255 blue:152.0/255 alpha:1.0];
+            break;
+        default:
+            yourColor = NULL;
+            break;
+    }
+    return yourColor;
+}
+
 
 @end
      

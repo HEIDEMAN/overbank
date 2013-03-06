@@ -35,4 +35,7 @@
 
 @property (assign) IBOutlet NSTabView *tabView;
 
+- (NSGradient *) createGradient:(int)fromColor :(int)toColor;
+- (NSColor *)giveMeColor:(int)color;
+
 @end

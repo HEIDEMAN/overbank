@@ -23,7 +23,10 @@
 @property (atomic, retain) NSArray *categoriesArray;
 @property (nonatomic, retain) NSMutableArray *yearsOfData;
 
--(int)computeHowManyYearsInInterval;
--(void)computeYear;
+- (int) computeHowManyYearsInInterval;
+- (void) computeYear;
+
+- (NSGradient *) createGradient:(int)fromColor :(int)toColor;
+- (NSColor *)giveMeColor:(int)color;
 
 @end

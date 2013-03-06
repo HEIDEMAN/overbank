@@ -10,6 +10,14 @@
 #import "DBEntry.h"
 #import "Accumulator.h"
 
+#define LightGreen 0
+#define DarkGreen  1
+#define LightRed   2
+#define DarkRed    3
+
+#define MAXBOXWIDTH  1000
+#define MAXBOXHEIGHT 90
+
 @implementation YearGraph
 @synthesize entriesArray, categoriesArray, yearsOfData;
 
@@ -28,32 +36,6 @@
 	return [[categoriesArray retain] autorelease];
 }
 
-//- (void)setEntriesArray:(NSArray *)newArray
-//{
-//    [self willChangeValueForKey:@"entriesArray"];
-//	[entriesArray release];
-//	entriesArray = [newArray copy];
-//	[self didChangeValueForKey:@"entriesArray"];
-//
-//    NSLog(@"YearGraphView:: Got %ld elements in 'entriesArray'", [entriesArray count]);
-//
-//    //[self computeYear];
-//    //[self drawRect:[self visibleRect]];
-//    //[self setNeedsDisplayInRect:[self visibleRect]];
-//}
-//- (void)setCategoriesArray:(NSArray *)newArray
-//{
-//    [self willChangeValueForKey:@"categoriesArray"];
-//	[categoriesArray release];
-//	categoriesArray = [newArray copy];
-//	[self didChangeValueForKey:@"categoriesArray"];
-//
-//    NSLog(@"YearGraphView:: Got %ld elements in 'categoriesArray'", [categoriesArray count]);
-//
-//    //[self computeYear];
-//    [self drawRect:[self visibleRect]];
-//    [self setNeedsDisplayInRect:[self visibleRect]];
-//}
 
 - (void)dealloc
 {
@@ -79,8 +61,7 @@
     // Create the data structure that holds the cummulated monthly data per category.
     yearsOfData = [[NSMutableArray alloc]init];
     NSArray *emptyMonths = [self emptyArray];
-    for (DBCategory *dbcat in categoriesArray)
-    {
+    for (DBCategory *dbcat in categoriesArray) {
         for (int y=0;y<numYears; y++)
         {
             Accumulator *year = [[Accumulator alloc]initWithData:emptyMonths];
@@ -89,8 +70,9 @@
     }
     
     [self populateEntries];
-    [self drawRect:[self visibleRect]];
+    //[self drawRect:[self visibleRect]];
     [self setNeedsDisplayInRect:[self visibleRect]];
+    [self display];
     
     return;
 }
@@ -172,7 +154,8 @@
 {
     if (numYears <= 0) return;
     
-    NSLog(@"drawRect YearGraph");
+    NSLog(@"drawRect YearGraph.");
+    NSLog(@"Self is %@",self);
     
     // Compute the max and min to later normalize.
     float maxValue=-1000000.0f;
@@ -198,24 +181,69 @@
             NSRect r;
             r.origin.x = (Width*(i+1))-(Width/2)-(barwidth/2);
             r.size.width = barwidth;
-            r.size.height = (Height * abs([year valueAtIndex:i])) / maxValue;
+            r.size.height = ((Height * abs([year valueAtIndex:i])) / maxValue);
+            if (r.size.height >= Height) r.size.height = Height-5.0;
+            
+            NSGradient *gradient;
+            
+            // Possitives are drawed green, negatives, red.
             if ([year valueAtIndex:i] > 0) {
-                [[NSColor colorWithSRGBRed:0.0/255.f
-                                     green:255.0/255.f
-                                      blue:0.0/255.f
-                                     alpha:1.0] set];
-
+                gradient = [self createGradient:LightGreen :DarkGreen];
                 r.origin.y = Yo;
             } else {
-                [[NSColor colorWithSRGBRed:255.0/255.f
-                                     green:0.0/255.f
-                                      blue:0.0/255.f
-                                     alpha:1.0] set];
+                gradient = [self createGradient:LightRed :DarkRed];
                 r.origin.y = Yo-r.size.height;
             }
-            NSRectFill(r);
+            
+            [self logRect:r];
+            if ([self rectWithinBounds:r]) NSRectFill(r);
+            [gradient drawInRect:r angle:90.0];
         }
     }
 }
+
+-(BOOL)rectWithinBounds:(NSRect)r {
+    if ((r.origin.x < 1) || (r.origin.x >= MAXBOXWIDTH)) return NO;
+    if ((r.origin.y < 1) || (r.origin.y >= MAXBOXHEIGHT)) return NO;
+    if ((r.size.height < 0) || (r.size.height >= MAXBOXHEIGHT)) return NO;
+    if ((r.size.width < 0) || (r.size.width >= 50)) return NO;
+    return YES;
+}
+
+-(void)logRect:(NSRect)r {
+    NSLog(@"Rect[%.0f, %.0f]; W:%.0f, H:%.0f", r.origin.x, r.origin.y, r.size.width, r.size.height);
+}
+
+- (NSGradient *) createGradient:(int)fromColor :(int)toColor
+{
+    NSGradient* aGradient = [[NSGradient alloc] initWithStartingColor:
+                              [self giveMeColor:fromColor] endingColor:[self giveMeColor:toColor]];
+
+    return aGradient;
+}
+
+- (NSColor *)giveMeColor:(int)color
+{
+    NSColor *yourColor = [[NSColor alloc] init];
+    switch (color) {
+        case LightGreen:
+            yourColor = [NSColor colorWithSRGBRed:160.0/255 green:202.0/255 blue:74.0/255 alpha:1.0];
+            break;
+        case DarkGreen:
+            yourColor = [NSColor colorWithSRGBRed:220.0/255 green:255.0/255 blue:159.0/255 alpha:1.0];
+            break;
+        case LightRed:
+            yourColor = [NSColor colorWithSRGBRed:210.0/255 green:65.0/255 blue:61.0/255 alpha:1.0];
+            break;
+        case DarkRed:
+            yourColor = [NSColor colorWithSRGBRed:254.0/255 green:152.0/255 blue:152.0/255 alpha:1.0];
+            break;
+        default:
+            yourColor = NULL;
+            break;
+    }
+    return yourColor;
+}
+
 
 @end
