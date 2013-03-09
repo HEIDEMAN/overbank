@@ -621,7 +621,9 @@
  Esta funciona deberá sumar para cada categoria, los importes totales y devolver el porcentaje
  que representan con el total.
  */
-- (NSDictionary *) computeAggregatedCategories:(NSManagedObjectContext *)moc fromDate:(NSDate *)fromDate toDate:(NSDate *)toDate
+- (NSDictionary *) computeAggregatedCategories:(NSManagedObjectContext *)moc
+                                       inArray:(NSArray *)selectedCategories
+                                      fromDate:(NSDate *)fromDate toDate:(NSDate *)toDate
 {
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
@@ -676,6 +678,24 @@
 	NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
 	for (DBEntry *line in array) {
 		if (line.category.name == nil) continue;
+        
+        // XXXXXXXXXXX
+        // XXXXXXXXXXX
+        // XXXXXXXXXXX
+        // TODO Verify that this works.... probably NOT.!!!!!!!!!!!!!!!!
+        // XXXXXXXXXXX
+        // XXXXXXXXXXX
+        // XXXXXXXXXXX
+        BOOL entryCategoryWithinSelectedCategories = NO;
+        for (int i=0;i<[selectedCategories count];i++) {
+            NSString *selectedCategoryName = [[selectedCategories objectAtIndex:i] name];
+            if ( [line.category.name caseInsensitiveCompare:selectedCategoryName] == NSOrderedSame ) {
+                entryCategoryWithinSelectedCategories = YES;
+                break;
+            }
+        }
+        if (entryCategoryWithinSelectedCategories == NO) continue;
+        
 		NSString *category = line.category.name;
 		if ([dict valueForKey:category] == nil)
 		{
@@ -686,7 +706,8 @@
 		else
 		{
 			NSNumber *accumulated = [NSNumber numberWithFloat:
-									 ([[Database abs:line.importe] floatValue] + [[dict valueForKey:category] floatValue])];
+									 ([[Database abs:line.importe] floatValue] +
+                                      [[dict valueForKey:category] floatValue])];
 			[dict setValue:accumulated forKey:category];
 		}
 	}

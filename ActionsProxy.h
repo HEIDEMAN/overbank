@@ -50,7 +50,9 @@
 - (int)  actionSetDefaultPreferences:(NSManagedObjectContext *)managedObjectContext;
 
 - (int)  actionPrepareGraphicsTab:(NSManagedObjectContext *)moc;
-- (NSDictionary *)  actionDrawPieChart:(NSManagedObjectContext *)moc from:(NSDate *)fromThisDate to:(NSDate *)toThisDate;
+- (NSDictionary *)  actionDrawPieChart:(NSManagedObjectContext *)moc
+                               inArray:(NSArray *)selectedCategories
+                                  from:(NSDate *)fromThisDate to:(NSDate *)toThisDate;
 
 - (int) actionPrepareBarGraphTab:(NSManagedObjectContext *)moc;
 

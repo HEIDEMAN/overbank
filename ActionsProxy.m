@@ -9,20 +9,20 @@
 #import "ActionsProxy.h"
 
 @implementation ActionsProxy
-@synthesize fileName, structuredMemoryLog, prefs, conflicts; //newEntry, 
+@synthesize fileName, structuredMemoryLog, prefs, conflicts; //newEntry,
 
--(id)init 
+-(id)init
 {
 	self = [super init];
     if (self) {
 		NSLog(@"---- Allocating proxy instance...");
-
+        
 		// Creo la estructura para las preferencias, incluyendo el diccionario de tags y categorias.
 		// Se establecen a los valores por defecto a lo que haya guardado en el disco en las funciones
 		// que controlan la inicialización del AppDelegate.
 		NSLog(@"---- Allocating Preferences and Conflicts dictionaries...");
 		prefs = [[Prefs alloc] init];
-		conflicts = [[NSMutableSet alloc] init];		
+		conflicts = [[NSMutableSet alloc] init];
 		db = [[[Database alloc] init]autorelease];
 		NSLog(@"---- done.");
 		
@@ -39,21 +39,21 @@
 	fileName = [[NSString alloc] initWithString:nameOfFile];
 	
 	// Leo el fichero de movimientos.
-	// Si he podido acceder a los datos... 
+	// Si he podido acceder a los datos...
 	//
 	// -> fileContents
-	// 
+	//
 	// La instancia del parser ("file"), y el buffer con su contenido.
 	//
 	NSLog(@"Entering the processing of the file");
 	FileMgr  *file = [[FileMgr alloc] init];
 	NSString *fileContents;
-	if ([file fileExists:nameOfFile] == YES) 
+	if ([file fileExists:nameOfFile] == YES)
 	{
 		// Capturo todos los datos y los meto en un buffer de memoria.
 		NSLog(@"Calling FileMgr methods to import data");
 		fileContents = [file suckData];
-		if (fileContents == nil) 
+		if (fileContents == nil)
 		{
 			NSLog(@"ERROR: Failed to read Contents\n");
 			return 1;
@@ -78,7 +78,7 @@
 		[structuredMemoryLog addEntry:newEntry];
 	}
 	NSLog(@"File has %d entries", [file getNumLines]);
-
+    
 	NSLog(@"Calling DB to store structured memory buffer...");
 	int rc = [db fastImportLog:[structuredMemoryLog logArray] managedObjectContext:managedObjectContext];
 	NSLog(@"DB returned code %d", rc);
@@ -88,7 +88,7 @@
 
 /**
  This function will be responsible for the matching of all the entries in the database.
- Preconditions: the database must contain objects, the objects must not be previously 
+ Preconditions: the database must contain objects, the objects must not be previously
  categorized.
  Since this function is located in the actions proxy between the GUI and the bizz logic,
  it will simply control the execution of the proper function in the database object.
@@ -99,7 +99,7 @@
 	//Database *db = [[[Database alloc]init]autorelease];
 	
 	int rc = [db categorizeAllEntries:managedObjectContext preferences:prefs conflictsSet:conflicts
-						 solveConflictsFlag:YES verboseFlag:YES];
+                   solveConflictsFlag:YES verboseFlag:YES];
 	
 	[Match listConflictSet:conflicts];
 	
@@ -108,8 +108,8 @@
 }
 
 /*
-    This method calls the class database to learn from a new categorization that
-    the user has provoked by manually selecting the proper category for an entry.
+ This method calls the class database to learn from a new categorization that
+ the user has provoked by manually selecting the proper category for an entry.
  */
 - (int) actionLearnMatchFromUserCategorization:(NSManagedObjectContext *)moc dbentry:(DBEntry *)dbentry
 {
@@ -122,12 +122,12 @@
 
 
 /**
-	This function sets up the preferences from a default set, by the first time the program executes.
-	Once set, the preferences are stored in disk to be recovered from there now on.
+ This function sets up the preferences from a default set, by the first time the program executes.
+ Once set, the preferences are stored in disk to be recovered from there now on.
  */
 - (int)  actionSetDefaultPreferences:(NSManagedObjectContext *)managedObjectContext
 {
-	int rc=0; 
+	int rc=0;
 	
 	NSLog(@"Setting default preferences...");
 	rc = [prefs defaultPrefs];
@@ -138,16 +138,16 @@
 	NSLog(@"Populating the Categories table.");
 	NSMutableArray *categoryNames = [prefs getCategoryNames];
 	
-	rc = [db storeCategoriesInDatabase:(NSArray *)categoryNames 
-			 managedObjectContext:(NSManagedObjectContext *)managedObjectContext];
+	rc = [db storeCategoriesInDatabase:(NSArray *)categoryNames
+                  managedObjectContext:(NSManagedObjectContext *)managedObjectContext];
 	NSLog(@"Populating returned code %d.", rc);
-
+    
 	return rc;
 }
 
 /**
-	This function reads the existing preferences stored in the plist file, if this is not the first 
-	time that the program is executed.
+ This function reads the existing preferences stored in the plist file, if this is not the first
+ time that the program is executed.
  */
 - (int)  actionReadExistingPreferences
 {
@@ -156,27 +156,31 @@
 
 
 /*
-	actionPrepareGraphicsTab
-	This function do some calculations over the database to prepare
-	parts of the graphics
+ actionPrepareGraphicsTab
+ This function do some calculations over the database to prepare
+ parts of the graphics
  */
 - (int) actionPrepareGraphicsTab:(NSManagedObjectContext *)moc
 {
 	NSLog(@"Inside actionPrepareGraphicsTab");
 	//NSArray *fromAndToDates = [db findDatesInterval:moc];
-		
+    
 	return 0;
 }
 
 /**
-	This function is responsible for computing the values to be represented in the pie
-	chart and make them drawed.
+ This function is responsible for computing the values to be represented in the pie
+ chart and make them drawed.
  */
-- (NSDictionary *) actionDrawPieChart:(NSManagedObjectContext *)moc from:(NSDate *)fromThisDate to:(NSDate *)toThisDate
+- (NSDictionary *) actionDrawPieChart:(NSManagedObjectContext *)moc
+                              inArray:(NSArray *)selectedCategories
+                                 from:(NSDate *)fromThisDate to:(NSDate *)toThisDate
 {
 	NSLog(@"Inside actionDrawPieChart");
 	
-	NSDictionary *aggregated = [db computeAggregatedCategories:moc fromDate:fromThisDate toDate:toThisDate];
+	NSDictionary *aggregated = [db computeAggregatedCategories:moc
+                                                       inArray:selectedCategories
+                                                      fromDate:fromThisDate toDate:toThisDate];
 	
 	return aggregated;
 }

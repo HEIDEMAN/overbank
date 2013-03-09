@@ -44,7 +44,7 @@
     IBOutlet NSArrayController *tableEntriesController;
     IBOutlet NSArrayController *categoriesController;
     IBOutlet NSTableView *tableView;
-    IBOutlet PieChart *graphicsView;
+    IBOutlet PieChart *pieChartView;
     IBOutlet BarGraph *bargraphView;
     IBOutlet YearGraph *yearGraphView;
 }
@@ -69,7 +69,7 @@
 @property (nonatomic, retain) IBOutlet NSArrayController *tableEntriesController;
 @property (nonatomic, retain) IBOutlet NSArrayController *categoriesController;
 @property (nonatomic, retain) IBOutlet NSTableView *tableView;
-@property (nonatomic, retain) IBOutlet PieChart *graphicsView;
+@property (nonatomic, retain) IBOutlet PieChart *pieChartView;
 @property (nonatomic, retain) IBOutlet BarGraph *bargraphView;
 @property (nonatomic, retain) IBOutlet YearGraph *yearGraphView;
 

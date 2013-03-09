@@ -15,12 +15,17 @@
 	NSArray *segmentValuesArray;
 	NSMutableArray *segmentPathsArray;
 	NSMutableArray *segmentTextsArray;
+    
+    NSArray *categoriesArray;
 }
 
 @property (nonatomic, retain) NSArray *segmentNamesArray;
 @property (nonatomic, retain) NSArray *segmentValuesArray;
 @property (nonatomic, retain) NSMutableArray *segmentPathsArray;
 @property (nonatomic, retain) NSMutableArray *segmentTextsArray;
+
+@property (atomic, retain) NSArray *categoriesArray;
+
 
 - (NSColor *) randomColor;
 - (NSColor *) colorForIndex:(unsigned)index;

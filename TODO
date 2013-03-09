@@ -1,0 +1,14 @@
++ Re-write the method 
+- (NSDictionary *) computeAggregatedCategories:(NSManagedObjectContext *)moc
+                                       inArray:(NSArray *)selectedCategories
+                                      fromDate:(NSDate *)fromDate toDate:(NSDate *)toDate
+                                      
+  within Database. Place it within PieChart, and avoid running a "fetch". Use the arraycontrollers
+  instead.
+
++ Forget every association. Cmd-F
++ Make stats' tab, tabView and entries view shorter
++ Display the mean when a category is selected in Statistics view.
++ Select all categories when trying to draw a pie chart. 
++ Enable selection of what categories to include in the PIE chart.
++ Export categorized entries as CSV.

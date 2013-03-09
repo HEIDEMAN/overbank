@@ -54,7 +54,9 @@
 			 managedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 
 - (NSArray *)findDatesInterval:(NSManagedObjectContext *)managedObjectContext;
-- (NSDictionary *) computeAggregatedCategories:(NSManagedObjectContext *)moc fromDate:(NSDate *)fromDate toDate:(NSDate *)toDate;
+- (NSDictionary *) computeAggregatedCategories:(NSManagedObjectContext *)moc
+                                       inArray:(NSArray *)selectedCategories
+                                      fromDate:(NSDate *)fromDate toDate:(NSDate *)toDate;
 
 - (NSDate*) stringToNSDate:(NSString *)string;
 - (NSDate*) dateWithNoTime:(NSDate *)date;
