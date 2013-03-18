@@ -15,7 +15,7 @@
 
 @implementation PieChart
 @synthesize segmentNamesArray, segmentValuesArray, segmentPathsArray, segmentTextsArray,
-    categoriesArray;
+categoriesArray;
 
 
 + (void) initialize {
@@ -40,7 +40,7 @@
 							  FLOAT(5.0),
 							  nil];
     }
-        
+    
     return self;
 }
 
@@ -61,57 +61,64 @@
 		NSBezierPath *eachPath = [pathsArray objectAtIndex:count];
 		
 		// fill the path with the drawing color for this index
-		[[self colorForIndex:count] set];
+		[[self colourForIndex:count] set];
 		[eachPath fill];
-		
-		// draw a black border around it
-		[[NSColor blackColor] set];
-		[eachPath stroke];
+
 	}
 	
 	// Draw the text.
 	NSArray *textsArray = [self segmentTextsArray];
 	for( count = 0; count < [textsArray count]; count++ ) {
 		NSDictionary *eachTextDictionary = [textsArray objectAtIndex:count];
-		NSPoint textPoint = NSMakePoint( [[eachTextDictionary valueForKey:@"textPointX"] floatValue], 
+		NSPoint textPoint = NSMakePoint( [[eachTextDictionary valueForKey:@"textPointX"] floatValue],
 										[[eachTextDictionary valueForKey:@"textPointY"] floatValue] );
 		
 		NSDictionary *textAttributes = [eachTextDictionary valueForKey:@"textAttributes"];
 		
 		NSString *text = [eachTextDictionary valueForKey:@"text"];
 		[text drawAtPoint:textPoint withAttributes:textAttributes];
-	}	
+	}
 }
 
-- (NSColor *)randomColor
+- (NSColor *)colourForIndex:(unsigned)index
 {
-	float red = (random()%1000)/1000.0;
-	float green = (random()%1000)/1000.0;
-	float blue = (random()%1000)/1000.0;
-	float alpha = (random()%1000)/1000.0;
-	return [NSColor colorWithCalibratedRed:red green:green blue:blue alpha:alpha];
+    if (index > 30) index=0;
+    
+    unsigned char redByte[30] = {
+        0x00, 0x00, 0x00, 0x00, 0x00,
+        0x99, 0x99, 0x99, 0x99, 0x99,
+        0xcc, 0xcc, 0xcc, 0xcc, 0xcc,
+        0x33, 0x33, 0x66, 0x66, 0x66,
+        0x33, 0x66, 0x99, 0xcc, 0xff, 
+        0xff, 0xff, 0xcc, 0xcc, 0xcc
+    };
+    unsigned char greenByte[30] = {
+        0x00, 0x66, 0x99, 0xcc, 0xff,
+        0xff, 0xcc, 0x99, 0x66, 0x00,
+        0x00, 0x66, 0x99, 0xcc, 0xff,
+        0x66, 0xcc, 0xff, 0xcc, 0x99,
+        0x33, 0x66, 0x99, 0xcc, 0xff, 
+        0xff, 0xff, 0xff, 0xff, 0xff, 
+    };
+    unsigned char blueByte[30] = {
+        0xff, 0xff, 0xff, 0xff, 0xff,
+        0xff, 0xff, 0xff, 0xff, 0xff,
+        0xff, 0xff, 0xff, 0xff, 0xff,
+        0x00, 0x00, 0x00, 0x00, 0x00,
+        0x33, 0x66, 0x99, 0xcc, 0xff, 
+        0x66, 0xcc, 0xcc, 0x66, 0x00 
+    };
+    
+    NSColor *result = [NSColor
+                       colorWithCalibratedRed:
+                       (CGFloat)redByte[index] / 0xff
+                       green:(CGFloat)greenByte[index] / 0xff
+                       blue:(CGFloat)blueByte[index] / 0xff
+                       alpha:1.0];
+    
+    return result;
 }
 
-- (NSColor *)colorForIndex:(unsigned)index
-{
-	static NSMutableArray *colorsArray = nil;
-	
-	if( colorsArray == nil )
-	{
-		colorsArray = [[NSMutableArray alloc] init];
-	}
-	
-	if( index >= [colorsArray count] )
-	{
-		unsigned currentNum = 0;
-		for( currentNum = [colorsArray count]; currentNum <= index; currentNum++ )
-		{
-			[colorsArray addObject:[self randomColor]];
-		}
-	}
-	
-	return [colorsArray objectAtIndex:index];
-}
 
 - (void)generateDrawingInformation
 {
@@ -188,12 +195,12 @@
     float red = 0.89;
     float green = 0.89;
     float blue = 0.89;
-    float alpha = 1.0;	
+    float alpha = 1.0;
 	NSColor *greyColor = [NSColor colorWithCalibratedRed:red green:green blue:blue alpha:alpha];
-	NSDictionary *textAttributes = [NSDictionary dictionaryWithObjectsAndKeys: 
-									greyColor, NSBackgroundColorAttributeName, 
-									[NSColor blackColor], NSForegroundColorAttributeName, 
-									[NSFont systemFontOfSize:12], NSFontAttributeName, 
+	NSDictionary *textAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+									greyColor, NSBackgroundColorAttributeName,
+									[NSColor blackColor], NSForegroundColorAttributeName,
+									[NSFont systemFontOfSize:10], NSFontAttributeName,
 									nil];
 	
 	
@@ -216,7 +223,7 @@
 		NSPoint textPoint = [eachSegmentPath currentPoint];
 		[eachSegmentPath appendBezierPathWithArcWithCenter:midPoint radius:radius startAngle:midDegree endAngle:endDegree clockwise:NO];
 		[eachSegmentPath closePath]; // close path also handles the lines from the midPoint to the start and end of the arc
-		[eachSegmentPath setLineWidth:3.0];		 
+		[eachSegmentPath setLineWidth:3.0];
 		[segmentPathsArray addObject:eachSegmentPath];
 		
 		/*
@@ -266,10 +273,13 @@
 			textPoint.y = viewBounds.origin.y + viewBounds.size.height - textSize.height;
 		
 		// Finally add the details as a dictionary to our segmentTextsArray.
-		// We include here the textAttributes lest we decide later to e.g. color the texts the same color as the segment fill
-		[segmentTextsArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:textPoint.x], 
-									  @"textPointX", [NSNumber numberWithFloat:textPoint.y], @"textPointY", eachText, 
-									  @"text", textAttributes, @"textAttributes", nil]];
+		// We include here the textAttributes lest we decide later to e.g. color the texts
+        // the same color as the segment fill.
+		[segmentTextsArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                                      [NSNumber numberWithFloat:textPoint.x], @"textPointX",
+                                      [NSNumber numberWithFloat:textPoint.y], @"textPointY",
+                                      eachText, @"text",
+                                      textAttributes, @"textAttributes", nil]];
 		
 	}
 }
@@ -285,9 +295,30 @@
 	
 	NSLog(@"Adding the new values");
 	segmentValuesArray = [aggregated allValues];
-	segmentNamesArray = [aggregated allKeys];
+    
+    // XXXXXXXXXXXX
+    // XXXXXXXXXXXX
+    // XXXXXXXXXXXX
+    // XXXXXXXXXXXX
+    // Let's build a new array with the keys slightly modified to include the amount information
+    // Old version only contained the line below.
+	//segmentNamesArray = [aggregated allKeys];
+    NSMutableArray *modifiedNames = [[[NSMutableArray alloc]init] autorelease];
+    for (id clave in aggregated) {
+        NSString *newCatName = [NSString stringWithFormat:@"%@(%ld€)",
+                                clave, (long)[[aggregated objectForKey:clave] integerValue]];
+        [modifiedNames addObject:newCatName];
+    }
+    segmentNamesArray = modifiedNames;
+    // XXXXXXXXXXXX
+    // XXXXXXXXXXXX
+    // XXXXXXXXXXXX
+    // XXXXXXXXXXXX
+    // XXXXXXXXXXXX
+    // XXXXXXXXXXXX
 	
-	NSLog(@"Added %lu elements", [segmentValuesArray count]);
+	
+    NSLog(@"Added %lu elements", [segmentValuesArray count]);
 	NSLog(@"Calling generateDrawingInformation");
 	[self generateDrawingInformation];
 	[self display];
@@ -296,8 +327,8 @@
 }
 
 /*
-	The paths array should be recalculated whenever the bound arrays change, 
-	so modify the two setter methods:
+ The paths array should be recalculated whenever the bound arrays change,
+ so modify the two setter methods:
  */
 - (void)setSegmentNamesArray:(NSArray *)newArray {
 	[self willChangeValueForKey:@"segmentNamesArray"];
@@ -334,9 +365,9 @@
 	
 	if( segmentTextsArray )
 		[segmentTextsArray release];
-
+    
     [categoriesArray release];
-
+    
 	[super dealloc];
 }
 

@@ -7,7 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-
+#define PALETESTRIPSIZE 18
 
 @interface PieChart : NSView 
 {
@@ -34,5 +34,7 @@
 
 - (void) generateDrawingInformation;
 - (int)  updatePieData:(NSDictionary *)aggregated;
+
+- (NSColor *)colorForIdx:(unsigned)index;
 
 @end

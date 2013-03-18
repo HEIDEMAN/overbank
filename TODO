@@ -1,14 +1,14 @@
-+ Re-write the method 
-- (NSDictionary *) computeAggregatedCategories:(NSManagedObjectContext *)moc
-                                       inArray:(NSArray *)selectedCategories
-                                      fromDate:(NSDate *)fromDate toDate:(NSDate *)toDate
-                                      
-  within Database. Place it within PieChart, and avoid running a "fetch". Use the arraycontrollers
+x Select all categories when trying to draw a pie chart.
+· Re-write the method "computeAggregatedCategories" within Database. 
+  Place it within PieChart, and avoid running a "fetch". Use the arraycontrollers
   instead.
-
-+ Forget every association. Cmd-F
-+ Make stats' tab, tabView and entries view shorter
-+ Display the mean when a category is selected in Statistics view.
-+ Select all categories when trying to draw a pie chart. 
-+ Enable selection of what categories to include in the PIE chart.
-+ Export categorized entries as CSV.
+· Progress bar when importing and when "matching" new data.
+· Forget every association. Cmd-F
+· Make stats' tab, tabView and entries view shorter
+· Display the mean when a category is selected in Statistics view.
+x Enable selection of what categories to include in the PIE chart.
+· Export categorized entries as CSV.
+· Change the randomColors in PieChart by known pastel color palette.
+· Add gradients to the colors in the pie chart, and same base colors always (instead of random)
+· Test multiyear bar graph in histogram.
+· Use a separate Category Controller for the categories listing in the pie chart.

@@ -696,7 +696,8 @@
         }
         if (entryCategoryWithinSelectedCategories == NO) continue;
         
-		NSString *category = line.category.name;
+		// Original way of setting keys: only the name of the category.
+        NSString *category = line.category.name;
 		if ([dict valueForKey:category] == nil)
 		{
 			NSNumber *value = [Database abs:line.importe];
