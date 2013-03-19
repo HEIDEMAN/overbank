@@ -7,7 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#define PALETESTRIPSIZE 18
+#define PALETESTRIPSIZE 30
 
 @interface PieChart : NSView 
 {
