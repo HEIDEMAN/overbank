@@ -14,17 +14,21 @@
 //NSPoint makeTextStartingPoint( NSSize textSize, NSRect bounds , float angle, int offset );
 
 @implementation PieChart
-@synthesize segmentNamesArray, segmentValuesArray, segmentPathsArray, segmentTextsArray,
-categoriesArray;
+
+@synthesize segmentNamesArray,
+    segmentValuesArray,
+    segmentPathsArray,
+    segmentTextsArray,
+    selectableCategoriesArray;
 
 
 + (void) initialize {
-    [self exposeBinding:@"categoriesArray"];
+    [self exposeBinding:@"selectableCategoriesArray"];
 }
 
-- (NSArray *)categoriesArray
+- (NSArray *)selectableCategoriesArray
 {
-	return [[categoriesArray retain] autorelease];
+	return [[selectableCategoriesArray retain] autorelease];
 }
 
 
@@ -366,7 +370,7 @@ categoriesArray;
 	if( segmentTextsArray )
 		[segmentTextsArray release];
     
-    [categoriesArray release];
+    [selectableCategoriesArray release];
     
 	[super dealloc];
 }

@@ -16,7 +16,7 @@
 	NSMutableArray *segmentPathsArray;
 	NSMutableArray *segmentTextsArray;
     
-    NSArray *categoriesArray;
+    NSArray *selectableCategoriesArray;
 }
 
 @property (nonatomic, retain) NSArray *segmentNamesArray;
@@ -24,7 +24,7 @@
 @property (nonatomic, retain) NSMutableArray *segmentPathsArray;
 @property (nonatomic, retain) NSMutableArray *segmentTextsArray;
 
-@property (atomic, retain) NSArray *categoriesArray;
+@property (atomic, retain) NSArray *selectableCategoriesArray;
 
 
 - (NSColor *) randomColor;

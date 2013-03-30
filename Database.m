@@ -670,6 +670,7 @@
 		return nil;
 	}
 	NSLog(@"  %lu results obtained", [array count]);
+    NSLog(@"  %lu categories selected", [selectedCategories count]);
 	
 	/*
      Build the dictionary

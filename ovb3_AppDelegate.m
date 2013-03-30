@@ -22,8 +22,8 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
     tableEntriesDictionary, sendAction,
     matchingEnabled, MDFirstRun,
     fromDatePick, toDatePick, searchFieldOutlet, tableEntriesController,
-    categoriesController, tableView,
-    pieChartView, bargraphView, yearGraphView;
+    categoriesController, selectableCategoriesController,
+    tableView, pieChartView, bargraphView, yearGraphView;
 
 #pragma mark APP INITIALIZATION
 
@@ -116,7 +116,7 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
             withKeyPath:@"selectedObjects" options:nil];
     
     // Bind the table with categories to the piechartview.
-    [pieChartView bind:@"categoriesArray" toObject:categoriesController
+    [pieChartView bind:@"selectableCategoriesArray" toObject:selectableCategoriesController
            withKeyPath:@"selectedObjects" options:nil];
     
 }
@@ -365,7 +365,7 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 	NSLog(@" -- to   date field: %@", [formatter stringFromDate:toThisDate]);
 	
 	NSDictionary *aggregated = [sendAction actionDrawPieChart:managedObjectContext
-                                                      inArray:[pieChartView categoriesArray]
+                                                      inArray:[pieChartView selectableCategoriesArray]
                                                          from:fromThisDate to:toThisDate];
 	[pieChartView updatePieData:(NSDictionary *)aggregated];
 }
