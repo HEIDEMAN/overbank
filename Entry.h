@@ -1,6 +1,5 @@
 //
 //  Entry.h
-//  FileExample
 //
 //  Created by Jesus Renero Quintero on 24/12/10.
 //  Copyright 2013 Jesus Renero Quintero. All rights reserved.
@@ -8,6 +7,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "Match.h"
+#import "simplifiedEntry.h"
 
 @interface Entry : NSObject {
 	NSString *fechaOperacion;
@@ -28,5 +28,6 @@
 
 - (void) printEntry;
 - (BOOL) equals:(Entry *)entry;
+- (simplifiedEntry *)simplified;
 
 @end

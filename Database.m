@@ -10,9 +10,7 @@
 
 @implementation Database
 
-
 #pragma mark Import Entry objects into the database.
-
 
 /**
  Take the log from memory and import it into the database, avoiding duplicates.
@@ -24,6 +22,13 @@
     // Take the table up to memory
     NSArray *array = [self loadTableToArray:managedObjectContext];
     
+    // These 2 hastables contain the elements to compare with, in order to avoid duplicates.
+    NSHashTable *dbHashTable = [[NSHashTable alloc]init];
+    for (DBEntry *record in array) {
+        [dbHashTable addObject:[self dbEntryToSimplifiedEntry:record]];
+    }
+    NSHashTable *memHashTable = [[NSHashTable alloc]init];
+    
     // Loop throughout the entire log in memory to insert those lines not
     // already in memory
 	for (Entry *line in log)
@@ -31,28 +36,36 @@
 		// Do not consider empty entries.
 		if ( [[line fechaOperacion] length] == 0) continue;
         
-        //NSLog(@"Checking for duplicates in\n  [%@:%@:%@]", line.fechaOperacion, line.concepto, line.importe);
+        // Get a simpified version of the Line Entry to perform comparisons.
+        simplifiedEntry *sline = [line simplified];
         
         // Skip also lines that are already in the table to avoid duplicates.
-        if ( [self arrayContainsEntry:array Entry:line] ) {
-            NSLog(@"Duplicate entry");
+        if ( [dbHashTable containsObject:sline] ) {
+            //if ( [self arrayContainsEntry:array Entry:line] ) {
+            NSLog(@"}}}}");
+            NSLog(@"Duplicate entry (%@|%@|%f)",
+                  sline.fechaOperacion, sline.concepto, [sline.importe floatValue]);
+            simplifiedEntry *e = [dbHashTable member:sline];
+            NSLog(@"%@|%@|%f", e.fechaOperacion, e.concepto, [e.importe floatValue]);
+            NSLog(@"}}}}");
             continue;
         }
-        
-        // Now I must search this entry within the previous entries of the array
-        // to avoid inserting duplicates.
-        // XXX
-        // XXX THIS IS NOT WORKING
-        // XXX
+
         BOOL doNotInsertFlag = FALSE;
-        for (uint position=0; position<[log indexOfObject:line]; position++) {
-            Entry *alreadyInsertedLine = [log objectAtIndex:position];
-            if ( [line equals:alreadyInsertedLine] ) {
-                NSLog(@"  Duplicate entry, already inserted. Skipping.");
-                doNotInsertFlag = TRUE;
-                break;
-            }
+
+        // Now I must search this entry within the previous entries of the array
+        // to avoid inserting duplicates. O(1)
+        if ( [memHashTable containsObject:sline] ) {
+            NSLog(@">>>>");
+            NSLog(@"Duplicate entry (%@|%@|%f), already inserted. Skipping.",
+                  sline.fechaOperacion, sline.concepto, [sline.importe floatValue]);
+            simplifiedEntry *e = [memHashTable member:sline];
+            NSLog(@"%@|%@|%f", e.fechaOperacion, e.concepto, [e.importe floatValue]);
+            NSLog(@">>>>");
+            doNotInsertFlag = TRUE;
+            //break;
         }
+        
         if (doNotInsertFlag) continue;
         
         // Create the MOC that will hold the entry.
@@ -69,6 +82,10 @@
 			NSLog(@"  ERROR: An error occurred while saving entry.");
 			errorOcurred = TRUE;
 		}
+        
+        // Add this entry to the memTable to perform further comparisons against entries already inserted.
+        [memHashTable addObject:sline];
+        
     }
     
     // Return the number of entries updated.
@@ -100,8 +117,9 @@
 - (BOOL)arrayContainsEntry:(NSArray*)array Entry:(Entry*)line
 {
     for (DBEntry *record in array) {
-        if ( [line equals:[self dbEntryToEntry:record]] )
+        if ( [line equals:[self dbEntryToEntry:record]] ) {
             return TRUE;
+        }
     }
     
     return FALSE;
@@ -324,7 +342,7 @@
     NSLog(@"");
     NSLog(@"Re-categorization based on user manual change.\n");
     NSLog(@"");
-
+    
 	for (NSManagedObject *line in fetchedObjects)
 	{
 		Entry *entry = [self dbEntryToEntry:line];
@@ -788,7 +806,7 @@
 	
 	// The dates must be formatted into strings from NSDate formats.
 	entry.fechaOperacion = [dateFormatter stringFromDate:[object valueForKey:@"fechaOperacion"]];
-	entry.fechaOperacion = [dateFormatter stringFromDate:[object valueForKey:@"fechaValor"]];
+	entry.fechaValor = [dateFormatter stringFromDate:[object valueForKey:@"fechaValor"]];
 	
 	entry.concepto = [NSString stringWithString:[object valueForKey:@"concepto"]];
 	entry.importe =	[NSNumber numberWithDouble:[[object valueForKey:@"importe"] doubleValue ]];
@@ -803,6 +821,20 @@
 	return entry;
 }
 
+- (simplifiedEntry *)dbEntryToSimplifiedEntry:(NSManagedObject *)object
+{
+	simplifiedEntry *entry = [[simplifiedEntry alloc] init];
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setDateFormat:@"dd-MM-yyyy"];
+	
+	// The dates must be formatted into strings from NSDate formats.
+	entry.fechaOperacion = [dateFormatter stringFromDate:[object valueForKey:@"fechaOperacion"]];
+	
+	entry.concepto = [NSString stringWithString:[object valueForKey:@"concepto"]];
+	entry.importe =	[NSNumber numberWithDouble:[[object valueForKey:@"importe"] doubleValue ]];
+	
+	return entry;
+}
 
 /**
  Convert a String into a NSDate field, appropiate for being

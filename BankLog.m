@@ -104,10 +104,8 @@
 - (BOOL)addEntry:(Entry *)newEntry 
 {
 	NSString *localized = [NSString stringWithString:[newEntry concepto]];
-	
-	//[[newEntry concepto] stringByReplacingOccurrencesOfString:@"ó" withString:@"o"];
-	NSString *delocalized = [NSString stringWithUTF8String:[localized cStringUsingEncoding:[NSString defaultCStringEncoding]]];
-	
+	NSString *delocalized = [NSString stringWithUTF8String:
+                             [localized cStringUsingEncoding:[NSString defaultCStringEncoding]]];
 	newEntry.concepto = [NSString stringWithString:delocalized];
 	
 	// Relleno el Match para que no se quede vacio y asi no estropee la ejecución de la 

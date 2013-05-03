@@ -9,6 +9,7 @@
 · Make stats' tab, tabView and entries view shorter
 · Display the mean when a category is selected in Statistics view.
 · Export categorized entries as CSV.
+· Use NSSet instead of NSArray when fastImporting new log files from CSV to the database.
 - Add gradients to the colors in the pie chart, and same base colors always (instead of random)
 x Select all categories when trying to draw a pie chart.
 x Enable selection of what categories to include in the PIE chart.

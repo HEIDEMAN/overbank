@@ -41,7 +41,7 @@
 	amountsArray = [newArray copy];
 	[self didChangeValueForKey:@"amountsArray"];
     
-    NSLog(@"BarGraphView:: Got %ld elements in 'amountsArray'", [amountsArray count]);
+    //NSLog(@"BarGraphView:: Got %ld elements in 'amountsArray'", [amountsArray count]);
     [self computeIncomeAndOutcome];
     [self drawRect:[self visibleRect]];
     [self setNeedsDisplayInRect:[self visibleRect]];
@@ -75,8 +75,8 @@
     incomeRectangle.size.height = (totalIncome * (maxHeight)) / (totalIncome+(-1.f*totalOutcome));
     outcomeRectangle.size.height = (-1.f) * (totalOutcome * (maxHeight)) / (totalIncome+(-1.f*totalOutcome));
     
-    NSLog(@"income(%f), outcome(%f)", totalIncome, totalOutcome);
-    NSLog(@"height1(%f), height2(%f)", incomeRectangle.size.height, outcomeRectangle.size.height);
+    //NSLog(@"income(%f), outcome(%f)", totalIncome, totalOutcome);
+    //NSLog(@"height1(%f), height2(%f)", incomeRectangle.size.height, outcomeRectangle.size.height);
 }
 
 - (id)initWithFrame:(NSRect)frame
@@ -108,7 +108,7 @@
 {
     // Check if the right tab is selected with this boolean
     // flag that is controlled from the main App delegate.
-    NSLog(@"Is the bar graph drawable? = %@", (drawable?@"YES":@"NO"));
+    //NSLog(@"Is the bar graph drawable? = %@", (drawable?@"YES":@"NO"));
     if (drawable == FALSE) return;
     
     // Drawing code here.

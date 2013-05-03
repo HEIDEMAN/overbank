@@ -30,12 +30,17 @@
     cond1 = ( [self.fechaOperacion compare:entry.fechaOperacion] == NSOrderedSame);
     cond2 = ( [self.concepto caseInsensitiveCompare:entry.concepto] == NSOrderedSame );
     cond3 = ( [self.importe floatValue] == [entry.importe floatValue] );
-    /**
-    NSLog(@"    {%@ %@}", (cond1? @"==" : @"!="), entry.fechaOperacion);
-    NSLog(@"    {%@ %@}", (cond2? @"==" : @"!="), entry.concepto);
-    NSLog(@"    {%@ %@}", (cond3? @"==" : @"!="), entry.importe);
-    */
+
     return (cond1 && cond2 && cond3);
+}
+
+- (simplifiedEntry *)simplified
+{
+    simplifiedEntry *s = [[[simplifiedEntry alloc]init]autorelease];
+    s.fechaOperacion = self.fechaOperacion;
+    s.concepto = self.concepto;
+    s.importe = self.importe;
+    return s;
 }
 
 - (void)printEntry

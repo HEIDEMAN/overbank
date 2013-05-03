@@ -19,6 +19,8 @@
 		AA6DE0C014C830DD002B873A /* DBCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6DE0BE14C830DD002B873A /* DBCategory.m */; };
 		AA9B4E4B16DBDD7700775922 /* YearGraph.m in Sources */ = {isa = PBXBuildFile; fileRef = AA9B4E4A16DBDD7700775922 /* YearGraph.m */; };
 		AA9B4E4C16DBDD7700775922 /* YearGraph.m in Sources */ = {isa = PBXBuildFile; fileRef = AA9B4E4A16DBDD7700775922 /* YearGraph.m */; };
+		AA9C75471733DA0900E391D2 /* simplifiedEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = AA9C75461733DA0900E391D2 /* simplifiedEntry.m */; };
+		AA9C75481733DA0900E391D2 /* simplifiedEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = AA9C75461733DA0900E391D2 /* simplifiedEntry.m */; };
 		AAB8C42E16E7CAC0004F4A7A /* TODO in Resources */ = {isa = PBXBuildFile; fileRef = AAB8C42D16E7CAC0004F4A7A /* TODO */; };
 		AAC5218E14AF5982007FC279 /* tableColorTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = AAC5218D14AF5982007FC279 /* tableColorTransformer.m */; };
 		AAD8F8EF169B0335005BEF53 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F8EE169B0335005BEF53 /* SenTestingKit.framework */; };
@@ -72,6 +74,8 @@
 		AA6DE0BE14C830DD002B873A /* DBCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBCategory.m; sourceTree = "<group>"; };
 		AA9B4E4916DBDD7700775922 /* YearGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YearGraph.h; sourceTree = "<group>"; };
 		AA9B4E4A16DBDD7700775922 /* YearGraph.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YearGraph.m; sourceTree = "<group>"; };
+		AA9C75451733DA0900E391D2 /* simplifiedEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = simplifiedEntry.h; sourceTree = "<group>"; };
+		AA9C75461733DA0900E391D2 /* simplifiedEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = simplifiedEntry.m; sourceTree = "<group>"; };
 		AAB8C42D16E7CAC0004F4A7A /* TODO */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
 		AAC5218C14AF5982007FC279 /* tableColorTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tableColorTransformer.h; sourceTree = "<group>"; };
 		AAC5218D14AF5982007FC279 /* tableColorTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tableColorTransformer.m; sourceTree = "<group>"; };
@@ -141,6 +145,8 @@
 				AAFAD0B914AB3F1400457F9B /* Database.m */,
 				AAFAD04414AB32D200457F9B /* Entry.h */,
 				AAFAD04514AB32D200457F9B /* Entry.m */,
+				AA9C75451733DA0900E391D2 /* simplifiedEntry.h */,
+				AA9C75461733DA0900E391D2 /* simplifiedEntry.m */,
 				AAFAD04614AB32D200457F9B /* FileMgr.h */,
 				AAFAD04714AB32D200457F9B /* FileMgr.m */,
 				AAFAD04814AB32D200457F9B /* Match.h */,
@@ -405,6 +411,7 @@
 				AAEDE14016BE5DB900FF91F8 /* BarGraph.m in Sources */,
 				AA9B4E4B16DBDD7700775922 /* YearGraph.m in Sources */,
 				AA115C4316E34FAC004F9DA7 /* Accumulator.m in Sources */,
+				AA9C75471733DA0900E391D2 /* simplifiedEntry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -416,6 +423,7 @@
 				AAEDE14116BE5DB900FF91F8 /* BarGraph.m in Sources */,
 				AA9B4E4C16DBDD7700775922 /* YearGraph.m in Sources */,
 				AA115C4416E34FAC004F9DA7 /* Accumulator.m in Sources */,
+				AA9C75481733DA0900E391D2 /* simplifiedEntry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
