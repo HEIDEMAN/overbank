@@ -7,11 +7,12 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "FileMgr.h"
 #import "BankLog.h"
-#import "Entry.h"
-#import "Prefs.h"
+#import "CSVParser.h"
 #import "Database.h"
+#import "Entry.h"
+#import "FileMgr.h"
+#import "Prefs.h"
 
 #define KFIND_MATCHES					1
 #define KSET_DEFAULT_CATEGORIES			2

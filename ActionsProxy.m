@@ -36,55 +36,130 @@
  */
 -(int) actionOpenFile:(NSString *)nameOfFile managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
-	fileName = [[NSString alloc] initWithString:nameOfFile];
-	
-	// Leo el fichero de movimientos.
-	// Si he podido acceder a los datos...
-	//
-	// -> fileContents
-	//
-	// La instancia del parser ("file"), y el buffer con su contenido.
-	//
-	NSLog(@"Entering the processing of the file");
-	FileMgr  *file = [[FileMgr alloc] init];
-	NSString *fileContents;
-	if ([file fileExists:nameOfFile] == YES)
-	{
-		// Capturo todos los datos y los meto en un buffer de memoria.
-		NSLog(@"Calling FileMgr methods to import data");
-		fileContents = [file suckData];
-		if (fileContents == nil)
-		{
-			NSLog(@"ERROR: Failed to read Contents\n");
-			return 1;
-		}
-		NSLog(@"Content buffer successfully read into memory");
-	} else {
-		NSLog(@"El fichero <%@> NO existe.", nameOfFile);
-		return 2;
-	}
-	
-	//
-	// Meto una a una, todas las entradas en el array de movimientos.
-	//
-	// -> myLog
-	//
-	// "myLog" es un log de movimientos.
-	//
-	NSLog(@"Storing entries in structured memory log");
-	structuredMemoryLog = [[BankLog alloc] init];
-	Entry *newEntry;
-	while ((newEntry = [file getNextEntry:fileContents]) != nil) {
-		[structuredMemoryLog addEntry:newEntry];
-	}
-	NSLog(@"File has %d entries", [file getNumLines]);
+    CSVParser *parser = [[[CSVParser alloc]
+                          initWithFilePath:nameOfFile
+                          separator:@";" hasHeader:YES
+                          fieldNames:nil] autorelease];
     
-	NSLog(@"Calling DB to store structured memory buffer...");
-	int rc = [db fastImportLog:[structuredMemoryLog logArray] managedObjectContext:managedObjectContext];
-	NSLog(@"DB returned code %d", rc);
-	
-	return 0;
+    // Guess the type of the fields parsed.
+    NSArray *records = [parser parseRows];
+    NSUInteger numHeaders = [parser guessFieldTypes:records];
+    [parser guessIndexForFieldTypes:[[NSArray alloc] initWithObjects:
+                                     [NSNumber numberWithInt:DATE_TYPE_STRING],
+                                     [NSNumber numberWithInt:TEXT_TYPE_STRING],
+                                     [NSNumber numberWithInt:NUMBER_TYPE_STRING],
+                                     nil]];
+    NSLog(@"%lu Headers, %lu Records read.", (unsigned long)numHeaders, [records count]);
+    
+    // Put the elements parsed into a proper "Entry" array for later storing in DB.
+    structuredMemoryLog = [[BankLog alloc] init];
+    for (NSDictionary *record in records)
+    {
+        Entry *entry = [[[Entry alloc]init]autorelease];
+        entry.fechaOperacion = [record objectForKey:[parser.fieldNames objectAtIndex:[parser indexDate]]];
+        
+        // Convert Importe from NSString to NSNumber
+        entry.importe = [record objectForKey:[parser.fieldNames objectAtIndex:[parser indexAmount]]];
+        NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+        [f setNumberStyle:NSNumberFormatterDecimalStyle];
+        entry.importe = [f numberFromString:
+                         [record objectForKey:[parser.fieldNames objectAtIndex:[parser indexAmount]]]];
+        [f release];
+        
+        // De-localize "concepto" string.
+        entry.concepto = [record objectForKey:[parser.fieldNames objectAtIndex:[parser indexConcept]]];
+        
+        NSString *localized = [NSString stringWithString:[entry concepto]];
+        NSString *delocalized = [NSString stringWithUTF8String:
+                                 [localized cStringUsingEncoding:[NSString defaultCStringEncoding]]];
+        entry.concepto = [NSString stringWithString:delocalized];
+        
+        // Relleno el Match para que no se quede vacio y asi no estropee la ejecución de la
+        // TableView.
+        entry.matchingCategory.categoryMatched = @"";
+        [entry.matchingCategory.tagsMatched addObject:(NSString *)@""];
+        entry.matchingCategory.votes = 0;
+        
+        [structuredMemoryLog.logArray addObject:entry];
+    }
+    
+	return [db fastImportLog:[structuredMemoryLog logArray] managedObjectContext:managedObjectContext];
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//-(int) actionOpenFile:(NSString *)nameOfFile managedObjectContext:(NSManagedObjectContext *)managedObjectContext
+//{
+//	fileName = [[NSString alloc] initWithString:nameOfFile];
+//
+//	// Leo el fichero de movimientos.
+//	// Si he podido acceder a los datos...
+//	//
+//	// -> fileContents
+//	//
+//	// La instancia del parser ("file"), y el buffer con su contenido.
+//	//
+//	NSLog(@"Entering the processing of the file");
+//	FileMgr  *file = [[FileMgr alloc] init];
+//	NSString *fileContents;
+//	if ([file fileExists:nameOfFile] == YES)
+//	{
+//		// Capturo todos los datos y los meto en un buffer de memoria.
+//		NSLog(@"Calling FileMgr methods to import data");
+//		fileContents = [file suckData];
+//		if (fileContents == nil)
+//		{
+//			NSLog(@"ERROR: Failed to read Contents\n");
+//			return 1;
+//		}
+//		NSLog(@"Content buffer successfully read into memory");
+//	} else {
+//		NSLog(@"El fichero <%@> NO existe.", nameOfFile);
+//		return 2;
+//	}
+//
+//	//
+//	// Meto una a una, todas las entradas en el array de movimientos.
+//	//
+//	// -> myLog
+//	//
+//	// "myLog" es un log de movimientos.
+//	//
+//	NSLog(@"Storing entries in structured memory log");
+//	structuredMemoryLog = [[BankLog alloc] init];
+//	Entry *newEntry;
+//	while ((newEntry = [file getNextEntry:fileContents]) != nil) {
+//		[structuredMemoryLog addEntry:newEntry];
+//	}
+//	NSLog(@"File has %d entries", [file getNumLines]);
+//
+//	NSLog(@"Calling DB to store structured memory buffer...");
+//	int rc = [db fastImportLog:[structuredMemoryLog logArray] managedObjectContext:managedObjectContext];
+//	NSLog(@"DB returned code %d", rc);
+//
+//	return 0;
+//}
 
 /**
  This function will be responsible for the matching of all the entries in the database.

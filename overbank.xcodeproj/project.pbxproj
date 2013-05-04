@@ -28,6 +28,7 @@
 		AAD8F8FA169B0335005BEF53 /* overbank.m in Sources */ = {isa = PBXBuildFile; fileRef = AAD8F8F9169B0335005BEF53 /* overbank.m */; };
 		AADCA32B14B20C2A0065FAF7 /* stringToArrayTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = AADCA32914B20C2A0065FAF7 /* stringToArrayTransformer.m */; };
 		AAE180B814B07A2E00D972D7 /* PieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = AAE180B714B07A2E00D972D7 /* PieChart.m */; };
+		AAE5EBDB1734183200C58DD0 /* CSVParser.m in Sources */ = {isa = PBXBuildFile; fileRef = AAE5EBD91734183200C58DD0 /* CSVParser.m */; };
 		AAEDE14016BE5DB900FF91F8 /* BarGraph.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEDE13F16BE5DB800FF91F8 /* BarGraph.m */; };
 		AAEDE14116BE5DB900FF91F8 /* BarGraph.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEDE13F16BE5DB800FF91F8 /* BarGraph.m */; };
 		AAFAD04114AB311D00457F9B /* ActionsProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = AAFAD04014AB311D00457F9B /* ActionsProxy.m */; };
@@ -90,6 +91,8 @@
 		AADCA32A14B20C2A0065FAF7 /* stringToArrayTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stringToArrayTransformer.h; sourceTree = "<group>"; };
 		AAE180B614B07A2E00D972D7 /* PieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieChart.h; sourceTree = "<group>"; };
 		AAE180B714B07A2E00D972D7 /* PieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieChart.m; sourceTree = "<group>"; };
+		AAE5EBD91734183200C58DD0 /* CSVParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSVParser.m; sourceTree = "<group>"; };
+		AAE5EBDA1734183200C58DD0 /* CSVParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSVParser.h; sourceTree = "<group>"; };
 		AAEDE13E16BE5DB800FF91F8 /* BarGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarGraph.h; sourceTree = "<group>"; };
 		AAEDE13F16BE5DB800FF91F8 /* BarGraph.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BarGraph.m; sourceTree = "<group>"; };
 		AAFAD03F14AB311D00457F9B /* ActionsProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionsProxy.h; sourceTree = "<group>"; };
@@ -141,14 +144,12 @@
 				AAFAD04314AB32D200457F9B /* BankLog.m */,
 				AAEDE13E16BE5DB800FF91F8 /* BarGraph.h */,
 				AAEDE13F16BE5DB800FF91F8 /* BarGraph.m */,
+				AAE5EBDA1734183200C58DD0 /* CSVParser.h */,
+				AAE5EBD91734183200C58DD0 /* CSVParser.m */,
 				AAFAD0B814AB3F1400457F9B /* Database.h */,
 				AAFAD0B914AB3F1400457F9B /* Database.m */,
 				AAFAD04414AB32D200457F9B /* Entry.h */,
 				AAFAD04514AB32D200457F9B /* Entry.m */,
-				AA9C75451733DA0900E391D2 /* simplifiedEntry.h */,
-				AA9C75461733DA0900E391D2 /* simplifiedEntry.m */,
-				AAFAD04614AB32D200457F9B /* FileMgr.h */,
-				AAFAD04714AB32D200457F9B /* FileMgr.m */,
 				AAFAD04814AB32D200457F9B /* Match.h */,
 				AAFAD04914AB32D200457F9B /* Match.m */,
 				77C8280B06725ACE000B614F /* ovb3_AppDelegate.h */,
@@ -157,6 +158,8 @@
 				AAE180B714B07A2E00D972D7 /* PieChart.m */,
 				AAFAD04A14AB32D200457F9B /* Prefs.h */,
 				AAFAD04B14AB32D200457F9B /* Prefs.m */,
+				AA9C75451733DA0900E391D2 /* simplifiedEntry.h */,
+				AA9C75461733DA0900E391D2 /* simplifiedEntry.m */,
 				AA9B4E4916DBDD7700775922 /* YearGraph.h */,
 				AA9B4E4A16DBDD7700775922 /* YearGraph.m */,
 			);
@@ -209,6 +212,8 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				AAFAD04614AB32D200457F9B /* FileMgr.h */,
+				AAFAD04714AB32D200457F9B /* FileMgr.m */,
 				AAFAD05F14AB346C00457F9B /* Levenshtein.h */,
 				AAFAD06014AB346C00457F9B /* Levenshtein.m */,
 				32CA4F630368D1EE00C91783 /* overbank_Prefix.pch */,
@@ -412,6 +417,7 @@
 				AA9B4E4B16DBDD7700775922 /* YearGraph.m in Sources */,
 				AA115C4316E34FAC004F9DA7 /* Accumulator.m in Sources */,
 				AA9C75471733DA0900E391D2 /* simplifiedEntry.m in Sources */,
+				AAE5EBDB1734183200C58DD0 /* CSVParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
