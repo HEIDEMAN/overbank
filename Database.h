@@ -12,7 +12,7 @@
 #import "Match.h"
 #import "DBCategory.h"
 #import "DBEntry.h"
-#import "simplifiedEntry.h"
+#import "SimplifiedEntry.h"
 
 /**
 #define ENTRY_ENTITYNAME	"Entry";
@@ -48,7 +48,7 @@
 
 - (NSManagedObject*) entryToDBEntry:(Entry*)line inManagedObjectContext:(NSManagedObjectContext*)moc;
 - (Entry *)dbEntryToEntry:(NSManagedObject *)object;
-- (simplifiedEntry *)dbEntryToSimplifiedEntry:(NSManagedObject *)object;
+- (SimplifiedEntry *)dbEntryToSimplifiedEntry:(NSManagedObject *)object;
 - (int) updateCategoriesInDatabase:(NSManagedObject *)dbEntry fromEntry:(Entry *)entry
 			  managedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 - (int) storeEntryInDatabase:(Entry *)entry managedObjectContext:(NSManagedObjectContext *)managedObjectContext;

@@ -34,9 +34,9 @@
     return (cond1 && cond2 && cond3);
 }
 
-- (simplifiedEntry *)simplified
+- (SimplifiedEntry *)simplified
 {
-    simplifiedEntry *s = [[[simplifiedEntry alloc]init]autorelease];
+    SimplifiedEntry *s = [[[SimplifiedEntry alloc]init]autorelease];
     s.fechaOperacion = self.fechaOperacion;
     s.concepto = self.concepto;
     s.importe = self.importe;

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface simplifiedEntry : NSObject {
+@interface SimplifiedEntry : NSObject {
     NSString *fechaOperacion;
     NSString *concepto;
     NSNumber *importe;

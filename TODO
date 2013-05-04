@@ -1,5 +1,4 @@
 · Test multiyear bar graph in histogram.
-· Importing RAW CSV converted files DOESN'T WORK
 · Remove the black line at the top of the green INCOME bar.
 · Re-write the method "computeAggregatedCategories" within Database.
   Place it within PieChart, and avoid running a "fetch". Use the arraycontrollers
@@ -15,3 +14,8 @@ x Select all categories when trying to draw a pie chart.
 x Enable selection of what categories to include in the PIE chart.
 x Use a separate Category Controller for the categories listing in the pie chart.
 x Change the randomColors in PieChart by known pastel color palette.
+x Importing RAW CSV converted files DOESN'T WORK
+
+
+--
+Use https://github.com/nst/objc_dep to draw dependencies among classes.

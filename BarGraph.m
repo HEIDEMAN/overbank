@@ -154,7 +154,7 @@
 
 - (NSColor *)giveMeColor:(int)color
 {
-    NSColor *yourColor = [[NSColor alloc] init];
+    NSColor *yourColor;
     switch (color) {
         case LightGreen:
             yourColor = [NSColor colorWithSRGBRed:160.0/255 green:202.0/255 blue:74.0/255 alpha:1.0];

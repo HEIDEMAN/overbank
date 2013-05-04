@@ -7,7 +7,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "Match.h"
-#import "simplifiedEntry.h"
+#import "SimplifiedEntry.h"
 
 @interface Entry : NSObject {
 	NSString *fechaOperacion;
@@ -28,6 +28,6 @@
 
 - (void) printEntry;
 - (BOOL) equals:(Entry *)entry;
-- (simplifiedEntry *)simplified;
+- (SimplifiedEntry *)simplified;
 
 @end

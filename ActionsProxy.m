@@ -30,6 +30,8 @@
 	return self;
 }
 
+
+
 /**
  This function gets the name selected through the dialog presented when the "Open" item
  under the "File" menu is selected, and process it.
@@ -68,7 +70,6 @@
         
         // De-localize "concepto" string.
         entry.concepto = [record objectForKey:[parser.fieldNames objectAtIndex:[parser indexConcept]]];
-        
         NSString *localized = [NSString stringWithString:[entry concepto]];
         NSString *delocalized = [NSString stringWithUTF8String:
                                  [localized cStringUsingEncoding:[NSString defaultCStringEncoding]]];
@@ -89,78 +90,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//-(int) actionOpenFile:(NSString *)nameOfFile managedObjectContext:(NSManagedObjectContext *)managedObjectContext
-//{
-//	fileName = [[NSString alloc] initWithString:nameOfFile];
-//
-//	// Leo el fichero de movimientos.
-//	// Si he podido acceder a los datos...
-//	//
-//	// -> fileContents
-//	//
-//	// La instancia del parser ("file"), y el buffer con su contenido.
-//	//
-//	NSLog(@"Entering the processing of the file");
-//	FileMgr  *file = [[FileMgr alloc] init];
-//	NSString *fileContents;
-//	if ([file fileExists:nameOfFile] == YES)
-//	{
-//		// Capturo todos los datos y los meto en un buffer de memoria.
-//		NSLog(@"Calling FileMgr methods to import data");
-//		fileContents = [file suckData];
-//		if (fileContents == nil)
-//		{
-//			NSLog(@"ERROR: Failed to read Contents\n");
-//			return 1;
-//		}
-//		NSLog(@"Content buffer successfully read into memory");
-//	} else {
-//		NSLog(@"El fichero <%@> NO existe.", nameOfFile);
-//		return 2;
-//	}
-//
-//	//
-//	// Meto una a una, todas las entradas en el array de movimientos.
-//	//
-//	// -> myLog
-//	//
-//	// "myLog" es un log de movimientos.
-//	//
-//	NSLog(@"Storing entries in structured memory log");
-//	structuredMemoryLog = [[BankLog alloc] init];
-//	Entry *newEntry;
-//	while ((newEntry = [file getNextEntry:fileContents]) != nil) {
-//		[structuredMemoryLog addEntry:newEntry];
-//	}
-//	NSLog(@"File has %d entries", [file getNumLines]);
-//
-//	NSLog(@"Calling DB to store structured memory buffer...");
-//	int rc = [db fastImportLog:[structuredMemoryLog logArray] managedObjectContext:managedObjectContext];
-//	NSLog(@"DB returned code %d", rc);
-//
-//	return 0;
-//}
-
 /**
  This function will be responsible for the matching of all the entries in the database.
  Preconditions: the database must contain objects, the objects must not be previously
@@ -168,7 +97,7 @@
  Since this function is located in the actions proxy between the GUI and the bizz logic,
  it will simply control the execution of the proper function in the database object.
  */
-- (int)  actionMatchDatabaseEntries:(NSManagedObjectContext *)managedObjectContext
+- (int) actionMatchDatabaseEntries:(NSManagedObjectContext *)managedObjectContext
 {
 	NSLog(@"Entering actionMatchDatabaseEntries");
 	//Database *db = [[[Database alloc]init]autorelease];
@@ -181,6 +110,8 @@
 	NSLog(@"Leaving actionMatchDatabaseEntries");
 	return rc;
 }
+
+
 
 /*
  This method calls the class database to learn from a new categorization that
@@ -196,11 +127,13 @@
 }
 
 
+
+
 /**
  This function sets up the preferences from a default set, by the first time the program executes.
  Once set, the preferences are stored in disk to be recovered from there now on.
  */
-- (int)  actionSetDefaultPreferences:(NSManagedObjectContext *)managedObjectContext
+- (int) actionSetDefaultPreferences:(NSManagedObjectContext *)managedObjectContext
 {
 	int rc=0;
 	
@@ -220,14 +153,18 @@
 	return rc;
 }
 
+
+
 /**
  This function reads the existing preferences stored in the plist file, if this is not the first
  time that the program is executed.
  */
-- (int)  actionReadExistingPreferences
+- (int) actionReadExistingPreferences
 {
 	return [prefs readPrefs];
 }
+
+
 
 
 /*
@@ -242,6 +179,8 @@
     
 	return 0;
 }
+
+
 
 /**
  This function is responsible for computing the values to be represented in the pie

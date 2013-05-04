@@ -6,7 +6,7 @@
 //  Copyright 2013 Jesus Renero Quintero. All rights reserved.
 //
 
-#import "ovb3_AppDelegate.h"
+#import "AppDelegate.h"
 #import "tableColorTransformer.h"
 
 
@@ -15,7 +15,7 @@
 NSString * const MDFirstRunKey = @"MDFirstRun";
 
 
-@implementation ovb3_AppDelegate
+@implementation AppDelegate
 
 @synthesize window, tabView,
     persistentStoreCoordinator, managedObjectModel, managedObjectContext,

@@ -37,7 +37,7 @@
 		if ( [[line fechaOperacion] length] == 0) continue;
         
         // Get a simpified version of the Line Entry to perform comparisons.
-        simplifiedEntry *sline = [line simplified];
+        SimplifiedEntry *sline = [line simplified];
         
         // Skip also lines that are already in the table to avoid duplicates.
         if ( [dbHashTable containsObject:sline] ) {
@@ -45,7 +45,7 @@
             NSLog(@"}}}}");
             NSLog(@"Duplicate entry (%@|%@|%f)",
                   sline.fechaOperacion, sline.concepto, [sline.importe floatValue]);
-            simplifiedEntry *e = [dbHashTable member:sline];
+            SimplifiedEntry *e = [dbHashTable member:sline];
             NSLog(@"%@|%@|%f", e.fechaOperacion, e.concepto, [e.importe floatValue]);
             NSLog(@"}}}}");
             continue;
@@ -59,7 +59,7 @@
             NSLog(@">>>>");
             NSLog(@"Duplicate entry (%@|%@|%f), already inserted. Skipping.",
                   sline.fechaOperacion, sline.concepto, [sline.importe floatValue]);
-            simplifiedEntry *e = [memHashTable member:sline];
+            SimplifiedEntry *e = [memHashTable member:sline];
             NSLog(@"%@|%@|%f", e.fechaOperacion, e.concepto, [e.importe floatValue]);
             NSLog(@">>>>");
             doNotInsertFlag = TRUE;
@@ -821,9 +821,9 @@
 	return entry;
 }
 
-- (simplifiedEntry *)dbEntryToSimplifiedEntry:(NSManagedObject *)object
+- (SimplifiedEntry *)dbEntryToSimplifiedEntry:(NSManagedObject *)object
 {
-	simplifiedEntry *entry = [[simplifiedEntry alloc] init];
+	SimplifiedEntry *entry = [[SimplifiedEntry alloc] init];
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateFormat:@"dd-MM-yyyy"];
 	
@@ -842,12 +842,25 @@
  */
 - (NSDate *) stringToNSDate:(NSString *)string
 {
-    //NSLog(@"Converting <%@>", string);
     // Parameters needed to convert the dates..
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-	[dateFormatter setDateFormat:@"dd-MM-yyyy"];
+    // We've different possibilities for the date format.
+    if ( [string length] > 9)
+    {
+        NSRange range = [string rangeOfString:@"-"];
+        if (range.location != NSNotFound)
+        {
+            [dateFormatter setDateFormat:@"dd-MM-yyyy"];
+        } else {
+            [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+        }
+
+    } else {
+        [dateFormatter setDateFormat:@"dd/MM/yy"];
+    }
+    
     NSDate *date = [self dateWithNoTime:[dateFormatter dateFromString:string]];
-    //NSLog(@"Result <%@>", date);
+    NSLog(@"-----> Result from dateFormatter <%@>", date);
 	[dateFormatter release];
 	
 	return date;

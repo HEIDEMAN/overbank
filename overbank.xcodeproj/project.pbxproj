@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		2F7446990DB6B7EA00F9684A /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F7446970DB6B7EA00F9684A /* MainMenu.xib */; };
 		770B37ED0679A11B001EADE2 /* ovb3_DataModel.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 770B37EC0679A11B001EADE2 /* ovb3_DataModel.xcdatamodel */; };
-		77C8280E06725ACE000B614F /* ovb3_AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 77C8280C06725ACE000B614F /* ovb3_AppDelegate.m */; };
+		77C8280E06725ACE000B614F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 77C8280C06725ACE000B614F /* AppDelegate.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -19,8 +19,8 @@
 		AA6DE0C014C830DD002B873A /* DBCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6DE0BE14C830DD002B873A /* DBCategory.m */; };
 		AA9B4E4B16DBDD7700775922 /* YearGraph.m in Sources */ = {isa = PBXBuildFile; fileRef = AA9B4E4A16DBDD7700775922 /* YearGraph.m */; };
 		AA9B4E4C16DBDD7700775922 /* YearGraph.m in Sources */ = {isa = PBXBuildFile; fileRef = AA9B4E4A16DBDD7700775922 /* YearGraph.m */; };
-		AA9C75471733DA0900E391D2 /* simplifiedEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = AA9C75461733DA0900E391D2 /* simplifiedEntry.m */; };
-		AA9C75481733DA0900E391D2 /* simplifiedEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = AA9C75461733DA0900E391D2 /* simplifiedEntry.m */; };
+		AA9C75471733DA0900E391D2 /* SEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = AA9C75461733DA0900E391D2 /* SEntry.m */; };
+		AA9C75481733DA0900E391D2 /* SEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = AA9C75461733DA0900E391D2 /* SEntry.m */; };
 		AAB8C42E16E7CAC0004F4A7A /* TODO in Resources */ = {isa = PBXBuildFile; fileRef = AAB8C42D16E7CAC0004F4A7A /* TODO */; };
 		AAC5218E14AF5982007FC279 /* tableColorTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = AAC5218D14AF5982007FC279 /* tableColorTransformer.m */; };
 		AAD8F8EF169B0335005BEF53 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F8EE169B0335005BEF53 /* SenTestingKit.framework */; };
@@ -63,8 +63,8 @@
 		32CA4F630368D1EE00C91783 /* overbank_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = overbank_Prefix.pch; sourceTree = "<group>"; };
 		770B37EC0679A11B001EADE2 /* ovb3_DataModel.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = ovb3_DataModel.xcdatamodel; sourceTree = "<group>"; };
 		77C82804067257F0000B614F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
-		77C8280B06725ACE000B614F /* ovb3_AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ovb3_AppDelegate.h; sourceTree = "<group>"; };
-		77C8280C06725ACE000B614F /* ovb3_AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ovb3_AppDelegate.m; sourceTree = "<group>"; };
+		77C8280B06725ACE000B614F /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		77C8280C06725ACE000B614F /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* overbank-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist.xml; fileEncoding = 4; path = "overbank-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* overbank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = overbank.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA115C4116E34FAC004F9DA7 /* Accumulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Accumulator.h; sourceTree = "<group>"; };
@@ -75,8 +75,8 @@
 		AA6DE0BE14C830DD002B873A /* DBCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBCategory.m; sourceTree = "<group>"; };
 		AA9B4E4916DBDD7700775922 /* YearGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YearGraph.h; sourceTree = "<group>"; };
 		AA9B4E4A16DBDD7700775922 /* YearGraph.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YearGraph.m; sourceTree = "<group>"; };
-		AA9C75451733DA0900E391D2 /* simplifiedEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = simplifiedEntry.h; sourceTree = "<group>"; };
-		AA9C75461733DA0900E391D2 /* simplifiedEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = simplifiedEntry.m; sourceTree = "<group>"; };
+		AA9C75451733DA0900E391D2 /* SEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEntry.h; sourceTree = "<group>"; };
+		AA9C75461733DA0900E391D2 /* SEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEntry.m; sourceTree = "<group>"; };
 		AAB8C42D16E7CAC0004F4A7A /* TODO */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
 		AAC5218C14AF5982007FC279 /* tableColorTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tableColorTransformer.h; sourceTree = "<group>"; };
 		AAC5218D14AF5982007FC279 /* tableColorTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tableColorTransformer.m; sourceTree = "<group>"; };
@@ -140,6 +140,8 @@
 				AA115C4216E34FAC004F9DA7 /* Accumulator.m */,
 				AAFAD03F14AB311D00457F9B /* ActionsProxy.h */,
 				AAFAD04014AB311D00457F9B /* ActionsProxy.m */,
+				77C8280B06725ACE000B614F /* AppDelegate.h */,
+				77C8280C06725ACE000B614F /* AppDelegate.m */,
 				AAFAD04214AB32D200457F9B /* BankLog.h */,
 				AAFAD04314AB32D200457F9B /* BankLog.m */,
 				AAEDE13E16BE5DB800FF91F8 /* BarGraph.h */,
@@ -152,14 +154,12 @@
 				AAFAD04514AB32D200457F9B /* Entry.m */,
 				AAFAD04814AB32D200457F9B /* Match.h */,
 				AAFAD04914AB32D200457F9B /* Match.m */,
-				77C8280B06725ACE000B614F /* ovb3_AppDelegate.h */,
-				77C8280C06725ACE000B614F /* ovb3_AppDelegate.m */,
 				AAE180B614B07A2E00D972D7 /* PieChart.h */,
 				AAE180B714B07A2E00D972D7 /* PieChart.m */,
 				AAFAD04A14AB32D200457F9B /* Prefs.h */,
 				AAFAD04B14AB32D200457F9B /* Prefs.m */,
-				AA9C75451733DA0900E391D2 /* simplifiedEntry.h */,
-				AA9C75461733DA0900E391D2 /* simplifiedEntry.m */,
+				AA9C75451733DA0900E391D2 /* SEntry.h */,
+				AA9C75461733DA0900E391D2 /* SEntry.m */,
 				AA9B4E4916DBDD7700775922 /* YearGraph.h */,
 				AA9B4E4A16DBDD7700775922 /* YearGraph.m */,
 			);
@@ -398,7 +398,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
-				77C8280E06725ACE000B614F /* ovb3_AppDelegate.m in Sources */,
+				77C8280E06725ACE000B614F /* AppDelegate.m in Sources */,
 				770B37ED0679A11B001EADE2 /* ovb3_DataModel.xcdatamodel in Sources */,
 				AAFAD04114AB311D00457F9B /* ActionsProxy.m in Sources */,
 				AAFAD04C14AB32D200457F9B /* BankLog.m in Sources */,
@@ -416,7 +416,7 @@
 				AAEDE14016BE5DB900FF91F8 /* BarGraph.m in Sources */,
 				AA9B4E4B16DBDD7700775922 /* YearGraph.m in Sources */,
 				AA115C4316E34FAC004F9DA7 /* Accumulator.m in Sources */,
-				AA9C75471733DA0900E391D2 /* simplifiedEntry.m in Sources */,
+				AA9C75471733DA0900E391D2 /* SEntry.m in Sources */,
 				AAE5EBDB1734183200C58DD0 /* CSVParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -429,7 +429,7 @@
 				AAEDE14116BE5DB900FF91F8 /* BarGraph.m in Sources */,
 				AA9B4E4C16DBDD7700775922 /* YearGraph.m in Sources */,
 				AA115C4416E34FAC004F9DA7 /* Accumulator.m in Sources */,
-				AA9C75481733DA0900E391D2 /* simplifiedEntry.m in Sources */,
+				AA9C75481733DA0900E391D2 /* SEntry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

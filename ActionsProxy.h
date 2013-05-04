@@ -11,7 +11,6 @@
 #import "CSVParser.h"
 #import "Database.h"
 #import "Entry.h"
-#import "FileMgr.h"
 #import "Prefs.h"
 
 #define KFIND_MATCHES					1

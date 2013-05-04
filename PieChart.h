@@ -23,18 +23,20 @@
 @property (nonatomic, retain) NSArray *segmentValuesArray;
 @property (nonatomic, retain) NSMutableArray *segmentPathsArray;
 @property (nonatomic, retain) NSMutableArray *segmentTextsArray;
-
 @property (atomic, retain) NSArray *selectableCategoriesArray;
 
+- (void) drawRect:(NSRect)rect;
 
-- (NSColor *) randomColor;
-- (NSColor *) colorForIndex:(unsigned)index;
 - (NSArray *) segmentPathsArray;
 - (NSArray *) segmentTextsArray;
+- (NSArray *) selectableCategoriesArray;
 
 - (void) generateDrawingInformation;
-- (int)  updatePieData:(NSDictionary *)aggregated;
+- (int) updatePieData:(NSDictionary *)aggregated;
+- (id) initWithFrame:(NSRect)frame;
 
-- (NSColor *)colorForIdx:(unsigned)index;
+
+- (BOOL) isFlipped;
+- (void) dealloc;
 
 @end

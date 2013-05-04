@@ -6,9 +6,9 @@
 //
 //
 
-#import "simplifiedEntry.h"
+#import "SimplifiedEntry.h"
 
-@implementation simplifiedEntry
+@implementation SimplifiedEntry
 @synthesize fechaOperacion, concepto, importe;
 
 - (id)init {
@@ -29,7 +29,7 @@
 //
 // return TRUE if both objects are identical.
 //
-- (BOOL)isEqual:(simplifiedEntry *)other
+- (BOOL)isEqual:(SimplifiedEntry *)other
 {
     if (other == self) {
         return YES;
