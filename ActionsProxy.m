@@ -9,7 +9,10 @@
 #import "ActionsProxy.h"
 
 @implementation ActionsProxy
-@synthesize fileName, structuredMemoryLog, prefs, conflicts; //newEntry,
+@synthesize _fileName,
+    structuredMemoryLog,
+    prefs,
+    conflicts;
 
 -(id)init
 {
@@ -209,7 +212,7 @@
 // To be deprecated
 //
 -(BOOL)fileSelected {
-	return (fileName == nil ? NO : YES);
+	return (_fileName == nil ? NO : YES);
 }
 
 

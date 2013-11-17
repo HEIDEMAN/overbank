@@ -15,6 +15,10 @@
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		AA115C4316E34FAC004F9DA7 /* Accumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = AA115C4216E34FAC004F9DA7 /* Accumulator.m */; };
 		AA115C4416E34FAC004F9DA7 /* Accumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = AA115C4216E34FAC004F9DA7 /* Accumulator.m */; };
+		AA3121D61839455B000701D5 /* prefsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3121D41839455B000701D5 /* prefsViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AA3121D71839455B000701D5 /* prefsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA3121D51839455B000701D5 /* prefsViewController.xib */; };
+		AA3121DC18394618000701D5 /* MASPreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA3121D918394618000701D5 /* MASPreferencesWindow.xib */; };
+		AA3121DD18394618000701D5 /* MASPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3121DB18394618000701D5 /* MASPreferencesWindowController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		AA6DE0BF14C830DD002B873A /* DBEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6DE0BC14C830DD002B873A /* DBEntry.m */; };
 		AA6DE0C014C830DD002B873A /* DBCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6DE0BE14C830DD002B873A /* DBCategory.m */; };
 		AA9B4E4B16DBDD7700775922 /* YearGraph.m in Sources */ = {isa = PBXBuildFile; fileRef = AA9B4E4A16DBDD7700775922 /* YearGraph.m */; };
@@ -69,6 +73,13 @@
 		8D1107320486CEB800E47090 /* overbank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = overbank.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA115C4116E34FAC004F9DA7 /* Accumulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Accumulator.h; sourceTree = "<group>"; };
 		AA115C4216E34FAC004F9DA7 /* Accumulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Accumulator.m; sourceTree = "<group>"; };
+		AA3121D31839455B000701D5 /* prefsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefsViewController.h; sourceTree = "<group>"; };
+		AA3121D41839455B000701D5 /* prefsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = prefsViewController.m; sourceTree = "<group>"; };
+		AA3121D51839455B000701D5 /* prefsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = prefsViewController.xib; sourceTree = "<group>"; };
+		AA3121D818394618000701D5 /* MASPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASPreferencesViewController.h; sourceTree = "<group>"; };
+		AA3121D918394618000701D5 /* MASPreferencesWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MASPreferencesWindow.xib; sourceTree = "<group>"; };
+		AA3121DA18394618000701D5 /* MASPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASPreferencesWindowController.h; sourceTree = "<group>"; };
+		AA3121DB18394618000701D5 /* MASPreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASPreferencesWindowController.m; sourceTree = "<group>"; };
 		AA6DE0BB14C830DD002B873A /* DBEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBEntry.h; sourceTree = "<group>"; };
 		AA6DE0BC14C830DD002B873A /* DBEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBEntry.m; sourceTree = "<group>"; };
 		AA6DE0BD14C830DD002B873A /* DBCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBCategory.h; sourceTree = "<group>"; };
@@ -156,6 +167,8 @@
 				AAE180B714B07A2E00D972D7 /* PieChart.m */,
 				AAFAD04A14AB32D200457F9B /* Prefs.h */,
 				AAFAD04B14AB32D200457F9B /* Prefs.m */,
+				AA3121D31839455B000701D5 /* prefsViewController.h */,
+				AA3121D41839455B000701D5 /* prefsViewController.m */,
 				AA9C75451733DA0900E391D2 /* SEntry.h */,
 				AA9C75461733DA0900E391D2 /* SEntry.m */,
 				AA9B4E4916DBDD7700775922 /* YearGraph.h */,
@@ -210,6 +223,9 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				AA3121D818394618000701D5 /* MASPreferencesViewController.h */,
+				AA3121DA18394618000701D5 /* MASPreferencesWindowController.h */,
+				AA3121DB18394618000701D5 /* MASPreferencesWindowController.m */,
 				AAFAD04214AB32D200457F9B /* BankLog.h */,
 				AAFAD04314AB32D200457F9B /* BankLog.m */,
 				AAFAD04614AB32D200457F9B /* FileMgr.h */,
@@ -225,9 +241,11 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				8D1107310486CEB800E47090 /* overbank-Info.plist */,
-				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				2F7446970DB6B7EA00F9684A /* MainMenu.xib */,
+				AA3121D918394618000701D5 /* MASPreferencesWindow.xib */,
+				AA3121D51839455B000701D5 /* prefsViewController.xib */,
+				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
+				8D1107310486CEB800E47090 /* overbank-Info.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -362,6 +380,8 @@
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				2F7446990DB6B7EA00F9684A /* MainMenu.xib in Resources */,
+				AA3121DC18394618000701D5 /* MASPreferencesWindow.xib in Resources */,
+				AA3121D71839455B000701D5 /* prefsViewController.xib in Resources */,
 				AAB8C42E16E7CAC0004F4A7A /* TODO in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -412,6 +432,8 @@
 				AAE180B814B07A2E00D972D7 /* PieChart.m in Sources */,
 				AADCA32B14B20C2A0065FAF7 /* stringToArrayTransformer.m in Sources */,
 				AA6DE0BF14C830DD002B873A /* DBEntry.m in Sources */,
+				AA3121D61839455B000701D5 /* prefsViewController.m in Sources */,
+				AA3121DD18394618000701D5 /* MASPreferencesWindowController.m in Sources */,
 				AA6DE0C014C830DD002B873A /* DBCategory.m in Sources */,
 				AAEDE14016BE5DB900FF91F8 /* BarGraph.m in Sources */,
 				AA9B4E4B16DBDD7700775922 /* YearGraph.m in Sources */,

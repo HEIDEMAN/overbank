@@ -7,6 +7,8 @@
 //
 
 #import "AppDelegate.h"
+#import "MASPreferencesViewController.h"
+#import "prefsViewController.h"
 #import "tableColorTransformer.h"
 
 
@@ -17,7 +19,7 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 
 @implementation AppDelegate
 
-@synthesize window, tabView,
+@synthesize _window, _tabView, _preferencesWindow,
     persistentStoreCoordinator, managedObjectModel, managedObjectContext,
     tableEntriesDictionary, sendAction,
     matchingEnabled, MDFirstRun,
@@ -93,7 +95,7 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:MDFirstRunKey];
 	}
 	
-	[tabView selectFirstTabViewItem:NULL];
+	[_tabView selectFirstTabViewItem:NULL];
     
     // Bind the contents of the Array controller column "importe" to the bindable array in
     // NSView that will be used to represent the bar graph with the total income and outcome.
@@ -252,6 +254,25 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 #pragma mark ACTIONS taken from the APP
 
 /**
+ * This is the funcion invoked when Cmd-, is hit, to open the preferences window.
+ */
+- (IBAction)displayPreferences:(id)sender
+{
+    if (_preferencesWindow == nil)
+    {
+        // These are the steps to follow to conforms with MASPrefs lib.
+        // http://simplecode.me/2012/04/08/preferences-window-in-cocoa-maspreferences/
+        NSViewController *generalViewController = [[prefsViewController alloc] init];
+        NSArray *controllers = [[NSArray alloc] initWithObjects:generalViewController, nil];
+        NSString *title = NSLocalizedString(@"Preferences", @"Common title for Preferences window");
+        _preferencesWindow = [[MASPreferencesWindowController alloc] initWithViewControllers:controllers title:title];
+    }
+
+    [_preferencesWindow showWindow:self];
+}
+
+
+/**
  Performs the save action for the application, which is to send the save:
  message to the application's managed object context.  Any encountered errors
  are presented to the user.
@@ -311,7 +332,7 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 }
 
 
-/*
+/**
  This method is called when the cell pop up menu is clicked.
  I control from here, the category update for the record.
  */

@@ -7,9 +7,12 @@
 //
 
 #import <Cocoa/Cocoa.h>
+
 #import "ActionsProxy.h"
-#import "PieChart.h"
 #import "BarGraph.h"
+#import "MASPreferencesWindowController.h"
+#import "prefsViewController.h"
+#import "PieChart.h"
 #import "YearGraph.h"
 
 
@@ -20,8 +23,11 @@
 
 @interface AppDelegate : NSObject <NSTabViewDelegate, NSTableViewDataSource>
 {
-    NSWindow *window;
-	NSTabView *__strong tabView;
+    NSWindow *_window;
+	NSTabView *__strong _tabView;
+
+    // Here it is the preferences window controller.
+    NSWindowController *_preferencesWindow;
     
     NSPersistentStoreCoordinator *persistentStoreCoordinator;
     NSManagedObjectModel *managedObjectModel;
@@ -50,8 +56,9 @@
     IBOutlet YearGraph *yearGraphView;
 }
 
-@property (nonatomic, strong) IBOutlet NSWindow *window;
-@property (strong) IBOutlet NSTabView *tabView;
+@property (nonatomic, strong) IBOutlet NSWindow *_window;
+@property (strong) IBOutlet NSTabView *_tabView;
+@property (nonatomic, strong) NSWindowController *_preferencesWindow;
 
 @property (nonatomic, strong, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, strong, readonly) NSManagedObjectModel *managedObjectModel;

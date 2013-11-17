@@ -27,19 +27,21 @@
 #define KLIST_CONFLICTS					13
 #define KSYNC_CONFLICTS_FILE			14
 
-@interface ActionsProxy : NSObject {
-	NSString *fileName;
-	NSMutableArray  *structuredMemoryLog;
+@interface ActionsProxy : NSObject
+{
 	Prefs	 *prefs;
+	NSString *_fileName;
+	NSMutableArray  *structuredMemoryLog;
 	NSMutableSet *conflicts;
 	Database *db;
     int selectedTab;
 }
 
-@property (strong) NSString* fileName; 
-@property (strong) NSMutableArray* structuredMemoryLog;
-@property (strong) Prefs* prefs; 
-@property (strong) NSMutableSet *conflicts;
+@property (nonatomic, strong) NSString* _fileName;
+@property (nonatomic, strong) NSMutableArray* structuredMemoryLog;
+@property (nonatomic, strong) NSWindowController *_preferencesWindow;
+@property (nonatomic, strong) Prefs* prefs;
+@property (nonatomic, strong) NSMutableSet *conflicts;
 
 - (BOOL) fileSelected;
 - (int)  actionOpenFile:(NSString *)nameOfFile managedObjectContext:(NSManagedObjectContext *)managedObjectContext;
