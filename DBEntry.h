@@ -14,15 +14,15 @@
 {
 }
 
-@property (nonatomic, retain) NSDate * fechaValor;
-@property (nonatomic, retain) NSDate * fechaOperacion;
-@property (nonatomic, retain) NSNumber * votes;
-@property (nonatomic, retain) NSNumber * saldo;
-@property (nonatomic, retain) NSString * categoryMatched;
-@property (nonatomic, retain) NSString * concepto;
-@property (nonatomic, retain) NSString * tags;
-@property (nonatomic, retain) NSNumber * importe;
-@property (nonatomic, retain) DBCategory * category;
+@property (nonatomic, strong) NSDate * fechaValor;
+@property (nonatomic, strong) NSDate * fechaOperacion;
+@property (nonatomic, strong) NSNumber * votes;
+@property (nonatomic, strong) NSNumber * saldo;
+@property (nonatomic, strong) NSString * categoryMatched;
+@property (nonatomic, strong) NSString * concepto;
+@property (nonatomic, strong) NSString * tags;
+@property (nonatomic, strong) NSNumber * importe;
+@property (nonatomic, strong) DBCategory * category;
 
 @end
 

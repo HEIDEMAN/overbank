@@ -52,8 +52,8 @@
             return(nil);
         }
         
-		csvString = [aCSVString retain];
-		separator = [aSeparatorString retain];
+		csvString = aCSVString;
+		separator = aSeparatorString;
 		
 		NSAssert([separator length] > 0 &&
                  [separator rangeOfString:@"\""].location == NSNotFound &&
@@ -98,8 +98,8 @@
 	self = [super init];
 	if (self)
 	{
-		csvString = [aCSVString retain];
-		separator = [aSeparatorString retain];
+		csvString = aCSVString;
+		separator = aSeparatorString;
 		
 		NSAssert([separator length] > 0 &&
                  [separator rangeOfString:@"\""].location == NSNotFound &&
@@ -129,14 +129,6 @@
 //
 // Releases instance memory.
 //
-- (void)dealloc
-{
-	[csvString release];
-	[separator release];
-	[fieldNames release];
-	[endTextCharacterSet release];
-	[super dealloc];
-}
 
 
 //
@@ -149,10 +141,9 @@
 - (NSArray *)arrayOfParsedRows
 {
 	scanner = [[NSScanner alloc] initWithString:csvString];
-	[scanner setCharactersToBeSkipped:[[[NSCharacterSet alloc] init] autorelease]];
+	[scanner setCharactersToBeSkipped:[[NSCharacterSet alloc] init]];
 	
 	NSArray *result = [self parseFile];
-	[scanner release];
 	scanner = nil;
 	
 	return result;
@@ -172,28 +163,24 @@
 - (void)parseRowsForReceiver:(id)aReceiver selector:(SEL)aSelector
 {
 	scanner = [[NSScanner alloc] initWithString:csvString];
-	[scanner setCharactersToBeSkipped:[[[NSCharacterSet alloc] init] autorelease]];
-	receiver = [aReceiver retain];
+	[scanner setCharactersToBeSkipped:[[NSCharacterSet alloc] init]];
+	receiver = aReceiver;
 	receiverSelector = aSelector;
 	
 	[self parseFile];
 	
-	[scanner release];
 	scanner = nil;
-	[receiver release];
 	receiver = nil;
 }
 
 - (NSArray *)parseRows
 {
 	scanner = [[NSScanner alloc] initWithString:csvString];
-	[scanner setCharactersToBeSkipped:[[[NSCharacterSet alloc] init] autorelease]];
+	[scanner setCharactersToBeSkipped:[[NSCharacterSet alloc] init]];
 	
 	NSArray *records = [self parseFile];
 	
-	[scanner release];
 	scanner = nil;
-	[receiver release];
 	receiver = nil;
     
     return records;
@@ -212,10 +199,6 @@
 {
 	if (hasHeader)
 	{
-		if (fieldNames)
-		{
-			[fieldNames release];
-		}
 		
         //
         // I change the original behavior here, to call to the
@@ -224,7 +207,7 @@
         //
 		// fieldNames = [[self parseHeader] retain];
         //
-        fieldNames = [[self parseHeaderWithRetries] retain];
+        fieldNames = [self parseHeaderWithRetries];
         
 		if (!fieldNames || ![self parseLineSeparator])
 		{
@@ -238,7 +221,7 @@
 		records = [NSMutableArray array];
 	}
 	
-	NSDictionary *record = [[self parseRecord] retain];
+	NSDictionary *record = [self parseRecord];
 	if (!record)
 	{
 		return nil;
@@ -246,26 +229,25 @@
 	
 	while (record)
 	{
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+		@autoreleasepool {
 		
-		if (receiver)
-		{
-			[receiver performSelector:receiverSelector withObject:record];
+			if (receiver)
+			{
+				[receiver performSelector:receiverSelector withObject:record];
+			}
+			else
+			{
+				[records addObject:record];
+			}
+			
+			if (![self parseLineSeparator])
+			{
+				break;
+			}
+			
+			record = [self parseRecord];
+		
 		}
-		else
-		{
-			[records addObject:record];
-		}
-		[record release];
-		
-		if (![self parseLineSeparator])
-		{
-			break;
-		}
-		
-		record = [[self parseRecord] retain];
-		
-		[pool drain];
 	}
 	
 	return records;
@@ -337,7 +319,6 @@
             return names;
         
         if ([names count] > 0) {
-            [names release];
         }
         [self parseLineSeparator];
         name = [self parseName];

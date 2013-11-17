@@ -30,7 +30,7 @@
 
 
 NSInteger countedSort(id obj1, id obj2, void *context) {
-    NSCountedSet *countedSet = context;
+    NSCountedSet *countedSet = ( NSCountedSet *)CFBridgingRelease(context);
     NSUInteger obj1Count = [countedSet countForObject:obj1];
     NSUInteger obj2Count = [countedSet countForObject:obj2];
 	
@@ -47,17 +47,16 @@ void LogIt (NSString *format, ...)
     string = [[NSString alloc] initWithFormat: format  arguments: args];
     va_end (args);
     fprintf (stderr, "%s\n", [string UTF8String]);
-    [string release];	
 } // LogIt
 
 
 @implementation Prefs
-
+@synthesize prefs = _prefs;
 
 - (id)init {
 	self = [super init];
 	if (self != nil) {
-		prefs = [NSUserDefaults standardUserDefaults];
+		_prefs = [NSUserDefaults standardUserDefaults];
 	}
 	return self;
 }
@@ -163,8 +162,7 @@ void LogIt (NSString *format, ...)
 	// categorias. Solo sus nombres.
 	NSData *data;
 	data = [NSKeyedArchiver archivedDataWithRootObject:defaultCategoriesArray];
-	[prefs setObject:data forKey:@"categories"];
-	[data release];
+	[_prefs setObject:data forKey:@"categories"];
 	
 	// Y ya por fin, lo que hago es crear otro monton de atributos: uno por cada categoria,
 	// y estos seran los que contendran los tags. Habra un atributo llamado "Casa" que 
@@ -172,12 +170,11 @@ void LogIt (NSString *format, ...)
 	// array de tags.
 	for (id key in diccionario) {
 		data = [NSKeyedArchiver archivedDataWithRootObject:[diccionario objectForKey:key]];
-		[prefs setObject:data forKey:key];
-		[data release];
+		[_prefs setObject:data forKey:key];
 	}
 	
 	NSLog(@"Default prefs dictionary set.");
-	[prefs synchronize];
+	[_prefs synchronize];
 	NSLog(@"Default prefs sync'ed");
 	
 	/*
@@ -219,24 +216,19 @@ void LogIt (NSString *format, ...)
 	
 	NSLog(@"Reading user preferences...");
 	
-	[diccionario release];
 	diccionario = [[NSMutableDictionary alloc] init];
 	
-	data = [prefs objectForKey:@"categories"];
+	data = [_prefs objectForKey:@"categories"];
 	array = [NSKeyedUnarchiver unarchiveObjectWithData:data];
 	for(int i=0; i<array.count; i++) 
 	{
-		NSData  *subdata  = [prefs objectForKey:[array objectAtIndex:i]];
+		NSData  *subdata = [_prefs objectForKey:[array objectAtIndex:i]];
 		NSMutableArray *subarray = [NSKeyedUnarchiver unarchiveObjectWithData:subdata];
 		
 		[diccionario setObject:subarray forKey:[array objectAtIndex:i]];
 		
-		[subarray release];
-		[subdata release];
 	}
 	
-	[data release];
-	[array release];
 	
 	NSLog(@"  DONE!");
 
@@ -255,10 +247,9 @@ void LogIt (NSString *format, ...)
 	NSArray *categoriesArray = [diccionario allKeys];
 	// Pack the array into the NSData structure.
 	data = [NSKeyedArchiver archivedDataWithRootObject:categoriesArray];
-	[prefs removeObjectForKey:@"categories"];
-	[prefs setObject:data forKey:@"categories"];
+	[_prefs removeObjectForKey:@"categories"];
+	[_prefs setObject:data forKey:@"categories"];
 	
-	[data release];
 	
 	// Y ya por fin, lo que hago es crear otro monton de atributos: uno por cada categoria,
 	// y estos seran los que contendran los tags. Habra un atributo llamado "Casa" que 
@@ -266,12 +257,11 @@ void LogIt (NSString *format, ...)
 	// array de tags.
 	for (id key in diccionario) {
 		data = [NSKeyedArchiver archivedDataWithRootObject:[diccionario objectForKey:key]];
-		[prefs removeObjectForKey:key];
-		[prefs setObject:data forKey:key];
-		[data release];
+		[_prefs removeObjectForKey:key];
+		[_prefs setObject:data forKey:key];
 	}
 	
-	[prefs synchronize];
+	[_prefs synchronize];
 	
 	NSLog(@"  DONE!");
 	
@@ -302,15 +292,13 @@ void LogIt (NSString *format, ...)
 			//NSLog(@"        -> adding: %@", match.categoryMatched);
 		}
 		[array addObject:subarray];
-		[subarray release];
 	}
 	
 	data = [NSKeyedArchiver archivedDataWithRootObject:array];
-	[prefs removeObjectForKey:@"conflicts"];
-	[prefs setObject:data forKey:@"conflicts"];	
-	[data release];
+	[_prefs removeObjectForKey:@"conflicts"];
+	[_prefs setObject:data forKey:@"conflicts"];
 
-	[prefs synchronize];
+	[_prefs synchronize];
 	
 	NSLog(@"DONE!");
 	return 0;
@@ -330,7 +318,7 @@ void LogIt (NSString *format, ...)
 	
 	NSLog(@"Recovering ConflictsSet from NSUserDefaults...");
 	
-	data  = [prefs objectForKey:@"conflicts"];
+	data  = [_prefs objectForKey:@"conflicts"];
 	array = [NSKeyedUnarchiver unarchiveObjectWithData:data];
 	
 	for ( subarray in array ) 
@@ -345,7 +333,6 @@ void LogIt (NSString *format, ...)
 		}
 		
 		[conflictsSet addObject:subset];
-		[subset release];
 	}
 	
 	NSLog(@"DONE!");
@@ -420,7 +407,7 @@ void LogIt (NSString *format, ...)
 /*
  Una funcion para renombrar una categoría.
  */
--(int) renameCategory:(NSString *)oldCategory: (NSString *)newCategory
+-(int) renameCategory:(NSString *)oldCategory :(NSString *)newCategory
 {
 	NSLog(@"Renaming category %@ to %@ ...", oldCategory, newCategory);
 	// Compruebo si existe la categoria.
@@ -507,7 +494,6 @@ void LogIt (NSString *format, ...)
 		if (isThisCategoryMatched) 
 		{
 			[matchesFound addObject:match];
-			[match release];
 			match = nil;
 		}
 	}
@@ -567,7 +553,6 @@ void LogIt (NSString *format, ...)
 		if (isThisCategoryMatched) 
 		{
 			[matchesFound addObject:match];
-			[match release];
 			match = nil;
 		}
 	}
@@ -584,7 +569,7 @@ void LogIt (NSString *format, ...)
 /*
  Una funcion para cargarme un tag de una categoría.
  */
--(int) removeTag:(NSString *)tag: (NSString*)category
+-(int) removeTag:(NSString *)tag :(NSString*)category
 {
 	NSMutableArray *tags;
 	NSLog(@"Removing tag %@ from category %@ ...", tag, category);
@@ -609,7 +594,7 @@ void LogIt (NSString *format, ...)
 /*
  Una funcion para renombrar un tag de una categoría.
  */
--(int) renameTag:(NSString *)tag: (NSString*)category: (NSString *)newTag
+-(int) renameTag:(NSString *)tag :(NSString*)category :(NSString *)newTag
 {
 	NSMutableArray *tags;
 	NSLog(@"Renaming tag %@ from category %@ to %@...", tag, category, newTag);
@@ -640,7 +625,7 @@ void LogIt (NSString *format, ...)
  Error
  Error
  */
-- (int) addTagToCategory:(NSString *)newTag: (NSString *)targetCategory
+- (int) addTagToCategory:(NSString *)newTag :(NSString *)targetCategory
 {
 	NSMutableArray *categoryTags;
 	
@@ -692,7 +677,7 @@ void LogIt (NSString *format, ...)
 		return nil;
 	}
 	
-	NSMutableArray *names = [[[NSMutableArray alloc] init] retain];
+	NSMutableArray *names = [[NSMutableArray alloc] init];
 	for(id key in diccionario) 
 	{
 		[names addObject:key];

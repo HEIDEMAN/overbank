@@ -50,7 +50,7 @@
     int indexAmount;
 }
 
-@property (nonatomic, retain) NSMutableArray *fieldNames;
+@property (nonatomic, strong) NSMutableArray *fieldNames;
 @property (nonatomic) int indexDate;
 @property (nonatomic) int indexConcept;
 @property (nonatomic) int indexAmount;

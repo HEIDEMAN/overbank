@@ -27,22 +27,16 @@
     [self exposeBinding:@"categoriesArray"];
 }
 
-- (NSArray *)entriesArray
-{
-	return [[entriesArray retain] autorelease];
-}
-- (NSArray *)categoriesArray
-{
-	return [[categoriesArray retain] autorelease];
-}
+//- (NSArray *)entriesArray
+//{
+//	return [[entriesArray retain] autorelease];
+//}
+//- (NSArray *)categoriesArray
+//{
+//	return [[categoriesArray retain] autorelease];
+//}
 
 
-- (void)dealloc
-{
-	[entriesArray release];
-    [categoriesArray release];
-	[super dealloc];
-}
 
 - (void) computeYear
 {
@@ -111,7 +105,6 @@
     NSDate *minDate = [gregorian dateFromComponents:comps];
     [comps setYear:1971];
     NSDate *maxDate = [gregorian dateFromComponents:comps];
-    [comps release];
     
     // Establish what is the min and max dates in range to later determine
     // what is the time period covered by this set of entries.

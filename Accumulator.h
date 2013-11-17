@@ -13,8 +13,8 @@
     NSMutableArray *data;
 }
 
-@property (nonatomic, retain) NSString* name;
-@property (nonatomic, retain) NSMutableArray *data;
+@property (nonatomic, strong) NSString* name;
+@property (nonatomic, strong) NSMutableArray *data;
 
 
 - (id)initWithName:(NSString *)initName;

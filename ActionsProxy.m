@@ -23,7 +23,7 @@
 		NSLog(@"---- Allocating Preferences and Conflicts dictionaries...");
 		prefs = [[Prefs alloc] init];
 		conflicts = [[NSMutableSet alloc] init];
-		db = [[[Database alloc] init]autorelease];
+		db = [[Database alloc] init];
 		NSLog(@"---- done.");
 		
 	}
@@ -38,10 +38,10 @@
  */
 -(int) actionOpenFile:(NSString *)nameOfFile managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
-    CSVParser *parser = [[[CSVParser alloc]
+    CSVParser *parser = [[CSVParser alloc]
                           initWithFilePath:nameOfFile
                           separator:@";" hasHeader:YES
-                          fieldNames:nil] autorelease];
+                          fieldNames:nil];
     
     // Guess the type of the fields parsed.
     NSArray *records = [parser parseRows];
@@ -54,10 +54,10 @@
     NSLog(@"%lu Headers, %lu Records read.", (unsigned long)numHeaders, [records count]);
     
     // Put the elements parsed into a proper "Entry" array for later storing in DB.
-    structuredMemoryLog = [[BankLog alloc] init];
+    structuredMemoryLog = [[NSMutableArray alloc] init];
     for (NSDictionary *record in records)
     {
-        Entry *entry = [[[Entry alloc]init]autorelease];
+        Entry *entry = [[Entry alloc]init];
         entry.fechaOperacion = [record objectForKey:[parser.fieldNames objectAtIndex:[parser indexDate]]];
         
         // Convert Importe from NSString to NSNumber
@@ -66,7 +66,6 @@
         [f setNumberStyle:NSNumberFormatterDecimalStyle];
         entry.importe = [f numberFromString:
                          [record objectForKey:[parser.fieldNames objectAtIndex:[parser indexAmount]]]];
-        [f release];
         
         // De-localize "concepto" string.
         entry.concepto = [record objectForKey:[parser.fieldNames objectAtIndex:[parser indexConcept]]];
@@ -81,10 +80,10 @@
         [entry.matchingCategory.tagsMatched addObject:(NSString *)@""];
         entry.matchingCategory.votes = 0;
         
-        [structuredMemoryLog.logArray addObject:entry];
+        [structuredMemoryLog addObject:entry];
     }
     
-	return [db fastImportLog:[structuredMemoryLog logArray] managedObjectContext:managedObjectContext];
+	return [db fastImportLog:structuredMemoryLog managedObjectContext:managedObjectContext];
 }
 
 

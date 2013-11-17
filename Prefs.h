@@ -15,6 +15,8 @@ void LogIt (NSString *format, ...);
 	NSMutableDictionary *diccionario;
 }
 
+@property (nonatomic,strong) NSUserDefaults *prefs;
+
 -(int) syncPrefs;
 -(int) readPrefs;
 -(int) defaultPrefs;
@@ -24,11 +26,11 @@ void LogIt (NSString *format, ...);
 
 -(int) searchCategory:(NSString *)category;
 -(int) createCategory:(NSString *)newCategory;
--(int) addTagToCategory:(NSString *)newTag: (NSString *)targetCategory;
+-(int) addTagToCategory:(NSString *)newTag :(NSString *)targetCategory;
 -(int) removeCategory:(NSString *)category;
--(int) removeTag:(NSString *)tag: (NSString*)category;
--(int) renameTag:(NSString *)tag: (NSString*)category: (NSString *)newTag;
--(int) renameCategory:(NSString *)oldCategory: (NSString *)newCategory;
+-(int) removeTag:(NSString *)tag :(NSString*)category;
+-(int) renameTag:(NSString *)tag :(NSString*)category :(NSString *)newTag;
+-(int) renameCategory:(NSString *)oldCategory :(NSString *)newCategory;
 -(int) searchTag:(NSString *)tag;
 -(NSMutableSet *) matchTag:(NSString *)inputString;
 -(NSArray *) matchTag_old:(NSString *)inputString;

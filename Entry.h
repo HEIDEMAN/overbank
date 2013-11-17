@@ -7,7 +7,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "Match.h"
-#import "SimplifiedEntry.h"
+#import "SEntry.h"
 
 @interface Entry : NSObject {
 	NSString *fechaOperacion;
@@ -19,12 +19,12 @@
 	Match *matchingCategory;
 }
 
-@property (nonatomic,retain) NSString* fechaOperacion;
-@property (nonatomic,retain) NSString* fechaValor;
-@property (nonatomic,retain) NSString* concepto;
-@property (nonatomic,retain) NSNumber* importe;
-@property (nonatomic,retain) NSNumber* saldo;
-@property (nonatomic,retain) Match*    matchingCategory;
+@property (nonatomic,strong) NSString* fechaOperacion;
+@property (nonatomic,strong) NSString* fechaValor;
+@property (nonatomic,strong) NSString* concepto;
+@property (nonatomic,strong) NSNumber* importe;
+@property (nonatomic,strong) NSNumber* saldo;
+@property (nonatomic,strong) Match*    matchingCategory;
 
 - (void) printEntry;
 - (BOOL) equals:(Entry *)entry;

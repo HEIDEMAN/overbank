@@ -25,11 +25,7 @@
 + (void) initialize {
     [self exposeBinding:@"selectableCategoriesArray"];
 }
-
-- (NSArray *)selectableCategoriesArray
-{
-	return [[selectableCategoriesArray retain] autorelease];
-}
+    
 
 
 - (id)initWithFrame:(NSRect)frame {
@@ -132,13 +128,11 @@
 	
 	// Get rid of any existing Paths Array
 	if( segmentPathsArray ) {
-		[segmentPathsArray release];
 		segmentPathsArray = nil;
 	}
 	
 	// Get rid of any existing Texts Array
 	if( segmentTextsArray ) {
-		[segmentTextsArray release];
 		segmentTextsArray = nil;
 	}
 	
@@ -295,7 +289,6 @@
  */
 - (int) updatePieData:(NSDictionary *)aggregated {
 	NSLog(@"Removing the segmentsArray");
-	[segmentValuesArray release];
 	
 	NSLog(@"Adding the new values");
 	segmentValuesArray = [aggregated allValues];
@@ -307,7 +300,7 @@
     // Let's build a new array with the keys slightly modified to include the amount information
     // Old version only contained the line below.
 	//segmentNamesArray = [aggregated allKeys];
-    NSMutableArray *modifiedNames = [[[NSMutableArray alloc]init] autorelease];
+    NSMutableArray *modifiedNames = [[NSMutableArray alloc]init];
     for (id clave in aggregated) {
         NSString *newCatName = [NSString stringWithFormat:@"%@(%ld€)",
                                 clave, (long)[[aggregated objectForKey:clave] integerValue]];
@@ -336,7 +329,6 @@
  */
 - (void)setSegmentNamesArray:(NSArray *)newArray {
 	[self willChangeValueForKey:@"segmentNamesArray"];
-	[segmentNamesArray release];
 	segmentNamesArray = [newArray copy];
 	[self didChangeValueForKey:@"segmentNamesArray"];
 	
@@ -346,7 +338,6 @@
 
 - (void)setSegmentValuesArray:(NSArray *)newArray {
 	[self willChangeValueForKey:@"segmentValuesArray"];
-	[segmentValuesArray release];
 	segmentValuesArray = [newArray copy];
 	[self didChangeValueForKey:@"segmentValuesArray"];
 	
@@ -360,19 +351,5 @@
 	return segmentTextsArray;
 }
 
-- (void)dealloc {
-	[segmentNamesArray release];
-	[segmentValuesArray release];
-	
-	if( segmentPathsArray )
-		[segmentPathsArray release];
-	
-	if( segmentTextsArray )
-		[segmentTextsArray release];
-    
-    [selectableCategoriesArray release];
-    
-	[super dealloc];
-}
 
 @end

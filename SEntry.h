@@ -14,9 +14,9 @@
     NSNumber *importe;
 }
 
-@property (nonatomic,retain) NSString* fechaOperacion;
-@property (nonatomic,retain) NSString* concepto;
-@property (nonatomic,retain) NSNumber* importe;
+@property (nonatomic,strong) NSString* fechaOperacion;
+@property (nonatomic,strong) NSString* concepto;
+@property (nonatomic,strong) NSNumber* importe;
 
 - (void) printSimplifiedEntry;
 

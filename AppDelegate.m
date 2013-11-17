@@ -42,7 +42,7 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
  */
 + (void)initialize
 {
-	tableColorTransformer *transformer = [[[tableColorTransformer alloc] init] autorelease];
+	tableColorTransformer *transformer = [[tableColorTransformer alloc] init];
     [NSValueTransformer setValueTransformer:transformer	forName:@"tableColorTransformer"];
 	
     NSMutableDictionary *defaultValues = [NSMutableDictionary dictionary];
@@ -94,11 +94,6 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 	}
 	
 	[tabView selectFirstTabViewItem:NULL];
-    
-    // start listening for selection changes in our NSTableView's array controller
-    //[tableEntriesController addObserver: self forKeyPath: @"selectionIndexes"
-    //                            options: NSKeyValueObservingOptionNew context: NULL];
-	//NSLog(@"--");
     
     // Bind the contents of the Array controller column "importe" to the bindable array in
     // NSView that will be used to represent the bar graph with the total income and outcome.
@@ -168,7 +163,7 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 	
     if (managedObjectModel) return managedObjectModel;
 	
-    managedObjectModel = [[NSManagedObjectModel mergedModelFromBundles:nil] retain];
+    managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
     return managedObjectModel;
 }
 
@@ -213,7 +208,7 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 														options:nil
 														  error:&error]){
         [[NSApplication sharedApplication] presentError:error];
-        [persistentStoreCoordinator release], persistentStoreCoordinator = nil;
+        persistentStoreCoordinator = nil;
         return nil;
     }
 	
@@ -266,7 +261,8 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
     NSError *error = nil;
     
     if (![[self managedObjectContext] commitEditing]) {
-        NSLog(@"%@:%s unable to commit editing before saving", [self class], _cmd);
+        //NSLog(@"%@:%s unable to commit editing before saving", [self class], _cmd);
+        NSLog(@"%@: unable to commit editing before saving", [self class]);
     }
 	
     if (![[self managedObjectContext] save:&error]) {
@@ -432,7 +428,6 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
         [alert addButtonWithTitle:cancelButton];
 		
         NSInteger answer = [alert runModal];
-        [alert release];
         alert = nil;
         
         if (answer == NSAlertAlternateReturn) return NSTerminateCancel;
@@ -458,15 +453,6 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
  Implementation of dealloc, to release the retained variables.
  */
 
-- (void)dealloc {
-	
-    [window release];
-    [managedObjectContext release];
-    [persistentStoreCoordinator release];
-    [managedObjectModel release];
-	
-    [super dealloc];
-}
 
 
 @end

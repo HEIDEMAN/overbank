@@ -19,9 +19,9 @@
     int numYears;
 }
 
-@property (atomic, retain) NSArray *entriesArray;
-@property (atomic, retain) NSArray *categoriesArray;
-@property (nonatomic, retain) NSMutableArray *yearsOfData;
+@property (atomic, strong) NSArray *entriesArray;
+@property (atomic, strong) NSArray *categoriesArray;
+@property (nonatomic, strong) NSMutableArray *yearsOfData;
 
 - (int) computeHowManyYearsInInterval;
 - (void) computeYear;

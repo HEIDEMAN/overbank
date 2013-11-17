@@ -20,8 +20,8 @@
 	NSUInteger bufferPosition,parserStateMachineStatus;
 }
 
-@property (retain) NSFileManager *myFileManager;
-@property (retain) NSString *cwd;
+@property (strong) NSFileManager *myFileManager;
+@property (strong) NSString *cwd;
 
 - (id)init;
 - (BOOL)fileExists:(NSString *)whichPath;

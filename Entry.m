@@ -36,7 +36,7 @@
 
 - (SimplifiedEntry *)simplified
 {
-    SimplifiedEntry *s = [[[SimplifiedEntry alloc]init]autorelease];
+    SimplifiedEntry *s = [[SimplifiedEntry alloc]init];
     s.fechaOperacion = self.fechaOperacion;
     s.concepto = self.concepto;
     s.importe = self.importe;

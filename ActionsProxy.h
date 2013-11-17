@@ -7,7 +7,6 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "BankLog.h"
 #import "CSVParser.h"
 #import "Database.h"
 #import "Entry.h"
@@ -30,17 +29,17 @@
 
 @interface ActionsProxy : NSObject {
 	NSString *fileName;
-	BankLog  *structuredMemoryLog;
+	NSMutableArray  *structuredMemoryLog;
 	Prefs	 *prefs;
 	NSMutableSet *conflicts;
 	Database *db;
     int selectedTab;
 }
 
-@property (retain) NSString* fileName; 
-@property (retain) BankLog* structuredMemoryLog; 
-@property (retain) Prefs* prefs; 
-@property (retain) NSMutableSet *conflicts;
+@property (strong) NSString* fileName; 
+@property (strong) NSMutableArray* structuredMemoryLog;
+@property (strong) Prefs* prefs; 
+@property (strong) NSMutableSet *conflicts;
 
 - (BOOL) fileSelected;
 - (int)  actionOpenFile:(NSString *)nameOfFile managedObjectContext:(NSManagedObjectContext *)managedObjectContext;

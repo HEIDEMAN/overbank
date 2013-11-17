@@ -19,8 +19,8 @@
 -(void)encodeWithCoder:(NSCoder *)encoder;
 -(id)initWithCoder:(NSCoder *)coder;
 
-@property (nonatomic,retain) NSString *categoryMatched;
-@property (nonatomic,retain) NSMutableArray *tagsMatched;
+@property (nonatomic,strong) NSString *categoryMatched;
+@property (nonatomic,strong) NSMutableArray *tagsMatched;
 @property (nonatomic) NSInteger votes;
 
 +(Match *)solveConflict:(NSMutableSet *)matchesSet :(NSMutableSet *)conflictSet;

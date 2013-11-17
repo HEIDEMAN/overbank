@@ -14,7 +14,7 @@
 	NSMutableArray *logArray;
 }
 
-@property (retain) NSMutableArray* logArray;
+@property (strong) NSMutableArray* logArray;
 
 - (id)init; 
 - (BOOL) addEntry:(Entry *)newEntry;

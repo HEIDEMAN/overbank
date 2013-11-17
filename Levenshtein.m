@@ -61,8 +61,6 @@
 		
 	}
 	
-	[mStringA release];
-	[mStringB release];
 	
 	return averageSmallestDistance / [arrayA count];
 }

@@ -19,11 +19,11 @@
     NSArray *selectableCategoriesArray;
 }
 
-@property (nonatomic, retain) NSArray *segmentNamesArray;
-@property (nonatomic, retain) NSArray *segmentValuesArray;
-@property (nonatomic, retain) NSMutableArray *segmentPathsArray;
-@property (nonatomic, retain) NSMutableArray *segmentTextsArray;
-@property (atomic, retain) NSArray *selectableCategoriesArray;
+@property (nonatomic, strong) NSArray *segmentNamesArray;
+@property (nonatomic, strong) NSArray *segmentValuesArray;
+@property (nonatomic, strong) NSMutableArray *segmentPathsArray;
+@property (nonatomic, strong) NSMutableArray *segmentTextsArray;
+@property (atomic, strong) NSArray *selectableCategoriesArray;
 
 - (void) drawRect:(NSRect)rect;
 

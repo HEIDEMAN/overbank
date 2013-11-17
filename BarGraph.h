@@ -20,20 +20,20 @@
     
     CGFloat maxHeight;
     
-    IBOutlet NSTabView *tabView;
+    IBOutlet NSTabView *__strong tabView;
     
     BOOL drawable;
 }
 
-@property (atomic, retain) NSArray *amountsArray;
+@property (atomic, strong) NSArray *amountsArray;
 @property (atomic) NSRect incomeRectangle;
 @property (atomic) NSRect outcomeRectangle;
-@property (nonatomic, retain) NSString *incomeLabel;
-@property (nonatomic, retain) NSString *outcomeLabel;
-@property (nonatomic, retain) NSArrayController *tableEntriesController;
+@property (nonatomic, strong) NSString *incomeLabel;
+@property (nonatomic, strong) NSString *outcomeLabel;
+@property (nonatomic, strong) NSArrayController *tableEntriesController;
 @property (atomic) BOOL drawable;
 
-@property (assign) IBOutlet NSTabView *tabView;
+@property (strong) IBOutlet NSTabView *tabView;
 
 - (NSGradient *) createGradient:(int)fromColor :(int)toColor;
 - (NSColor *)giveMeColor:(int)color;

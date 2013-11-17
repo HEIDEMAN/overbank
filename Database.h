@@ -12,7 +12,7 @@
 #import "Match.h"
 #import "DBCategory.h"
 #import "DBEntry.h"
-#import "SimplifiedEntry.h"
+#import "SEntry.h"
 
 /**
 #define ENTRY_ENTITYNAME	"Entry";

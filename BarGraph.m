@@ -31,13 +31,12 @@
 
 - (NSArray *)amountsArray
 {
-	return [[amountsArray retain] autorelease];
+	return amountsArray;
 }
 
 - (void)setAmountsArray:(NSArray *)newArray
 {
     [self willChangeValueForKey:@"amountsArray"];
-	[amountsArray release];
 	amountsArray = [newArray copy];
 	[self didChangeValueForKey:@"amountsArray"];
     
@@ -47,11 +46,6 @@
     [self setNeedsDisplayInRect:[self visibleRect]];
 }
 
-- (void)dealloc
-{
-	[amountsArray release];
-	[super dealloc];
-}
 
 - (void) computeIncomeAndOutcome
 {

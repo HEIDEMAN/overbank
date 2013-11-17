@@ -1,3 +1,8 @@
+· Rewrite preferences as predicates or NSTokenFields in NSTableView, editable.
+  look: 
+    http://nvie.com/posts/nspredicateeditor-tutorial/
+    google Cocoa Rule Editor
+    http://themikeswan.wordpress.com/2009/05/30/a-core-data-tutorial-part-2-polishing-the-basics/
 · Test multiyear bar graph in histogram.
 · Remove the black line at the top of the green INCOME bar.
 · Re-write the method "computeAggregatedCategories" within Database.
@@ -8,14 +13,16 @@
 · Make stats' tab, tabView and entries view shorter
 · Display the mean when a category is selected in Statistics view.
 · Export categorized entries as CSV.
-· Use NSSet instead of NSArray when fastImporting new log files from CSV to the database.
+· Write Unit Tests
+· Refactor to fllow Uncle Bob's "The only way to be really be sure that a function does one thing is to extract 
+  'til you drop."
+x Use NSSet instead of NSArray when fastImporting new log files from CSV to the database.
 - Add gradients to the colors in the pie chart, and same base colors always (instead of random)
 x Select all categories when trying to draw a pie chart.
 x Enable selection of what categories to include in the PIE chart.
 x Use a separate Category Controller for the categories listing in the pie chart.
 x Change the randomColors in PieChart by known pastel color palette.
 x Importing RAW CSV converted files DOESN'T WORK
-
 
 --
 Use https://github.com/nst/objc_dep to draw dependencies among classes.

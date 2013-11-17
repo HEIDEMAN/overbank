@@ -96,7 +96,7 @@
 {
     // Set up the object that connects to the entity in Core Data to perform the fetch
     NSEntityDescription *entityDescription = [NSEntityDescription  entityForName:@"DBEntry" inManagedObjectContext:moc];
-    NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	[fetchRequest setEntity:entityDescription];
 	
     // You can add sorting like this
@@ -108,7 +108,6 @@
     NSArray *array = [moc executeFetchRequest:fetchRequest error:&error];
     if (array == nil) {
         NSLog(@"NO Results Back. Failed Fetch!!");
-        [fetchRequest release];
         return nil;
     }
     return array;
@@ -232,10 +231,8 @@
 		}
 		
 		// Release the winner category for the next iteration.
-		if (winner != nil) [winner release];
 	}
 	
-	[fetchRequest release];
 	
 	return 0;
 }
@@ -409,7 +406,6 @@
 		}
         NSLog(@">> \"%@\" CATEGORIZED AS %@", entry.concepto, entry.matchingCategory.categoryMatched );
 		
-		if (winner != nil) [winner release];
 	}
 	
 	return 0;
@@ -438,7 +434,7 @@
 	NSLog(@" ~~~> Leaving.");
 	
 	// Extract the array of tags into a concatenated string.
-	NSString *tags = [[[NSString alloc] init] autorelease];
+	NSString *tags = [[NSString alloc] init];
 	for (int i=0;i<[ entry.matchingCategory.tagsMatched count ]; i++) {
 		tags = [tags stringByAppendingFormat:@"%@;", [entry.matchingCategory.tagsMatched objectAtIndex:i] ];
 	}
@@ -472,7 +468,6 @@
 	NSArray *fetchedObjects = [moc executeFetchRequest:fetchRequest error:&error];
     NSLog(@"Re-categorization returned %ld elements", [fetchedObjects count]);
     
-	[fetchRequest release];
     
     return fetchedObjects;
 }
@@ -488,7 +483,7 @@
 	
     // Set up the object that connects to the entity in Core Data to perform the fetch
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"DBEntry" inManagedObjectContext:moc];
-    NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	[request setEntity:entityDescription];
 	
     // Form the predicate and send the request to the core data...
@@ -539,7 +534,7 @@
 	NSEntityDescription *entityDescription = [NSEntityDescription
 											  entityForName:@"DBCategory"
 											  inManagedObjectContext:managedObjectContext];
-	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	[request setEntity:entityDescription];
 	NSLog(@"Context, MgdObj and Fetch request objects created.");
 	
@@ -553,7 +548,6 @@
 	if ([array count] == 0)
 	{
 		NSLog(@"NO Results Back. They line is unique");
-		[request release];
 		return NO;
 	}
 	
@@ -577,7 +571,7 @@
 	NSEntityDescription *entityDescription = [NSEntityDescription
 											  entityForName:@"DBCategory"
 											  inManagedObjectContext:managedObjectContext];
-	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	[request setEntity:entityDescription];
 	NSLog(@"Context, MgdObj and Fetch request objects created.");
 	
@@ -591,7 +585,6 @@
 	if ([array count] == 0)
 	{
 		NSLog(@"NO Results Back. They line is unique");
-		[request release];
 		return NO;
 	}
 	
@@ -608,7 +601,7 @@
 	NSEntityDescription *entityDescription = [NSEntityDescription
 											  entityForName:@"DBEntry"
 											  inManagedObjectContext:managedObjectContext];
-	NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	[fetchRequest setEntity:entityDescription];
 	
 	//[fetchRequest setPredicate:@"*"];
@@ -622,7 +615,6 @@
 	if ([array count] == 0)
 	{
 		NSLog(@"NO Results Back. Failed Fetch!!");
-		[fetchRequest release];
 		return nil;
 	}
 	DBEntry *oldest = [array objectAtIndex:0];
@@ -644,7 +636,7 @@
                                       fromDate:(NSDate *)fromDate toDate:(NSDate *)toDate
 {
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
-	NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	NSString *stringDate1;
 	NSString *stringDate2;
 	NSDate *fechaFrom;
@@ -861,7 +853,6 @@
     
     NSDate *date = [self dateWithNoTime:[dateFormatter dateFromString:string]];
     NSLog(@"-----> Result from dateFormatter <%@>", date);
-	[dateFormatter release];
 	
 	return date;
 }
@@ -916,7 +907,7 @@
 	[dbEntry setValue:entry.matchingCategory.categoryMatched forKey:@"categoryMatched"];
 	
 	// Extract the array of tags into a concatenated string.
-	NSString *tags = [[[NSString alloc] init] autorelease];
+	NSString *tags = [[NSString alloc] init];
 	for (int i=0;i<[ entry.matchingCategory.tagsMatched count ]; i++) {
 		tags = [tags stringByAppendingFormat:@"%@,", [entry.matchingCategory.tagsMatched objectAtIndex:i] ];
 	}

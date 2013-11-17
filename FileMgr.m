@@ -63,7 +63,6 @@
 	// Se convierte el flujo NSData original del fichero en otro codificado como ASCII Strings.
 	NSString *output = [[NSString alloc]initWithData:data encoding:NSASCIIStringEncoding];
 
-	[data release];
 	
 	return [FileMgr beautify:output flag:NO];
 }
@@ -311,7 +310,7 @@
 {
 	// localization allows other thousands separators, also.
 	NSNumberFormatter * myNumFormatter = [[NSNumberFormatter alloc] init];
-	NSLocale *esLocale = [[[NSLocale alloc] initWithLocaleIdentifier:@"es_ES"] autorelease];
+	NSLocale *esLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"es_ES"];
 	[myNumFormatter setLocale:esLocale]; // happen by default?
 	[myNumFormatter setFormatterBehavior:NSNumberFormatterBehavior10_4];
 	// next line is very important!
@@ -320,7 +319,6 @@
 	NSNumber *tempNum = [myNumFormatter numberFromString:tempStr];
 	//NSLog(@"string '%@' gives NSNumber '%@' with floatValue '%f'", 
 	//	  tempStr, tempNum, [tempNum floatValue]);
-	[myNumFormatter release];
 	return tempNum;
 }
 

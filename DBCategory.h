@@ -14,8 +14,8 @@
 {
 }
 
-@property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) NSSet* entries;
+@property (nonatomic, strong) NSString * name;
+@property (nonatomic, strong) NSSet* entries;
 
 @end
 

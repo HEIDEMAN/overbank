@@ -6,7 +6,7 @@
 //
 //
 
-#import "SimplifiedEntry.h"
+#import "SEntry.h"
 
 @implementation SimplifiedEntry
 @synthesize fechaOperacion, concepto, importe;

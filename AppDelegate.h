@@ -21,7 +21,7 @@
 @interface AppDelegate : NSObject <NSTabViewDelegate, NSTableViewDataSource>
 {
     NSWindow *window;
-	NSTabView *tabView;
+	NSTabView *__strong tabView;
     
     NSPersistentStoreCoordinator *persistentStoreCoordinator;
     NSManagedObjectModel *managedObjectModel;
@@ -50,30 +50,30 @@
     IBOutlet YearGraph *yearGraphView;
 }
 
-@property (nonatomic, retain) IBOutlet NSWindow *window;
-@property (assign) IBOutlet NSTabView *tabView;
+@property (nonatomic, strong) IBOutlet NSWindow *window;
+@property (strong) IBOutlet NSTabView *tabView;
 
-@property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
-@property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, strong, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (nonatomic, strong, readonly) NSManagedObjectModel *managedObjectModel;
+@property (nonatomic, strong, readonly) NSManagedObjectContext *managedObjectContext;
 
-@property (nonatomic, retain) NSMutableDictionary *tableEntriesDictionary;
-@property (nonatomic, retain) ActionsProxy *sendAction;
+@property (nonatomic, strong) NSMutableDictionary *tableEntriesDictionary;
+@property (nonatomic, strong) ActionsProxy *sendAction;
 
 @property (assign) BOOL matchingEnabled;
 @property (assign) BOOL tablePopUpCellChanged;
 @property (assign) BOOL MDFirstRun;
 
-@property (nonatomic, retain) IBOutlet NSDatePicker *fromDatePick;
-@property (nonatomic, retain) IBOutlet NSDatePicker *toDatePick;
-@property (nonatomic, retain) IBOutlet NSSearchField *searchFieldOutlet;
-@property (nonatomic, retain) IBOutlet NSArrayController *tableEntriesController;
-@property (nonatomic, retain) IBOutlet NSArrayController *categoriesController;
-@property (nonatomic, retain) IBOutlet NSArrayController *selectableCategoriesController;
-@property (nonatomic, retain) IBOutlet NSTableView *tableView;
-@property (nonatomic, retain) IBOutlet PieChart *pieChartView;
-@property (nonatomic, retain) IBOutlet BarGraph *bargraphView;
-@property (nonatomic, retain) IBOutlet YearGraph *yearGraphView;
+@property (nonatomic, strong) IBOutlet NSDatePicker *fromDatePick;
+@property (nonatomic, strong) IBOutlet NSDatePicker *toDatePick;
+@property (nonatomic, strong) IBOutlet NSSearchField *searchFieldOutlet;
+@property (nonatomic, strong) IBOutlet NSArrayController *tableEntriesController;
+@property (nonatomic, strong) IBOutlet NSArrayController *categoriesController;
+@property (nonatomic, strong) IBOutlet NSArrayController *selectableCategoriesController;
+@property (nonatomic, strong) IBOutlet NSTableView *tableView;
+@property (nonatomic, strong) IBOutlet PieChart *pieChartView;
+@property (nonatomic, strong) IBOutlet BarGraph *bargraphView;
+@property (nonatomic, strong) IBOutlet YearGraph *yearGraphView;
 
 @property (atomic) int selectedTab;
 
