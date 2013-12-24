@@ -21,7 +21,7 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 
 @synthesize _window, _tabView, _preferencesWindow,
     persistentStoreCoordinator, managedObjectModel, managedObjectContext,
-    tableEntriesDictionary, sendAction,
+    tableEntriesDictionary, _sendAction, _prefsController,
     matchingEnabled, MDFirstRun,
     fromDatePick, toDatePick, searchFieldOutlet, tableEntriesController,
     categoriesController, selectableCategoriesController,
@@ -78,19 +78,19 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 	
 	// Allocate memory for the actions proxy object that will handle the interface between
 	// the GUI and the app logic.
-	if (sendAction == nil) {
-		sendAction = [[ActionsProxy alloc] init];
+	if (_sendAction == nil) {
+		_sendAction = [[ActionsProxy alloc] init];
 	}
 	
 	if (MDFirstRun) {
 		NSLog(@"-- This IS the first time this App runs...");
 		// XXX Estp hay que quitarlo, solo puede valer YES, la primera vez.
 		//[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:MDFirstRunKey];
-		[sendAction actionSetDefaultPreferences:managedObjectContext];
+		[_sendAction actionSetDefaultPreferences:managedObjectContext];
 	}
 	else {
 		NSLog(@"-- NOT the first time this App runs...");
-		[sendAction actionReadExistingPreferences];
+		[_sendAction actionReadExistingPreferences];
 		// Esto hay que quitarlo. es solo para ver si se puede revertir.
 		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:MDFirstRunKey];
 	}
@@ -129,12 +129,12 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
     if ([[inTabViewItem label] caseInsensitiveCompare:@"Categorias"] == NSOrderedSame)
     {
         [bargraphView setDrawable:YES];
-        [sendAction actionPrepareBarGraphTab:managedObjectContext];
+        [_sendAction actionPrepareBarGraphTab:managedObjectContext];
     }
     if ([[inTabViewItem label] caseInsensitiveCompare:@"Estadisticas"] == NSOrderedSame)
     {
         [bargraphView setDrawable:NO];
-        [sendAction actionPrepareGraphicsTab:managedObjectContext];
+        [_sendAction actionPrepareGraphicsTab:managedObjectContext];
     }    
 }
 
@@ -246,7 +246,8 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
  returned is that of the managed object context for the application.
  */
 
-- (NSUndoManager *)windowWillReturnUndoManager:(NSWindow *)window {
+- (NSUndoManager *)windowWillReturnUndoManager:(NSWindow *)window
+{
     return [[self managedObjectContext] undoManager];
 }
 
@@ -262,12 +263,13 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
     {
         // These are the steps to follow to conforms with MASPrefs lib.
         // http://simplecode.me/2012/04/08/preferences-window-in-cocoa-maspreferences/
-        NSViewController *generalViewController = [[prefsViewController alloc] init];
+        _prefsController = [[prefsViewController alloc] initWithPrefsReference: _sendAction._prefs];
+        
+        NSViewController *generalViewController = _prefsController;
         NSArray *controllers = [[NSArray alloc] initWithObjects:generalViewController, nil];
         NSString *title = NSLocalizedString(@"Preferences", @"Common title for Preferences window");
         _preferencesWindow = [[MASPreferencesWindowController alloc] initWithViewControllers:controllers title:title];
     }
-
     [_preferencesWindow showWindow:self];
 }
 
@@ -277,7 +279,8 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
  message to the application's managed object context.  Any encountered errors
  are presented to the user.
  */
-- (IBAction) saveAction:(id)sender {
+- (IBAction) saveAction:(id)sender
+{
 	
     NSError *error = nil;
     
@@ -296,7 +299,8 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
  message to the application's actions proxy.  Any encountered errors
  are presented to the user.
  */
-- (IBAction)openAction:(id)sender {
+- (IBAction)openAction:(id)sender
+{
 	NSLog(@"doOpen");
 	
 	NSArray* fileTypes = [[NSArray alloc] initWithObjects:@"csv", @"CSV", nil];
@@ -325,7 +329,7 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 	NSString *fileName = [[NSString alloc] initWithString:[openPanel filename]];
 	NSLog(@"doOpen calling actionOpenFile with filename = %@", fileName);
 	
-	int rc = [sendAction actionOpenFile:fileName managedObjectContext:managedObjectContext];
+	int rc = [_sendAction actionOpenFile:fileName managedObjectContext:managedObjectContext];
 	NSLog(@"ActionOpenFile returned %d.", rc);
 	
 	NSLog(@"Leaving doOpen");
@@ -341,7 +345,7 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 	NSInteger selectedRow = [sender selectedRow];
     DBEntry *object = [[tableEntriesController arrangedObjects] objectAtIndex:selectedRow];
     
-    [sendAction actionLearnMatchFromUserCategorization:managedObjectContext dbentry:object];
+    [_sendAction actionLearnMatchFromUserCategorization:managedObjectContext dbentry:object];
 }
 
 
@@ -355,7 +359,7 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 	NSLog(@"Entering doMatchDatabaseEntries...");
 	matchingEnabled = YES;
 	
-	int rc = [sendAction actionMatchDatabaseEntries:managedObjectContext];
+	int rc = [_sendAction actionMatchDatabaseEntries:managedObjectContext];
 	NSLog(@"ActionMatchDatabaseEntries returned %d.", rc);
 	
 	NSLog(@"Leaving doMatchDatabaseEntries");
@@ -381,7 +385,7 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 	NSLog(@" -- from date field: %@", [formatter stringFromDate:fromThisDate]);
 	NSLog(@" -- to   date field: %@", [formatter stringFromDate:toThisDate]);
 	
-	NSDictionary *aggregated = [sendAction actionDrawPieChart:managedObjectContext
+	NSDictionary *aggregated = [_sendAction actionDrawPieChart:managedObjectContext
                                                       inArray:[pieChartView selectableCategoriesArray]
                                                          from:fromThisDate to:toThisDate];
 	[pieChartView updatePieData:(NSDictionary *)aggregated];

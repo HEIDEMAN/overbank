@@ -30,7 +30,7 @@
                             <tabViewItem label="Movimientos" identifier="1" id="524">
                                 <view key="view" id="525">
                                     <rect key="frame" x="10" y="33" width="1038" height="694"/>
-                                    <autoresizingMask key="autoresizingMask"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <searchField verticalHuggingPriority="750" id="620">
                                             <rect key="frame" x="839" y="669" width="182" height="22"/>
@@ -55,7 +55,7 @@
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <clipView key="contentView" id="7OC-MU-DZg">
                                                 <rect key="frame" x="1" y="17" width="1002" height="490"/>
-                                                <autoresizingMask key="autoresizingMask"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" alternatingRowBackgroundColors="YES" autosaveColumns="NO" headerView="592" id="591">
                                                         <rect key="frame" x="0.0" y="0.0" width="1002" height="490"/>
@@ -65,7 +65,7 @@
                                                         <tableViewGridLines key="gridStyleMask" vertical="YES" horizontal="YES"/>
                                                         <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                         <tableColumns>
-                                                            <tableColumn width="92.6123046875" minWidth="92.6123046875" maxWidth="3.4028234663852886e+38" id="617">
+                                                            <tableColumn width="96.6123046875" minWidth="92.6123046875" maxWidth="3.4028234663852886e+38" id="617">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="Fecha">
                                                                     <font key="font" metaFont="smallSystem"/>
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -82,7 +82,7 @@
                                                                     <binding destination="527" name="value" keyPath="arrangedObjects.fechaOperacion" id="619"/>
                                                                 </connections>
                                                             </tableColumn>
-                                                            <tableColumn width="400.53125" minWidth="54.75146484375" maxWidth="3.4028234663852886e+38" id="611">
+                                                            <tableColumn width="399.53125" minWidth="54.75146484375" maxWidth="3.4028234663852886e+38" id="611">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Concepto">
                                                                     <font key="font" metaFont="smallSystem"/>
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -107,7 +107,7 @@
                                                                     </binding>
                                                                 </connections>
                                                             </tableColumn>
-                                                            <tableColumn editable="NO" width="116.48828125" minWidth="45.8623046875" maxWidth="3.4028234663852886e+38" id="593">
+                                                            <tableColumn editable="NO" width="115.48828125" minWidth="45.8623046875" maxWidth="3.4028234663852886e+38" id="593">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Importe">
                                                                     <font key="font" metaFont="smallSystem"/>
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -135,18 +135,18 @@
                                                                     </binding>
                                                                 </connections>
                                                             </tableColumn>
-                                                            <tableColumn width="379.61669921875" minWidth="100.44873046875" maxWidth="3.4028234663852886e+38" id="608">
+                                                            <tableColumn width="377.61669921875" minWidth="100.44873046875" maxWidth="3.4028234663852886e+38" id="608">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Categoria">
                                                                     <font key="font" metaFont="smallSystem"/>
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                                 </tableHeaderCell>
-                                                                <popUpButtonCell key="dataCell" type="bevel" title="Pop Up" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="bezel" imageScaling="proportionallyDown" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" id="772">
+                                                                <popUpButtonCell key="dataCell" type="bevel" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="bezel" imageScaling="proportionallyDown" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" id="772">
                                                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                                     <font key="font" metaFont="smallSystem"/>
                                                                     <menu key="menu" title="OtherViews" id="773">
                                                                         <items>
-                                                                            <menuItem title="Pop Up" state="on" id="774"/>
+                                                                            <menuItem title="Pop Up" id="774"/>
                                                                         </items>
                                                                     </menu>
                                                                     <connections>
@@ -156,12 +156,12 @@
                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                 <connections>
                                                                     <binding destination="771" name="content" keyPath="arrangedObjects" id="908"/>
-                                                                    <binding destination="771" name="contentValues" keyPath="arrangedObjects.name" previousBinding="908" id="909"/>
                                                                     <binding destination="527" name="selectedObject" keyPath="arrangedObjects.category" previousBinding="909" id="916">
                                                                         <dictionary key="options">
                                                                             <bool key="NSValidatesImmediately" value="YES"/>
                                                                         </dictionary>
                                                                     </binding>
+                                                                    <binding destination="771" name="contentValues" keyPath="arrangedObjects.name" previousBinding="908" id="909"/>
                                                                 </connections>
                                                             </tableColumn>
                                                         </tableColumns>
@@ -229,12 +229,12 @@
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                             <connections>
-                                                <binding destination="527" name="displayPatternValue1" keyPath="selection.@count" id="575">
+                                                <binding destination="527" name="displayPatternValue2" keyPath="arrangedObjects.@count" previousBinding="575" id="576">
                                                     <dictionary key="options">
                                                         <string key="NSDisplayPattern">%{value1}@ out of %{value2}@</string>
                                                     </dictionary>
                                                 </binding>
-                                                <binding destination="527" name="displayPatternValue2" keyPath="arrangedObjects.@count" previousBinding="575" id="576">
+                                                <binding destination="527" name="displayPatternValue1" keyPath="selection.@count" id="575">
                                                     <dictionary key="options">
                                                         <string key="NSDisplayPattern">%{value1}@ out of %{value2}@</string>
                                                     </dictionary>
@@ -382,7 +382,7 @@
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                         <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="790" id="788">
                                                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                                            <font key="font" metaFont="system"/>
+                                                            <font key="font" metaFont="menu"/>
                                                             <menu key="menu" title="OtherViews" id="789">
                                                                 <items>
                                                                     <menuItem title="Item 1" state="on" id="790"/>
@@ -439,8 +439,8 @@
                                                                 <connections>
                                                                     <binding destination="749" name="value" keyPath="arrangedObjects.name" id="1157">
                                                                         <dictionary key="options">
-                                                                            <bool key="NSContinuouslyUpdatesValue" value="YES"/>
                                                                             <bool key="NSValidatesImmediately" value="YES"/>
+                                                                            <bool key="NSContinuouslyUpdatesValue" value="YES"/>
                                                                             <bool key="NSConditionallySetsEditable" value="NO"/>
                                                                             <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                                                         </dictionary>
@@ -522,7 +522,7 @@
                                                 <rect key="frame" x="1" y="272" width="503.74609375" height="15"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
-                                            <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="37" horizontal="NO" id="843">
+                                            <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="843">
                                                 <rect key="frame" x="224" y="17" width="15" height="102"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
@@ -821,7 +821,7 @@
                             <tabViewItem label="Estadisticas" identifier="Item 2" id="631">
                                 <view key="view" id="632">
                                     <rect key="frame" x="10" y="33" width="1038" height="694"/>
-                                    <autoresizingMask key="autoresizingMask"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <customView id="677" customClass="PieChart">
                                             <rect key="frame" x="364" y="17" width="653" height="674"/>
@@ -911,7 +911,7 @@
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <clipView key="contentView" id="5ud-vA-uPe">
                                                         <rect key="frame" x="1" y="1" width="305" height="339"/>
-                                                        <autoresizingMask key="autoresizingMask"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>
                                                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnReordering="NO" columnResizing="NO" emptySelection="NO" autosaveColumns="NO" typeSelect="NO" id="1126">
                                                                 <rect key="frame" x="0.0" y="0.0" width="305" height="339"/>
@@ -1171,14 +1171,14 @@
                 <string>entries</string>
             </declaredKeys>
             <connections>
-                <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="756"/>
                 <binding destination="205" name="sortDescriptors" keyPath="categoriesSortDescriptors" id="927"/>
+                <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="756"/>
             </connections>
         </arrayController>
         <arrayController mode="entity" entityName="DBCategory" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="1148" userLabel="SelectableCategoriesController" colorLabel="IBBuiltInLabel-Purple">
             <connections>
-                <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="1151"/>
                 <binding destination="205" name="sortDescriptors" keyPath="categoriesSortDescriptors" id="1153"/>
+                <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="1151"/>
             </connections>
         </arrayController>
         <arrayController mode="entity" entityName="DBCategory" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="771" userLabel="CatPopUpController">
@@ -1187,8 +1187,8 @@
                 <string>name</string>
             </declaredKeys>
             <connections>
-                <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="778"/>
                 <binding destination="205" name="sortDescriptors" keyPath="categoriesSortDescriptors" id="925"/>
+                <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="778"/>
             </connections>
         </arrayController>
         <arrayController mode="entity" entityName="DBEntry" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="866" userLabel="EntriesByCategoryController">

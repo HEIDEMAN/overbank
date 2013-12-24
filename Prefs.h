@@ -38,4 +38,9 @@ void LogIt (NSString *format, ...);
 -(void) listCategories;
 -(NSMutableArray *) getCategoryNames;
 
+// Methods to fulfill the NSTableProtocol, exposed and used from prefsViewController
+-(int) numCategories;
+-(id) categoryAtRow:(NSInteger)rowIndex;
+-(id) tagsAtRow:(NSInteger)rowIndex;
+
 @end

@@ -11,7 +11,7 @@
 @implementation ActionsProxy
 @synthesize _fileName,
     structuredMemoryLog,
-    prefs,
+    _prefs,
     conflicts;
 
 -(id)init
@@ -24,7 +24,7 @@
 		// Se establecen a los valores por defecto a lo que haya guardado en el disco en las funciones
 		// que controlan la inicialización del AppDelegate.
 		NSLog(@"---- Allocating Preferences and Conflicts dictionaries...");
-		prefs = [[Prefs alloc] init];
+		_prefs = [[Prefs alloc] init];
 		conflicts = [[NSMutableSet alloc] init];
 		db = [[Database alloc] init];
 		NSLog(@"---- done.");
@@ -104,7 +104,7 @@
 	NSLog(@"Entering actionMatchDatabaseEntries");
 	//Database *db = [[[Database alloc]init]autorelease];
 	
-	int rc = [db categorizeAllEntries:managedObjectContext preferences:prefs conflictsSet:conflicts
+	int rc = [db categorizeAllEntries:managedObjectContext preferences:_prefs conflictsSet:conflicts
                    solveConflictsFlag:YES verboseFlag:YES];
 	
 	[Match listConflictSet:conflicts];
@@ -124,7 +124,7 @@
     int rc = [db learnCategorizationFromUserAction:moc
                                            dbentry:dbentry
                                       conflictsSet:conflicts
-                                       preferences:prefs];
+                                       preferences:_prefs];
     return rc;
 }
 
@@ -140,13 +140,13 @@
 	int rc=0;
 	
 	NSLog(@"Setting default preferences...");
-	rc = [prefs defaultPrefs];
+	rc = [_prefs defaultPrefs];
 	NSLog(@"...and sync'ing them to disk.");
-	rc += [prefs syncPrefs];
+	rc += [_prefs syncPrefs];
 	
 	// Now, I have to store the names of the categories into the corresponding table.
 	NSLog(@"Populating the Categories table.");
-	NSMutableArray *categoryNames = [prefs getCategoryNames];
+	NSMutableArray *categoryNames = [_prefs getCategoryNames];
 	
 	rc = [db storeCategoriesInDatabase:(NSArray *)categoryNames
                   managedObjectContext:(NSManagedObjectContext *)managedObjectContext];
@@ -163,7 +163,7 @@
  */
 - (int) actionReadExistingPreferences
 {
-	return [prefs readPrefs];
+	return [_prefs readPrefs];
 }
 
 

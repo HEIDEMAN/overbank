@@ -1,3 +1,14 @@
+-> Go to line 28 in prefsViewController. Open Cookbook in pg.8
+   Continue with "rowData" function.
+
+· I'm in the middle of displaying the list of categories in the preferences window. I tried to use a
+  CoreData-based Array Controller, but I'm duplicating controller and I'm not sure whether that will impact
+  performance or if it will even work well. I decided to
+    · Access preferences array controller programatically
+    · Use a class that will allow me to do anything I want to make (WHAT DO I NEED TO DO WITH PREFS from the
+      preferences Window????)
+    · Continue working with the NSTokenFieldCells in the table
+--
 · Rewrite preferences as predicates or NSTokenFields in NSTableView, editable.
   look: 
     http://nvie.com/posts/nspredicateeditor-tutorial/

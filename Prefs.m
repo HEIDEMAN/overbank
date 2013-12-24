@@ -69,24 +69,13 @@ void LogIt (NSString *format, ...)
 - (int) defaultPrefs
 {
 	/**
-	 --esta es la categorizacion que hacen en un programa similar para el iphone.
-	 General
-	 Kids
-	 House
-	 Amusement
-	 Wardrobe
-	 Groceries
-	 Misc
-	 Food
-	 Payments
-	 Transport
-	 Utilities
-	 Personal
-	 iTunes
-	 Auto
-	 Vacation
+	  Esta es la categorizacion que hacen en un programa similar para el iphone.
+     
+	   General | Kids | House | Amusement | Wardrobe | Groceries | Misc | Food
+	   Payments | Transport | Utilities | Personal | iTunes | Auto | Vacation
+
 	 */
-	NSMutableArray *defaultCategoriesArray = [NSArray arrayWithObjects:
+	NSMutableArray *defaultCategoriesArray = [NSMutableArray arrayWithObjects:
 											  @"Casa", 
 											  @"Supermercados", 
 											  @"Viajes y Vacaciones",
@@ -153,7 +142,8 @@ void LogIt (NSString *format, ...)
 										 ATM,Recib,Ingr,Trnsf,Salud,Ropa,Ocio,Rest,Other,nil];
 	
 	// Creo el diccionario que contiene para cada categoria, el array de "tags" que lo define.
-	// Para la categoria "Casa", se asocia a: @"VERDECORA",@"LIQUIDACION",@"SECURITAS DIRECT",@"PERIODICA",@"PRESTAMO",@"IKEA"
+	// Para la categoria "Casa", se asocia a:
+    //   @"VERDECORA",@"LIQUIDACION",@"SECURITAS DIRECT",@"PERIODICA",@"PRESTAMO",@"IKEA"
 	diccionario = [NSMutableDictionary dictionaryWithObjects:defaultsTagsArray forKeys:defaultCategoriesArray];
 	
 	// Empaqueto el array de categorias en un contenedor de datos generico "NSData"
@@ -176,32 +166,6 @@ void LogIt (NSString *format, ...)
 	NSLog(@"Default prefs dictionary set.");
 	[_prefs synchronize];
 	NSLog(@"Default prefs sync'ed");
-	
-	/*
-	NSLog(@"Gonna release intermediate memory");
-	[Casa release];
-	[Super release];
-	[Viaje release];
-	[Inter release];
-	[Imp release];
-	[Edu release];
-	[Dep release];
-	[Tra release];
-	[Coche release];
-	[ATM release];
-	[Recib release];
-	[Ingr release];
-	[Salud release];
-	[Reg release];
-	[Shop release];
-	[Ropa release];
-	[Ocio release];
-	[Rest release];
-	[Other release];
-	[defaultCategoriesArray release];
-	[defaultsTagsArray release];
-	NSLog(@"Done!");
-	 */
 	
 	return 0;
 }
@@ -228,8 +192,6 @@ void LogIt (NSString *format, ...)
 		[diccionario setObject:subarray forKey:[array objectAtIndex:i]];
 		
 	}
-	
-	
 	NSLog(@"  DONE!");
 
 	return 0;
@@ -297,7 +259,6 @@ void LogIt (NSString *format, ...)
 	data = [NSKeyedArchiver archivedDataWithRootObject:array];
 	[_prefs removeObjectForKey:@"conflicts"];
 	[_prefs setObject:data forKey:@"conflicts"];
-
 	[_prefs synchronize];
 	
 	NSLog(@"DONE!");
@@ -317,7 +278,6 @@ void LogIt (NSString *format, ...)
 	Match *match;
 	
 	NSLog(@"Recovering ConflictsSet from NSUserDefaults...");
-	
 	data  = [_prefs objectForKey:@"conflicts"];
 	array = [NSKeyedUnarchiver unarchiveObjectWithData:data];
 	
@@ -331,7 +291,6 @@ void LogIt (NSString *format, ...)
 			[subset addObject:match];
 			//NSLog(@"        -> extracting: %@", match.categoryMatched);
 		}
-		
 		[conflictsSet addObject:subset];
 	}
 	
@@ -502,7 +461,6 @@ void LogIt (NSString *format, ...)
 	// Array with distinct elements only, sorted by their repeat count
 	// NSCountedSet *countedSet = [[[NSCountedSet alloc] initWithArray:matchingCategories] autorelease];
 	// NSArray *distinctArray = [[countedSet allObjects] sortedArrayUsingFunction:countedSort context:countedSet];
-		
 	return matchesFound;
 }
 
@@ -561,7 +519,6 @@ void LogIt (NSString *format, ...)
 	// Array with distinct elements only, sorted by their repeat count
 	// NSCountedSet *countedSet = [[[NSCountedSet alloc] initWithArray:matchingCategories] autorelease];
 	// NSArray *distinctArray = [[countedSet allObjects] sortedArrayUsingFunction:countedSort context:countedSet];
-	
 	return matchesFound;
 }
 
@@ -665,6 +622,24 @@ void LogIt (NSString *format, ...)
 			NSLog(@"-- %@", [tags objectAtIndex:i]);
 		}
 	}
+}
+
+// Count the number of categories.
+- (int) numCategories
+{
+    return [diccionario count];
+}
+
+- (id) categoryAtRow:(NSInteger)rowIndex
+{
+    NSArray * sortedKeys = [[diccionario allKeys] sortedArrayUsingSelector: @selector(caseInsensitiveCompare:)];
+    return [sortedKeys objectAtIndex:rowIndex];
+}
+
+- (id) tagsAtRow:(NSInteger)rowIndex
+{
+    NSArray * sortedKeys = [[diccionario allKeys] sortedArrayUsingSelector: @selector(caseInsensitiveCompare:)];
+    return [diccionario objectForKey:[sortedKeys objectAtIndex:rowIndex]];
 }
 
 /*

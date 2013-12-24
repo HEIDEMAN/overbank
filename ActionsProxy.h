@@ -29,7 +29,7 @@
 
 @interface ActionsProxy : NSObject
 {
-	Prefs	 *prefs;
+	Prefs	 *_prefs;
 	NSString *_fileName;
 	NSMutableArray  *structuredMemoryLog;
 	NSMutableSet *conflicts;
@@ -39,8 +39,8 @@
 
 @property (nonatomic, strong) NSString* _fileName;
 @property (nonatomic, strong) NSMutableArray* structuredMemoryLog;
-@property (nonatomic, strong) NSWindowController *_preferencesWindow;
-@property (nonatomic, strong) Prefs* prefs;
+//@property (nonatomic, strong) NSWindowController *_preferencesWindow;
+@property (nonatomic, strong) Prefs* _prefs;
 @property (nonatomic, strong) NSMutableSet *conflicts;
 
 - (BOOL) fileSelected;

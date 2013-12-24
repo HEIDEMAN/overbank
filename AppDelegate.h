@@ -25,6 +25,14 @@
 {
     NSWindow *_window;
 	NSTabView *__strong _tabView;
+    
+	// Actions Proxy. All the actions detected by the Application delegate
+    // are sent to the actions proxy for proper handling, and avoiding
+    // having too much complexity here.
+	ActionsProxy* _sendAction;
+    
+    // Interface to the class displaying the preferences
+    prefsViewController *_prefsController;
 
     // Here it is the preferences window controller.
     NSWindowController *_preferencesWindow;
@@ -33,11 +41,6 @@
     NSManagedObjectModel *managedObjectModel;
     NSManagedObjectContext *managedObjectContext;
     NSMutableDictionary *tableEntriesDictionary;
-
-	// Actions Proxy. All the actions detected by the Application delegate
-    // are sent to the actions proxy for proper handling, and avoiding
-    // having too much complexity here.
-	ActionsProxy* sendAction;
 	
 	// Menu flags to control activation
 	BOOL matchingEnabled;
@@ -58,14 +61,16 @@
 
 @property (nonatomic, strong) IBOutlet NSWindow *_window;
 @property (strong) IBOutlet NSTabView *_tabView;
+
 @property (nonatomic, strong) NSWindowController *_preferencesWindow;
+@property (nonatomic, strong) prefsViewController *_prefsController;
 
 @property (nonatomic, strong, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, strong, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, strong, readonly) NSManagedObjectContext *managedObjectContext;
 
 @property (nonatomic, strong) NSMutableDictionary *tableEntriesDictionary;
-@property (nonatomic, strong) ActionsProxy *sendAction;
+@property (nonatomic, strong) ActionsProxy *_sendAction;
 
 @property (assign) BOOL matchingEnabled;
 @property (assign) BOOL tablePopUpCellChanged;
@@ -83,6 +88,7 @@
 @property (nonatomic, strong) IBOutlet YearGraph *yearGraphView;
 
 @property (atomic) int selectedTab;
+
 
 // -- METHODS
 
