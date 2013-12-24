@@ -642,6 +642,14 @@ void LogIt (NSString *format, ...)
     return [diccionario objectForKey:[sortedKeys objectAtIndex:rowIndex]];
 }
 
+-(void) updateTags:(NSArray *)value forCategory:(NSInteger)rowIndex
+{
+    NSArray * sortedKeys = [[diccionario allKeys] sortedArrayUsingSelector: @selector(caseInsensitiveCompare:)];
+    [diccionario setObject:value forKey:[sortedKeys objectAtIndex:rowIndex]];
+    return;
+}
+
+
 /*
  * Una funcion para retornar en un array todos los nombres de las categorias.
  */

@@ -42,5 +42,6 @@ void LogIt (NSString *format, ...);
 -(int) numCategories;
 -(id) categoryAtRow:(NSInteger)rowIndex;
 -(id) tagsAtRow:(NSInteger)rowIndex;
+-(void) updateTags:(NSArray *)value forCategory:(NSInteger)row;
 
 @end

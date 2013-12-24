@@ -1,7 +1,8 @@
--> Go to line 28 in prefsViewController. Open Cookbook in pg.8
-   Continue with "rowData" function.
+-> I'm getting the row and column of the NSTokenField cell being edited. Need to write he code
+   to store changes in the Prefs Object, properly. It is LOCATED in the method "setObjectValue"
+   in prefsViewController.
 
-· I'm in the middle of displaying the list of categories in the preferences window. I tried to use a
+x I'm in the middle of displaying the list of categories in the preferences window. I tried to use a
   CoreData-based Array Controller, but I'm duplicating controller and I'm not sure whether that will impact
   performance or if it will even work well. I decided to
     · Access preferences array controller programatically

@@ -66,6 +66,29 @@
         return [_prefsObjectReference tagsAtRow:rowIndex];
 }
 
+- (void)controlTextDidEndEditing:(NSNotification *)notification
+{
+    NSLog(@"·····>>> controlTextDidEndEditing: %@", notification);
+    NSTableView *tableObject = [notification object ];
+    
+    NSInteger column, row;
+    column = tableObject.editedColumn;
+    row = tableObject.editedRow;
+    NSLog(@"·····>>> %ld, %ld", row, column);
+}
+
+- (void)tableView:(NSTableView *)thisTableView setObjectValue:(id)value forTableColumn:(NSTableColumn *)column row:(NSInteger)row {
+    //[states replaceObjectAtIndex:row withObject:value];
+    if (_prefsObjectReference == nil)
+        [self setPrefsObjectReference];
+
+    NSLog(@"You changed %@ for row:%ld, column with identifier:%@", value, row, [column identifier]);
+    
+    [_prefsObjectReference updateTags:value forCategory:row];
+    
+    [thisTableView reloadData];
+}
+
 
 #pragma mark MASPreferencesViewController
 
