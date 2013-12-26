@@ -84,15 +84,15 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 	
 	if (MDFirstRun) {
 		NSLog(@"-- This IS the first time this App runs...");
-		// XXX Estp hay que quitarlo, solo puede valer YES, la primera vez.
-		//[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:MDFirstRunKey];
+		// XXX Esto hay que quitarlo, solo puede valer YES, la primera vez.
+		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:MDFirstRunKey];
 		[_sendAction actionSetDefaultPreferences:managedObjectContext];
 	}
 	else {
 		NSLog(@"-- NOT the first time this App runs...");
 		[_sendAction actionReadExistingPreferences];
 		// Esto hay que quitarlo. es solo para ver si se puede revertir.
-		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:MDFirstRunKey];
+		//[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:MDFirstRunKey];
 	}
 	
 	[_tabView selectFirstTabViewItem:NULL];
@@ -136,6 +136,42 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
         [bargraphView setDrawable:NO];
         [_sendAction actionPrepareGraphicsTab:managedObjectContext];
     }    
+}
+
+
+#pragma mark WINDOW DELEGATE INITIALIZATIONS
+
+
+/**
+ Use the NOTIFICATION CENTER to receive WINDOW CLOSE notifications.
+ Register the selector "anyWindowWillClose" to receive NSWindowWillClose
+ notifications there.
+ */
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(anyWindowWillClose:)
+                                                 name:NSWindowWillCloseNotification object:nil];
+}
+
+/**
+ Here is where AppDelegate will enter when the window will try to get closed.
+ */
+- (void)windowWillClose:(NSNotification *)notification
+{
+    NSLog(@"!! WINDOW CLOSING !!");
+}
+
+/**
+ Handle all WindowWillClose notifications from here.
+ - When the preferences window is the one closing, I must sync the changes.
+ */
+- (void)anyWindowWillClose:(NSNotification *)notification
+{
+    if (notification.object == self._preferencesWindow.window) {
+        NSLog(@"Prefs WINDOW CLOSING");
+        [_sendAction actionSyncPreferences];
+    }
 }
 
 

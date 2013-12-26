@@ -204,14 +204,13 @@ void LogIt (NSString *format, ...)
 {
 	NSLog(@"Syncing user preferences...");
 	
-	NSData *data;
 	// Take the keys from the updated dictionary.
 	NSArray *categoriesArray = [diccionario allKeys];
 	// Pack the array into the NSData structure.
-	data = [NSKeyedArchiver archivedDataWithRootObject:categoriesArray];
+	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:categoriesArray];
+    // Remove the old one, and set the new one.
 	[_prefs removeObjectForKey:@"categories"];
 	[_prefs setObject:data forKey:@"categories"];
-	
 	
 	// Y ya por fin, lo que hago es crear otro monton de atributos: uno por cada categoria,
 	// y estos seran los que contendran los tags. Habra un atributo llamado "Casa" que 
@@ -221,8 +220,7 @@ void LogIt (NSString *format, ...)
 		data = [NSKeyedArchiver archivedDataWithRootObject:[diccionario objectForKey:key]];
 		[_prefs removeObjectForKey:key];
 		[_prefs setObject:data forKey:key];
-	}
-	
+	}	
 	[_prefs synchronize];
 	
 	NSLog(@"  DONE!");

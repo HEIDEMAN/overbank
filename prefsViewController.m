@@ -66,18 +66,22 @@
         return [_prefsObjectReference tagsAtRow:rowIndex];
 }
 
-- (void)controlTextDidEndEditing:(NSNotification *)notification
-{
-    NSLog(@"·····>>> controlTextDidEndEditing: %@", notification);
-    NSTableView *tableObject = [notification object ];
-    
-    NSInteger column, row;
-    column = tableObject.editedColumn;
-    row = tableObject.editedRow;
-    NSLog(@"·····>>> %ld, %ld", row, column);
-}
+//- (void)controlTextDidEndEditing:(NSNotification *)notification
+//{
+//    NSLog(@"·····>>> controlTextDidEndEditing: %@", notification);
+//    NSTableView *tableObject = [notification object ];
+//    
+//    NSInteger column, row;
+//    column = tableObject.editedColumn;
+//    row = tableObject.editedRow;
+//    NSLog(@"·····>>> %ld, %ld", row, column);
+//}
 
-- (void)tableView:(NSTableView *)thisTableView setObjectValue:(id)value forTableColumn:(NSTableColumn *)column row:(NSInteger)row {
+/**
+ This is the function used to receive the changed values in a NSTableView.
+ */
+- (void)tableView:(NSTableView *)thisTableView setObjectValue:(id)value
+   forTableColumn:(NSTableColumn *)column row:(NSInteger)row {
     //[states replaceObjectAtIndex:row withObject:value];
     if (_prefsObjectReference == nil)
         [self setPrefsObjectReference];
@@ -91,6 +95,7 @@
 
 
 #pragma mark MASPreferencesViewController
+
 
 - (NSString *)identifier
 {

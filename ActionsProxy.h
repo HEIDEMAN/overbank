@@ -48,6 +48,7 @@
 - (int)  actionMatchDatabaseEntries:(NSManagedObjectContext *)managedObjectContext;
 - (int)  actionLearnMatchFromUserCategorization:(NSManagedObjectContext *)moc dbentry:(DBEntry *)dbentry;
 - (int)  actionReadExistingPreferences;
+- (int)  actionSyncPreferences;
 - (int)  actionSetDefaultPreferences:(NSManagedObjectContext *)managedObjectContext;
 
 - (int)  actionPrepareGraphicsTab:(NSManagedObjectContext *)moc;

@@ -1,14 +1,5 @@
--> I'm getting the row and column of the NSTokenField cell being edited. Need to write he code
-   to store changes in the Prefs Object, properly. It is LOCATED in the method "setObjectValue"
-   in prefsViewController.
+-> Though I'm syncing prefs, they alawys start from scratch when launching the program.
 
-x I'm in the middle of displaying the list of categories in the preferences window. I tried to use a
-  CoreData-based Array Controller, but I'm duplicating controller and I'm not sure whether that will impact
-  performance or if it will even work well. I decided to
-    · Access preferences array controller programatically
-    · Use a class that will allow me to do anything I want to make (WHAT DO I NEED TO DO WITH PREFS from the
-      preferences Window????)
-    · Continue working with the NSTokenFieldCells in the table
 --
 · Rewrite preferences as predicates or NSTokenFields in NSTableView, editable.
   look: 
@@ -35,6 +26,16 @@ x Enable selection of what categories to include in the PIE chart.
 x Use a separate Category Controller for the categories listing in the pie chart.
 x Change the randomColors in PieChart by known pastel color palette.
 x Importing RAW CSV converted files DOESN'T WORK
+x  I'm getting the row and column of the NSTokenField cell being edited. Need to write he code
+   to store changes in the Prefs Object, properly. It is LOCATED in the method "setObjectValue"
+   in prefsViewController.
+x I'm in the middle of displaying the list of categories in the preferences window. I tried to use a
+  CoreData-based Array Controller, but I'm duplicating controller and I'm not sure whether that will impact
+  performance or if it will even work well. I decided to
+    · Access preferences array controller programatically
+    · Use a class that will allow me to do anything I want to make (WHAT DO I NEED TO DO WITH PREFS from the
+      preferences Window????)
+    · Continue working with the NSTokenFieldCells in the table
 
 --
 Use https://github.com/nst/objc_dep to draw dependencies among classes.

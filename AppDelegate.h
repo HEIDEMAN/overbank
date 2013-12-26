@@ -21,7 +21,7 @@
 #define MOVEMENTS_TAB 1
 #define PIECHART_TAB 2
 
-@interface AppDelegate : NSObject <NSTabViewDelegate, NSTableViewDataSource>
+@interface AppDelegate : NSObject <NSTabViewDelegate, NSTableViewDataSource, NSWindowDelegate>
 {
     NSWindow *_window;
 	NSTabView *__strong _tabView;

@@ -167,6 +167,14 @@
 }
 
 
+/**
+ Synchronize preferences from memory to disk.
+ */
+- (int) actionSyncPreferences
+{
+    return [_prefs syncPrefs];
+}
+
 
 
 /*

@@ -9,7 +9,7 @@
 #import "MASPreferencesViewController.h"
 #import "Prefs.h"
 
-@interface prefsViewController : NSViewController <MASPreferencesViewController, NSTableViewDataSource>
+@interface prefsViewController : NSViewController <MASPreferencesViewController, NSTableViewDataSource, NSWindowDelegate>
 {
     // This is a reference to the "Prefs" object.
     // I obtain it dynamically, by getting the MASPreferencesViewController
@@ -25,10 +25,13 @@
 - (id) initWithPrefsReference:(Prefs *)prefsReference;
 - (void) setPrefsObjectReference;
 
-// MEthods to comply with NSTableProtocol
+// Methods to comply with NSTableProtocol
 - (NSInteger) numberOfRowsInTableView:(NSTableView *)table;
 - (id)tableView:(NSTableView *)table objectValueForTableColumn:(NSTableColumn *)column
             row:(NSInteger)rowIndex;
+- (void)tableView:(NSTableView *)thisTableView setObjectValue:(id)value
+   forTableColumn:(NSTableColumn *)column row:(NSInteger)row;
+
 
 // Methods to comply with MASPreferences Protocol
 - (NSString *)identifier;
