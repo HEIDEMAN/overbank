@@ -807,7 +807,8 @@
 	// Check whether categorization has been done
 	if ( ([object valueForKey:@"categoryMatched"] != nil) ) {
 		entry.matchingCategory.categoryMatched = [NSString stringWithString:[object valueForKey:@"categoryMatched"]];
-		entry.matchingCategory.tagsMatched = [NSString stringWithString:[object valueForKey:@"tags"]];
+		//entry.matchingCategory.tagsMatched = [NSString stringWithString:[object valueForKey:@"tags"]];
+        [entry.matchingCategory.tagsMatched addObject:[NSString stringWithString:[object valueForKey:@"tags"]]];
 	}
 	
 	return entry;
