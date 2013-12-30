@@ -12,15 +12,47 @@
 
 #pragma mark Import Entry objects into the database.
 
+- (void)displayDuplicateEntry:(SimplifiedEntry *)sline hashTable:(NSHashTable *)hashTable
+{
+    NSLog(@"Duplicate entry (%@|%@|%f), already inserted. Skipping.",
+          sline.fechaOperacion, sline.concepto, [sline.importe floatValue]);
+    SimplifiedEntry *e = [hashTable member:sline];
+    NSLog(@"%@|%@|%f", e.fechaOperacion, e.concepto, [e.importe floatValue]);
+}
+
 /**
- Take the log from memory and import it into the database, avoiding duplicates.
+ * Create a Core Data "DBEntry" entity to save the contents of "line" object passed.
+ *
+ * @param  line   The "Entry" object to save into the Core Data database.
+ * @param  inMOC  The Managed Object Context.
+ * @return TRUE if an error ocurred, FALSE otherwise.
  */
-- (int)fastImportLog:(NSMutableArray *)log managedObjectContext:(NSManagedObjectContext *)managedObjectContext
+- (BOOL)saveEntry:(Entry *)line inMOC:(NSManagedObjectContext *)moc
+{
+    // Create the MOC that will hold the entry.
+    NSManagedObject *entry = [self entryToDBEntry:line inManagedObjectContext:moc];
+    if (entry == nil) {
+        NSLog(@"  ERROR: Unable to save the entry to database.");
+        return TRUE;
+    }
+
+    // Insert the line into the DB if previous controls are OK.
+    if ([moc save:nil] == NO) {
+        NSLog(@"  ERROR: An error occurred while saving entry.");
+        return TRUE;
+    }
+    return FALSE;;
+}
+
+/**
+ * Take the log from memory and import it into the database, avoiding duplicates.
+ */
+- (int)fastImportLog:(NSMutableArray *)log managedObjectContext:(NSManagedObjectContext *)moc
 {
     BOOL errorOcurred=FALSE;
     
     // Take the table up to memory
-    NSArray *array = [self loadTableToArray:managedObjectContext];
+    NSArray *array = [self loadTableToArray:moc];
     
     // These 2 hastables contain the elements to compare with, in order to avoid duplicates.
     NSHashTable *dbHashTable = [[NSHashTable alloc]init];
@@ -31,61 +63,29 @@
     
     // Loop throughout the entire log in memory to insert those lines not
     // already in memory
-	for (Entry *line in log)
-	{
-		// Do not consider empty entries.
+	for (Entry *line in log) {
+		// Do not consider empty entries, and operate on simplified entries.
 		if ( [[line fechaOperacion] length] == 0) continue;
-        
-        // Get a simpified version of the Line Entry to perform comparisons.
         SimplifiedEntry *sline = [line simplified];
         
         // Skip also lines that are already in the table to avoid duplicates.
         if ( [dbHashTable containsObject:sline] ) {
-            //if ( [self arrayContainsEntry:array Entry:line] ) {
-            NSLog(@"}}}}");
-            NSLog(@"Duplicate entry (%@|%@|%f)",
-                  sline.fechaOperacion, sline.concepto, [sline.importe floatValue]);
-            SimplifiedEntry *e = [dbHashTable member:sline];
-            NSLog(@"%@|%@|%f", e.fechaOperacion, e.concepto, [e.importe floatValue]);
-            NSLog(@"}}}}");
+            [self displayDuplicateEntry:sline hashTable:dbHashTable];
             continue;
         }
-
-        BOOL doNotInsertFlag = FALSE;
-
         // Now I must search this entry within the previous entries of the array
         // to avoid inserting duplicates. O(1)
         if ( [memHashTable containsObject:sline] ) {
-            NSLog(@">>>>");
-            NSLog(@"Duplicate entry (%@|%@|%f), already inserted. Skipping.",
-                  sline.fechaOperacion, sline.concepto, [sline.importe floatValue]);
-            SimplifiedEntry *e = [memHashTable member:sline];
-            NSLog(@"%@|%@|%f", e.fechaOperacion, e.concepto, [e.importe floatValue]);
-            NSLog(@">>>>");
-            doNotInsertFlag = TRUE;
-            //break;
+            [self displayDuplicateEntry:sline hashTable:memHashTable];
+            continue;
         }
         
-        if (doNotInsertFlag) continue;
-        
-        // Create the MOC that will hold the entry.
-        NSManagedObject *entry = [self entryToDBEntry:line
-                               inManagedObjectContext:managedObjectContext];
-        if (entry == nil) {
-            NSLog(@"  ERROR: Unable to save the entry to database.");
-            errorOcurred = TRUE;
+        // Save the entry in the DB, but if an error occurs, then break the loop.
+        if ( [self saveEntry:line inMOC:moc] == TRUE )
             break;
-        }
-        
-        // Insert the line into the DB if previous controls are OK.
-        if ([managedObjectContext save:nil] == NO) {
-			NSLog(@"  ERROR: An error occurred while saving entry.");
-			errorOcurred = TRUE;
-		}
         
         // Add this entry to the memTable to perform further comparisons against entries already inserted.
         [memHashTable addObject:sline];
-        
     }
     
     // Return the number of entries updated.
@@ -136,12 +136,12 @@
  If multiple categories are found, a conflict raises, and multiple categories are assigned
  to that entry.
  */
-- (int)  categorizeAllEntries:(NSManagedObjectContext *)managedObjectContext
-				  preferences:(Prefs *)prefs
-				 conflictsSet:(NSMutableSet *)conflictsSet
-		   solveConflictsFlag:(BOOL)solveConflict
-				  verboseFlag:(BOOL)verbose
+- (int) categorizeAllEntries:(NSManagedObjectContext *)managedObjectContext preferences:(Prefs *)prefs
+                conflictsSet:(NSMutableSet *)conflictsSet solveConflictsFlag:(BOOL)solveConflict
+                 verboseFlag:(BOOL)verbose
 {
+    NSLog(@"(categorizeAllEntries): Classifying entries in DB.");
+    
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"DBEntry"
                                               inManagedObjectContext:managedObjectContext];
@@ -162,6 +162,7 @@
 		// If the line is already categorized, I re-do the process only if the override flag is set
 		if ( [entry.matchingCategory.categoryMatched length] != 0) {
 			if (verbose) NSLog(@"Skipping entry classification. Already classified.");
+            NSLog(@"  '%@' -> [%@]", entry.concepto, entry.matchingCategory.categoryMatched);
 			continue;
 		}
 		
@@ -197,10 +198,12 @@
             {
 				if (solveConflict) // Soluciono el conflicto de manera interactiva, o...
 				{
+                    NSLog(@"  : Selecting winner from Match.");
 					winner = [Match solveConflict:matchesSet :conflictsSet];
 				}
 				else // Rehago el "winner" para que incluya todas las categorias concatenadas.
 				{
+                    NSLog(@"  : Generating Winner from multiple possible winners.");
 					winner = [[Match alloc] init];
 					NSString *allMatches = [[NSString alloc] init];
 					for (Match *m in matchesSet) {
@@ -215,6 +218,7 @@
 			// Si solo hay una, sacamos el elemento del set y ese es el winner.
 			else if ( matchesSet.count == 1 )
             {
+                NSLog(@"  : Setting winner from Set.");
 				NSEnumerator *e = [matchesSet objectEnumerator];
 				winner = [e nextObject];
 			}
@@ -229,11 +233,9 @@
 		if ( (matchesSet.count != 0) && (winner != nil) ) {
 			[self updateCategoriesInDatabase:line fromEntry:entry managedObjectContext:managedObjectContext];
 		}
-		
-		// Release the winner category for the next iteration.
 	}
 	
-	
+	NSLog(@"(categorizeAllEntries): Returning 0.");
 	return 0;
 }
 
@@ -345,6 +347,7 @@
 		Entry *entry = [self dbEntryToEntry:line];
         if ( [entry.matchingCategory.categoryMatched length] != 0) {
 			NSLog(@"Skipping entry classification. Already classified.");
+            NSLog(@"  '%@' => [%@]", entry.concepto, entry.matchingCategory.categoryMatched);
 			continue;
 		}
 		
@@ -411,27 +414,38 @@
 	return 0;
 }
 
+/**
+ * Updates a DBEntry object with the contents of an updated Entry object, that reflects updated category matching.
+ * @param dbEntry   The DBEntry object to updated.
+ * @param entry     The Entry object with updated matched category.
+ * @parammanagedObjectContext   The NSManagedObjectContext.
+ * @return  (0) if the update operation when OK. (1) if an error ocurred
+ *          during saving to MOC. (-1) if the category already existed.
+ */
 - (int) updateCategoriesInDatabase:(DBEntry *)dbEntry fromEntry:(Entry *)entry
 			  managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
-	int rc=0;
+	int returnCode=0;
 	
 	dbEntry.categoryMatched = entry.matchingCategory.categoryMatched;
 	
-	NSLog(@" ~~~> Entering the creation of the relationship: %@", entry.matchingCategory.categoryMatched);
+	NSLog(@"(updateCategoriesInDatabase) ~~~> Entering the creation of the relationship: %@", entry.matchingCategory.categoryMatched);
 	// create the entities (you could fetch these instead, if they already exist)
 	DBCategory *dbcategory = [self findCategory:entry.matchingCategory.categoryMatched
 						   managedObjectContext:managedObjectContext];
+    
+    if (dbcategory == nil) {
+        NSLog(@"(updateCategoriesInDatabase) No categories found. Returning -1.");
+        return -1;
+    }
 	
 	// set the relationships
-	NSLog(@"Setting Category to: %@", dbcategory.name);
-	[dbEntry setCategory:dbcategory];
-    
+	NSLog(@"(updateCategoriesInDatabase) Setting Category to: %@", dbcategory.name);
+	dbEntry.category = dbcategory;
 	NSError *error;
 	if (![managedObjectContext save:&error]) {
-		NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
+		NSLog(@"(updateCategoriesInDatabase) Whoops, couldn't save: %@", [error localizedDescription]);
 	}
-	NSLog(@" ~~~> Leaving.");
 	
 	// Extract the array of tags into a concatenated string.
 	NSString *tags = [[NSString alloc] init];
@@ -441,10 +455,11 @@
 	dbEntry.tags = tags;
 	
 	if ([managedObjectContext save:nil] == NO) {
-		NSLog(@"** An error occurred while saving entry.");
-		rc = 1;
+		NSLog(@"(updateCategoriesInDatabase) ** An error occurred while saving entry.");
+		returnCode = 1;
 	}
-	return rc;
+    NSLog(@"(updateCategoriesInDatabase)  ~~~> Leaving.");
+	return returnCode;
 }
 
 
@@ -528,7 +543,6 @@
 	// Setup the string that will contain the query to the Core data.
 	NSString *predicate;
 	predicate = [NSString stringWithFormat:@"(name LIKE[c] '%@')",catName ];
-	NSLog(@"Predicate: <%@>", predicate);
 	
 	// Set up the object that connects to the entity in Core Data to perform the fetch
 	NSEntityDescription *entityDescription = [NSEntityDescription
@@ -536,27 +550,26 @@
 											  inManagedObjectContext:managedObjectContext];
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	[request setEntity:entityDescription];
-	NSLog(@"Context, MgdObj and Fetch request objects created.");
 	
 	// I send the request to the core data...
 	NSPredicate *pr = [NSPredicate predicateWithFormat:predicate];
 	[request setPredicate:pr];
-	NSLog(@"Predicate sent...");
 	
 	NSError *error = nil;
 	NSArray *array = [managedObjectContext executeFetchRequest:request error:&error];
-	if ([array count] == 0)
-	{
-		NSLog(@"NO Results Back. They line is unique");
+	if ([array count] == 0)	{
 		return NO;
 	}
 	
-	NSLog(@"Duplicate entry (%lu)!", [array count]);
+	NSLog(@"(matchesExistingCategory) -> Duplicate entry (%lu)!", [array count]);
 	return YES;
 }
 
 /**
- This function searchs for entry logs matching the one trying to append to the DB
+ * Searchs for entry logs matching the one trying to append to the DB.
+ * @param   catName A String representing the category name to be found in the DB.
+ * @param   managedObjectContext    The Managed Object Context where entities are created.
+ * @return  The object matching the category name found, or NIL if none found.
  */
 - (DBCategory *)findCategory:(NSString *)catName managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
@@ -565,7 +578,7 @@
 	// Setup the string that will contain the query to the Core data.
 	NSString *predicate;
 	predicate = [NSString stringWithFormat:@"(name LIKE[c] '%@')",catName ];
-	NSLog(@"Search category predicate: <%@>", predicate);
+	NSLog(@"(findCategory)   Search category predicate: <%@>", predicate);
 	
 	// Set up the object that connects to the entity in Core Data to perform the fetch
 	NSEntityDescription *entityDescription = [NSEntityDescription
@@ -573,22 +586,16 @@
 											  inManagedObjectContext:managedObjectContext];
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	[request setEntity:entityDescription];
-	NSLog(@"Context, MgdObj and Fetch request objects created.");
-	
-	// I send the request to the core data...
 	NSPredicate *pr = [NSPredicate predicateWithFormat:predicate];
 	[request setPredicate:pr];
-	NSLog(@"Predicate sent...");
-	
 	NSError *error = nil;
 	NSArray *array = [managedObjectContext executeFetchRequest:request error:&error];
-	if ([array count] == 0)
-	{
-		NSLog(@"NO Results Back. They line is unique");
-		return NO;
+	if ([array count] == 0)	{
+		NSLog(@"(findCategory)   NO Results Back. The line is unique");
+		return nil;
 	}
 	
-	NSLog(@"Found category!");
+	NSLog(@"(findCategory)   Found category!");
 	return [array objectAtIndex:0];
 }
 
@@ -745,14 +752,17 @@
 
 
 /**
- This function stores in the "Categories" table the names of the categories, as set in the
- default preferences. It is called only when the program is run for the first time.
+ * This function stores in the "Categories" table the names of the categories, as set in the
+ * default preferences. It is called only when the program is run for the first time.
+ * @param categoryNames is the strings array with the names of the categories to be stored.
+ * @param moc is the core data context to be used to link with the database.
+ * @return 0 if everything went well, or a number ≠ 0, otherwise.
  */
 - (int) storeCategoriesInDatabase:(NSArray *)categoryNames
 			 managedObjectContext:(NSManagedObjectContext *)moc
 {
-	int rc=0;
-	
+    NSLog(@"(storeCategoriesInDatabase): Ready to store categories in DB.");
+	int returnCode=0;
 	for (NSString *catName in categoryNames)
 	{
 		if ( [self matchesExistingCategory:catName managedObjectContext:moc] == NO )
@@ -760,19 +770,26 @@
 			// Set up the object that connects to the entity in Core Data, and place it in an object.
 			NSManagedObject *dbEntry = [NSEntityDescription insertNewObjectForEntityForName:@"DBCategory"
 																	 inManagedObjectContext:moc];
-			
 			[dbEntry setValue:catName forKey:@"name"];
-			
-			// Save the entry.
-			if ([moc save:nil] == NO) {
-				NSLog(@"** An error occurred while saving entry.");
-				rc = 1;
-			}
+			if ([moc save:nil] == NO)
+            {
+				NSLog(@"(storeCategoriesInDatabase):   ERROR! An error occurred while saving entry.");
+				returnCode = 1;
+			} else {
+                NSLog(@"(storeCategoriesInDatabase):   Category '%@' stored in DB.", catName);
+            }
 		}
 	}
-	return rc;
+    NSLog(@"(storeCategoriesInDatabase):   Done! Returning %d", returnCode);
+	return returnCode;
 }
 
+/**
+ * Converts an "Entry" object into a DBEntry Core Data entity object.
+ * @param   line Is the Entry object to convert.
+ * @param   moc  Is the ManagedObjectContext from where extracting the DBEntry entity.
+ * @return  A DBEntry object with the contents of the Entry object passed.
+ */
 - (NSManagedObject*) entryToDBEntry:(Entry*)line inManagedObjectContext:(NSManagedObjectContext*)moc
 {
     // Set up the object that connects to the entity in Core Data, and place it in an object.
@@ -780,7 +797,7 @@
                                                              inManagedObjectContext:moc];
     
     NSDate *date1 = [self stringToNSDate:line.fechaOperacion];
-    NSDate *date2 = [self stringToNSDate:line.fechaValor];
+    NSDate *date2 = ([line.fechaValor length] == 0) ? date1 : [self stringToNSDate:line.fechaValor];
     [dbEntry setValue:date1 forKey:@"fechaOperacion"];
     [dbEntry setValue:date2 forKey:@"fechaValor"];
     [dbEntry setValue:line.concepto forKey:@"concepto"];
@@ -790,6 +807,11 @@
     return dbEntry;
 }
 
+/**
+ * Converts a DBEntry object to Entry object.
+ * @param   object    The DBEntry object to be converted to Entry format.
+ * @return  A newly created Entry object with the exact field present in the DBEntry object passed.
+ */
 - (Entry *)dbEntryToEntry:(NSManagedObject *)object
 {
 	Entry *entry = [[Entry alloc] init];
@@ -799,20 +821,28 @@
 	// The dates must be formatted into strings from NSDate formats.
 	entry.fechaOperacion = [dateFormatter stringFromDate:[object valueForKey:@"fechaOperacion"]];
 	entry.fechaValor = [dateFormatter stringFromDate:[object valueForKey:@"fechaValor"]];
-	
 	entry.concepto = [NSString stringWithString:[object valueForKey:@"concepto"]];
 	entry.importe =	[NSNumber numberWithDouble:[[object valueForKey:@"importe"] doubleValue ]];
 	entry.saldo = [NSNumber numberWithDouble:[[object valueForKey:@"saldo"] doubleValue ]];
 	
 	// Check whether categorization has been done
-	if ( ([object valueForKey:@"categoryMatched"] != nil) ) {
+	if ( ([object valueForKey:@"categoryMatched"] != nil) )
+    {
 		entry.matchingCategory.categoryMatched = [NSString stringWithString:[object valueForKey:@"categoryMatched"]];
-		entry.matchingCategory.tagsMatched = [NSString stringWithString:[object valueForKey:@"tags"]];
+        NSString *tagsReturned = [NSString stringWithString:[object valueForKey:@"tags"]];
+        [entry.matchingCategory.tagsMatched addObject:tagsReturned];
 	}
 	
 	return entry;
 }
 
+/**
+ * Convert a Managed Object Entry from the database into a simplified version
+ * with only 3 fields: "fechaOPeracion", "concepto" and "importe".
+ * 
+ * @param object The object to be converted from Database Entry model format.
+ * @return A "SimplifiedEntry" object.
+ */
 - (SimplifiedEntry *)dbEntryToSimplifiedEntry:(NSManagedObject *)object
 {
 	SimplifiedEntry *entry = [[SimplifiedEntry alloc] init];
@@ -852,12 +882,10 @@
     }
     
     NSDate *date = [self dateWithNoTime:[dateFormatter dateFromString:string]];
-    NSLog(@"-----> Result from dateFormatter <%@>", date);
-	
 	return date;
 }
 
-- (NSDate*) dateWithNoTime:(NSDate *)date
+- (NSDate *) dateWithNoTime:(NSDate *)date
 {
     unsigned int flags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
     NSCalendar* calendar = [NSCalendar currentCalendar];

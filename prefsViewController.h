@@ -17,10 +17,14 @@
     // private property "_selectedViewController" within it.
     // Check it out at "setPrefsObjectReference".
     Prefs *_prefsObjectReference;
+    
+    IBOutlet NSButtonCell *restoreDefaultsButtonOutlet;
 }
 
 @property (retain) Prefs *_prefsObjectReference;
 @property (retain) IBOutlet NSTableView *tableView;
+
+@property (strong, nonatomic) IBOutlet NSButtonCell *restoreDefaultsButtonOutlet;
 
 - (id) initWithPrefsReference:(Prefs *)prefsReference;
 - (void) setPrefsObjectReference;

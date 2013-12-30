@@ -16,12 +16,11 @@
 // with the NSUserPreferences.
 NSString * const MDFirstRunKey = @"MDFirstRun";
 
-
 @implementation AppDelegate
 
 @synthesize _window, _tabView, _preferencesWindow,
     persistentStoreCoordinator, managedObjectModel, managedObjectContext,
-    tableEntriesDictionary, _sendAction, _prefsController,
+    tableEntriesDictionary, _sendAction,
     matchingEnabled, MDFirstRun,
     fromDatePick, toDatePick, searchFieldOutlet, tableEntriesController,
     categoriesController, selectableCategoriesController,
@@ -63,7 +62,11 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 {
 	if (self = [super init]) {
 		NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-		MDFirstRun = [[userDefaults objectForKey:MDFirstRunKey] boolValue];
+        //NSLog(@"(init): %@", [[NSUserDefaults standardUserDefaults] dictionaryRepresentation]);
+        if ([userDefaults objectForKey:MDFirstRunKey] == nil)
+            MDFirstRun = YES;
+		else
+            MDFirstRun = [[userDefaults objectForKey:MDFirstRunKey] boolValue];
 	}
 	return self;
 }
@@ -82,17 +85,18 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 		_sendAction = [[ActionsProxy alloc] init];
 	}
 	
-	if (MDFirstRun) {
+	if (MDFirstRun == YES) {
 		NSLog(@"-- This IS the first time this App runs...");
 		// XXX Esto hay que quitarlo, solo puede valer YES, la primera vez.
-		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:MDFirstRunKey];
+		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:MDFirstRunKey];
+		//[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:MDFirstRunKey];
 		[_sendAction actionSetDefaultPreferences:managedObjectContext];
 	}
 	else {
 		NSLog(@"-- NOT the first time this App runs...");
 		[_sendAction actionReadExistingPreferences];
 		// Esto hay que quitarlo. es solo para ver si se puede revertir.
-		//[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:MDFirstRunKey];
+		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:MDFirstRunKey];
 	}
 	
 	[_tabView selectFirstTabViewItem:NULL];
@@ -299,7 +303,7 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
     {
         // These are the steps to follow to conforms with MASPrefs lib.
         // http://simplecode.me/2012/04/08/preferences-window-in-cocoa-maspreferences/
-        _prefsController = [[prefsViewController alloc] initWithPrefsReference: _sendAction._prefs];
+        prefsViewController *_prefsController = [[prefsViewController alloc] initWithPrefsReference: _sendAction._prefs];
         
         NSViewController *generalViewController = _prefsController;
         NSArray *controllers = [[NSArray alloc] initWithObjects:generalViewController, nil];
@@ -393,11 +397,12 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
 - (IBAction) doMatchDatabaseEntries:(id)sender
 {
 	NSLog(@"Entering doMatchDatabaseEntries...");
+    
 	matchingEnabled = YES;
-	
 	int rc = [_sendAction actionMatchDatabaseEntries:managedObjectContext];
-	NSLog(@"ActionMatchDatabaseEntries returned %d.", rc);
-	
+    [tableView reloadData];
+    
+	NSLog(@"  ActionMatchDatabaseEntries returned %d.", rc);
 	NSLog(@"Leaving doMatchDatabaseEntries");
 }
 
@@ -503,17 +508,10 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
  This method is bound from IB CatPopUpController "Sort Descriptors" submenu to
  indicate how to sort the contents of the array.
  */
-- (NSArray *)categoriesSortDescriptors {
-    return [NSArray arrayWithObject:
-			[NSSortDescriptor sortDescriptorWithKey:@"name"
-										  ascending:YES]];
+- (NSArray *)categoriesSortDescriptors
+{
+    return [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
 }
-
-
-/**
- Implementation of dealloc, to release the retained variables.
- */
-
 
 
 @end

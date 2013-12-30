@@ -68,6 +68,7 @@ void LogIt (NSString *format, ...)
  */
 - (int) defaultPrefs
 {
+    NSLog(@"(defaultPrefs) Setting default prefs.");
 	/**
 	  Esta es la categorizacion que hacen en un programa similar para el iphone.
      
@@ -102,7 +103,7 @@ void LogIt (NSString *format, ...)
 	NSMutableArray *Viaje = [NSMutableArray arrayWithObjects:
 							 @"VIAJE",@"POSADA",@"HOSTAL",@"HOTEL",@"AIRPORT",@"ALDEASA",@"AEROPUERTO",nil];
 	NSMutableArray *Inter = [NSMutableArray arrayWithObjects:
-							 @"RECIBO",@"BANCO",@"POPULAR",@"CUOTA",@"TARJETA",nil];
+							 @"BANCO",@"POPULAR",@"CUOTA",@"TARJETA",nil];
 	NSMutableArray *Imp = [NSMutableArray arrayWithObjects:
 						   @"IMPUESTO",@"RETENIDOS",nil];
 	NSMutableArray *Edu = [NSMutableArray arrayWithObjects:
@@ -115,7 +116,7 @@ void LogIt (NSString *format, ...)
 	NSMutableArray *ATM = [NSMutableArray arrayWithObjects:
 						   @"REINTEGRO",@"CAJERO",nil];
 	NSMutableArray *Recib = [NSMutableArray arrayWithObjects:
-							 @"RECIBO",@"TELEFONICA",nil];
+							 @"TELEFONICA",nil];
 	NSMutableArray *Ingr = [NSMutableArray arrayWithObjects:
 							@"TELEFONICA",@"INGRESO",@"NÓMINA",@"ERICSSON",@"INVESTIGA",@"ABONO",nil];
 	NSMutableArray *Trnsf = [NSMutableArray arrayWithObjects:@"TRANSFERENCIA", @"RECIBIDA", nil];
@@ -163,9 +164,8 @@ void LogIt (NSString *format, ...)
 		[_prefs setObject:data forKey:key];
 	}
 	
-	NSLog(@"Default prefs dictionary set.");
 	[_prefs synchronize];
-	NSLog(@"Default prefs sync'ed");
+	NSLog(@"(defaultPrefsDefault)   Prefs set.");
 	
 	return 0;
 }
@@ -175,56 +175,52 @@ void LogIt (NSString *format, ...)
  */
 - (int)readPrefs
 {
-	NSData *data;
-	NSMutableArray *array;
-	
-	NSLog(@"Reading user preferences...");
+	NSLog(@"(readPrefs) Reading user preferences...");
 	
 	diccionario = [[NSMutableDictionary alloc] init];
-	
-	data = [_prefs objectForKey:@"categories"];
-	array = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-	for(int i=0; i<array.count; i++) 
+	NSData *packedCategoryNames = [_prefs objectForKey:@"categories"];
+	NSMutableArray *categoryNames = [NSKeyedUnarchiver unarchiveObjectWithData:packedCategoryNames];
+	for(int i=0; i<categoryNames.count; i++) 
 	{
-		NSData  *subdata = [_prefs objectForKey:[array objectAtIndex:i]];
-		NSMutableArray *subarray = [NSKeyedUnarchiver unarchiveObjectWithData:subdata];
-		
-		[diccionario setObject:subarray forKey:[array objectAtIndex:i]];
+		NSData *packedTagsForCategory = [_prefs objectForKey:[categoryNames objectAtIndex:i]];
+		NSMutableArray *tagsForCategory = [NSKeyedUnarchiver unarchiveObjectWithData:packedTagsForCategory];
+		[diccionario setObject:tagsForCategory forKey:[categoryNames objectAtIndex:i]];
 		
 	}
-	NSLog(@"  DONE!");
-
+	NSLog(@"(readPrefs)   DONE!");
 	return 0;
 }
 
-/*
- Esta funcion actualiza el NSUserDefaults con lo ultimo que se haya cambiado en el diccionario.
+/**
+ * Updates the NSUserDefaults file (~/Library/Preferences/com.jesusrenero.overbank.plist) 
+ * with the updated category list and tags from the "diccionario" NSDictionary.
+ *
+ * @return 0, or error code if anything goes wrong.
  */
 - (int)syncPrefs
 {
-	NSLog(@"Syncing user preferences...");
+	NSLog(@"(syncPrefs) Syncing user preferences to disk...");
 	
-	// Take the keys from the updated dictionary.
+	// Take the keys from the updated dictionary, and pack them in NSData format.
 	NSArray *categoriesArray = [diccionario allKeys];
-	// Pack the array into the NSData structure.
-	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:categoriesArray];
+	NSData *packedCategoryNames = [NSKeyedArchiver archivedDataWithRootObject:categoriesArray];
+
     // Remove the old one, and set the new one.
 	[_prefs removeObjectForKey:@"categories"];
-	[_prefs setObject:data forKey:@"categories"];
+	[_prefs setObject:packedCategoryNames forKey:@"categories"];
 	
 	// Y ya por fin, lo que hago es crear otro monton de atributos: uno por cada categoria,
 	// y estos seran los que contendran los tags. Habra un atributo llamado "Casa" que 
 	// me devolvera un NSData con el array de tags. Los datos son un empaquetado binario del
 	// array de tags.
 	for (id key in diccionario) {
-		data = [NSKeyedArchiver archivedDataWithRootObject:[diccionario objectForKey:key]];
+		NSData *packedTagsForCategory = [NSKeyedArchiver archivedDataWithRootObject:[diccionario objectForKey:key]];
 		[_prefs removeObjectForKey:key];
-		[_prefs setObject:data forKey:key];
+		[_prefs setObject:packedTagsForCategory forKey:key];
 	}	
 	[_prefs synchronize];
 	
-	NSLog(@"  DONE!");
-	
+	NSLog(@"(syncPrefs)   DONE!");
 	return 0;
 }
 
@@ -648,22 +644,26 @@ void LogIt (NSString *format, ...)
 }
 
 
-/*
- * Una funcion para retornar en un array todos los nombres de las categorias.
+/**
+ * Builds an array with all the category names found in the dictionary.
+ * @return NSMutableArray containing all the category names found in dictionary
+ *         or NIL if none is found.
  */
 - (NSMutableArray *) getCategoryNames
 {
+    NSLog(@"(getCategoryNames): Retrieving category names from dictionary.");
+    
 	if ( [diccionario count] == 0) {
-		NSLog(@"WARNING: Empty dictionary");
+		NSLog(@"(getCategoryNames): WARNING! Empty dictionary. Cannot get category names.");
 		return nil;
 	}
 	
 	NSMutableArray *names = [[NSMutableArray alloc] init];
-	for(id key in diccionario) 
-	{
+	for(id key in diccionario) {
 		[names addObject:key];
 	}
-	NSLog(@"getCategoryNames: Returning %lu categories in array", [names count]);
+    
+	NSLog(@"(getCategoryNames):   %lu categories in array", [names count]);
 	return names;
 }
 

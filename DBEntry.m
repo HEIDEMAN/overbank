@@ -10,7 +10,7 @@
 
 #import "DBCategory.h"
 
-@implementation DBEntry 
+@implementation DBEntry
 
 @dynamic fechaValor;
 @dynamic fechaOperacion;

@@ -53,7 +53,7 @@
 			  managedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 - (int) storeEntryInDatabase:(Entry *)entry managedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 - (int) storeCategoriesInDatabase:(NSArray *)categoryNames 
-			 managedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+			 managedObjectContext:(NSManagedObjectContext *)moc;
 
 - (NSArray *)findDatesInterval:(NSManagedObjectContext *)managedObjectContext;
 - (NSDictionary *) computeAggregatedCategories:(NSManagedObjectContext *)moc
@@ -70,5 +70,7 @@
 - (void) printDBEntry:(DBEntry *)record;
 
 + (NSNumber *)abs:(NSNumber *)input;
+
+- (void)displayDuplicateEntry:(SimplifiedEntry *)sline hashTable:(NSHashTable *)hashTable;
 
 @end

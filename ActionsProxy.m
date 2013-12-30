@@ -36,8 +36,12 @@
 
 
 /**
- This function gets the name selected through the dialog presented when the "Open" item
- under the "File" menu is selected, and process it.
+ * This function gets the name selected through the dialog presented when the "Open" item
+ * under the "File" menu is selected, and process it to import contents into the CoreData Model.
+ * 
+ * @param nameOfFile The name of the file to be opened, containing an absolute path.
+ * @param managedObjectContext The ManagedObjectContext used in CoreData where data is to be imported.
+ * @return 0 if the import was succesful. An error code ≠ 0, otherwise.
  */
 -(int) actionOpenFile:(NSString *)nameOfFile managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
@@ -90,8 +94,6 @@
 }
 
 
-
-
 /**
  This function will be responsible for the matching of all the entries in the database.
  Preconditions: the database must contain objects, the objects must not be previously
@@ -101,16 +103,10 @@
  */
 - (int) actionMatchDatabaseEntries:(NSManagedObjectContext *)managedObjectContext
 {
-	NSLog(@"Entering actionMatchDatabaseEntries");
-	//Database *db = [[[Database alloc]init]autorelease];
-	
-	int rc = [db categorizeAllEntries:managedObjectContext preferences:_prefs conflictsSet:conflicts
+	int returnCode = [db categorizeAllEntries:managedObjectContext preferences:_prefs conflictsSet:conflicts
                    solveConflictsFlag:YES verboseFlag:YES];
-	
 	[Match listConflictSet:conflicts];
-	
-	NSLog(@"Leaving actionMatchDatabaseEntries");
-	return rc;
+	return returnCode;
 }
 
 
@@ -129,30 +125,26 @@
 }
 
 
-
-
 /**
- This function sets up the preferences from a default set, by the first time the program executes.
- Once set, the preferences are stored in disk to be recovered from there now on.
+ * Sets up the preferences from a default set hardwired in the code, and
+ * stored in the preferences plist. It also sets the category names list
+ * that will be stored in the database (populating it).
+ * @param managedObjectContext is the link with the entities in the Core
+ *        Data database
+ * @return 0 if everything goes fine, and a number ≠ 0, if an error occurs.
  */
-- (int) actionSetDefaultPreferences:(NSManagedObjectContext *)managedObjectContext
+- (int) actionSetDefaultPreferences:(NSManagedObjectContext *) moc
 {
-	int rc=0;
+	int returnCode = 0;
+	returnCode = [_prefs defaultPrefs];
+	returnCode += [_prefs syncPrefs];
 	
-	NSLog(@"Setting default preferences...");
-	rc = [_prefs defaultPrefs];
-	NSLog(@"...and sync'ing them to disk.");
-	rc += [_prefs syncPrefs];
-	
-	// Now, I have to store the names of the categories into the corresponding table.
-	NSLog(@"Populating the Categories table.");
+	// Store the names of the categories into the corresponding table in DB.
 	NSMutableArray *categoryNames = [_prefs getCategoryNames];
-	
-	rc = [db storeCategoriesInDatabase:(NSArray *)categoryNames
-                  managedObjectContext:(NSManagedObjectContext *)managedObjectContext];
-	NSLog(@"Populating returned code %d.", rc);
+	returnCode += [db storeCategoriesInDatabase:(NSArray *)categoryNames
+                  managedObjectContext:(NSManagedObjectContext *)moc];
     
-	return rc;
+	return returnCode;
 }
 
 
@@ -163,7 +155,8 @@
  */
 - (int) actionReadExistingPreferences
 {
-	return [_prefs readPrefs];
+	int returnCode = [_prefs readPrefs];    
+    return returnCode;
 }
 
 

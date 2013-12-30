@@ -25,18 +25,14 @@
 {
     NSWindow *_window;
 	NSTabView *__strong _tabView;
+    NSWindowController *_preferencesWindow; // Here it is the preferences window controller.
     
 	// Actions Proxy. All the actions detected by the Application delegate
     // are sent to the actions proxy for proper handling, and avoiding
     // having too much complexity here.
 	ActionsProxy* _sendAction;
-    
-    // Interface to the class displaying the preferences
-    prefsViewController *_prefsController;
 
-    // Here it is the preferences window controller.
-    NSWindowController *_preferencesWindow;
-    
+    // CORE DATA Components.
     NSPersistentStoreCoordinator *persistentStoreCoordinator;
     NSManagedObjectModel *managedObjectModel;
     NSManagedObjectContext *managedObjectContext;
@@ -46,7 +42,8 @@
 	BOOL matchingEnabled;
 	// Flag to control whether it is the first time the app executes.
 	BOOL MDFirstRun;
-	
+    
+    /* OUTLETS to the APPLICATION VISUAL PARTS */
 	IBOutlet NSDatePicker *fromDatePick;
 	IBOutlet NSDatePicker *toDatePick;
     IBOutlet NSSearchField *searchFieldOutlet;
@@ -61,14 +58,10 @@
 
 @property (nonatomic, strong) IBOutlet NSWindow *_window;
 @property (strong) IBOutlet NSTabView *_tabView;
-
 @property (nonatomic, strong) NSWindowController *_preferencesWindow;
-@property (nonatomic, strong) prefsViewController *_prefsController;
-
 @property (nonatomic, strong, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, strong, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, strong, readonly) NSManagedObjectContext *managedObjectContext;
-
 @property (nonatomic, strong) NSMutableDictionary *tableEntriesDictionary;
 @property (nonatomic, strong) ActionsProxy *_sendAction;
 

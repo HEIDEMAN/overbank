@@ -10,7 +10,7 @@
 #import "MASPreferencesWindowController.h"
 
 @implementation prefsViewController
-@synthesize _prefsObjectReference, tableView;
+@synthesize _prefsObjectReference, tableView, restoreDefaultsButtonOutlet;
 
 - (id)init
 {
@@ -66,31 +66,31 @@
         return [_prefsObjectReference tagsAtRow:rowIndex];
 }
 
-//- (void)controlTextDidEndEditing:(NSNotification *)notification
-//{
-//    NSLog(@"·····>>> controlTextDidEndEditing: %@", notification);
-//    NSTableView *tableObject = [notification object ];
-//    
-//    NSInteger column, row;
-//    column = tableObject.editedColumn;
-//    row = tableObject.editedRow;
-//    NSLog(@"·····>>> %ld, %ld", row, column);
-//}
+
 
 /**
  This is the function used to receive the changed values in a NSTableView.
  */
 - (void)tableView:(NSTableView *)thisTableView setObjectValue:(id)value
-   forTableColumn:(NSTableColumn *)column row:(NSInteger)row {
-    //[states replaceObjectAtIndex:row withObject:value];
+   forTableColumn:(NSTableColumn *)column row:(NSInteger)row
+{
     if (_prefsObjectReference == nil)
         [self setPrefsObjectReference];
-
-    NSLog(@"You changed %@ for row:%ld, column with identifier:%@", value, row, [column identifier]);
-    
+    //NSLog(@"You changed %@ for row:%ld, column with identifier:%@", value, row, [column identifier]);
     [_prefsObjectReference updateTags:value forCategory:row];
-    
     [thisTableView reloadData];
+}
+
+
+#pragma mark Actions received in this View.
+
+
+- (IBAction) pushRestoreDefaultCategoriesAndTags:(id)sender
+{
+    if (_prefsObjectReference == nil)
+        [self setPrefsObjectReference];
+    [_prefsObjectReference defaultPrefs];
+    [tableView reloadData];
 }
 
 

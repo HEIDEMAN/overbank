@@ -1,6 +1,7 @@
--> Though I'm syncing prefs, they alawys start from scratch when launching the program.
+-----
+To-Do
 
---
+· RE_WORK ALL THE applicationDidFinishLaunching logic around the MDFirstRun flag. (!!!!!!!!!!!!!!!!!!!)
 · Rewrite preferences as predicates or NSTokenFields in NSTableView, editable.
   look: 
     http://nvie.com/posts/nspredicateeditor-tutorial/
@@ -19,8 +20,13 @@
 · Write Unit Tests
 · Refactor to fllow Uncle Bob's "The only way to be really be sure that a function does one thing is to extract 
   'til you drop."
+· Add gradients to the colors in the pie chart, and same base colors always (instead of random)
+
+----
+Done
+
+x Fixed small issue when creating DBEntry with NIL pointer to one of the date fields.
 x Use NSSet instead of NSArray when fastImporting new log files from CSV to the database.
-- Add gradients to the colors in the pie chart, and same base colors always (instead of random)
 x Select all categories when trying to draw a pie chart.
 x Enable selection of what categories to include in the PIE chart.
 x Use a separate Category Controller for the categories listing in the pie chart.
@@ -36,6 +42,69 @@ x I'm in the middle of displaying the list of categories in the preferences wind
     · Use a class that will allow me to do anything I want to make (WHAT DO I NEED TO DO WITH PREFS from the
       preferences Window????)
     · Continue working with the NSTokenFieldCells in the table
+x Though I'm syncing prefs, they alawys start from scratch when launching the program.
+x Made a provisional Icon. Instructions found here: 
+  http://stackoverflow.com/questions/6337787/how-can-i-set-the-icon-for-a-mac-application-in-xcode
+x Chase an exception that ocasionally occurs over coredata in the table.
+
+    FIXED: Setting the "category" property to object "dbentry" is now made explicit, instead of 
+    using default setter.
+
+x Take a look at: categoriesSortDescriptors inside AppDelegate.
+
+Possible solution found:
+    You bound the content set of both the Recipes and the Types array controller to a managed object context. Since a  context is not a set, this fails. -> "Cannot create NSSet from object <NSManagedObjectContext: 0x10028efb0> of class NSManagedObjectContext." And if you use an array controller with Core Data, you'll have to set the controller's managed object context (on the bindings panel, section "Parameters") to the context it should access (the one you are currently using as a content set).
+
+So, we should try to use TWO managedObjectContexts withing the AppDelegate.
+
+
+
+    2013-12-26 11:54:38.259 overbank[4512:303]  ~~~> Entering the creation of the relationship: Recibos
+    2013-12-26 11:54:38.259 overbank[4512:303] Search category predicate: <(name LIKE[c] 'Recibos')>
+    2013-12-26 11:54:38.260 overbank[4512:303] Context, MgdObj and Fetch request objects created.
+    2013-12-26 11:54:38.260 overbank[4512:303] Predicate sent...
+    2013-12-26 11:54:38.264 overbank[4512:303] Found category!
+    2013-12-26 11:54:38.264 overbank[4512:303] Setting Category to: Recibos
+    2013-12-26 11:54:38.311 overbank[4512:303] Cannot create NSSet from object <DBCategory: 0x6080000bcda0> (entity: DBCategory; id: 0x600000236700 <x-coredata://E7F9F3F1-6697-4BD0-9F80-50C4EC34C309/DBCategory/p113> ; data: {
+        entries = "<relationship fault: 0x60000023ab40 'entries'>";
+        name = "Ropa, Regalos y Shopping";
+    }) of class DBCategory
+    2013-12-26 11:54:38.313 overbank[4512:303] (
+        0   CoreFoundation    0x00007fff8c33841c __exceptionPreprocess + 172
+        1   libobjc.A.dylib   0x00007fff93463e75 objc_exception_throw + 43
+        2   CoreFoundation    0x00007fff8c3381f8 +[NSException raise:format:arguments:] + 104
+        3   AppKit            0x00007fff890fc8c9 _NSValueOfClassWithSpecialSpecificErrorMessage + 243
+        4   AppKit            0x00007fff890fc799 -[NSArrayDetailBinder _refreshDetailContentInBackground:] + 1421
+        5   Foundation        0x00007fff91394c18 NSKeyValueNotifyObserver + 387
+        6   Foundation        0x00007fff913d1e71 -[NSObject(NSKeyValueObservingPrivate) _notifyObserversForKeyPath:change:] + 1115
+        7   AppKit            0x00007fff88eaac48 -[NSController _notifyObserversForKeyPath:change:] + 209
+        8   AppKit            0x00007fff8909820e -[NSController observeValueForKeyPath:ofObject:change:context:] + 851
+        9   AppKit            0x00007fff89195452 -[NSArrayController observeValueForKeyPath:ofObject:change:context:] + 111
+        10  Foundation        0x00007fff91394c18 NSKeyValueNotifyObserver + 387
+        11  Foundation        0x00007fff91393de8 NSKeyValueDidChange + 453
+        12  Foundation        0x00007fff91398a56 -[NSObject(NSKeyValueObserverNotification) didChangeValueForKey:] + 118
+        13  CoreData          0x00007fff955a51cc _PF_ManagedObject_DidChangeValueForKeyIndex + 108
+        14  CoreData          0x00007fff955a468d _sharedIMPL_setvfk_core + 237
+        15  overbank          0x0000000100019782 -[Database updateCategoriesInDatabase:fromEntry:managedObjectContext:] + 626
+        16  overbank          0x0000000100017712 -[Database categorizeAllEntries:preferences:conflictsSet:solveConflictsFlag:verboseFlag:] + 4082
+        17  overbank          0x00000001000058ae -[ActionsProxy actionMatchDatabaseEntries:] + 158
+        18  overbank          0x00000001000034fa -[AppDelegate doMatchDatabaseEntries:] + 138
+        19  AppKit            0x00007fff890403d0 -[NSApplication sendAction:to:from:] + 327
+        20  AppKit            0x00007fff8905b348 -[NSMenuItem _corePerformAction] + 394
+        21  AppKit            0x00007fff8905b084 -[NSCarbonMenuImpl performActionWithHighlightingForItemAtIndex:] + 117
+        22  AppKit            0x00007fff8905a1fc -[NSMenu performKeyEquivalent:] + 289
+        23  AppKit            0x00007fff89056a61 -[NSApplication _handleKeyEquivalent:] + 822
+        24  AppKit            0x00007fff88fc5c3c -[NSApplication sendEvent:] + 3293
+        25  AppKit            0x00007fff88e15a29 -[NSApplication run] + 646
+        26  AppKit            0x00007fff88e00803 NSApplicationMain + 940
+        27  overbank          0x0000000100001442 main + 34
+        28  libdyld.dylib     0x00007fff8edd15fd start + 1
+    )
+
+
+Seems that I've to take a deeper look into: 
+  http://stackoverflow.com/questions/15078679/binding-an-ordered-relationship-with-an-nsarraycontroller
+  
 
 --
 Use https://github.com/nst/objc_dep to draw dependencies among classes.

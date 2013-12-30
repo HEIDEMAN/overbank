@@ -31,7 +31,7 @@
 {
 	Prefs	 *_prefs;
 	NSString *_fileName;
-	NSMutableArray  *structuredMemoryLog;
+	NSMutableArray *structuredMemoryLog;
 	NSMutableSet *conflicts;
 	Database *db;
     int selectedTab;
@@ -39,7 +39,6 @@
 
 @property (nonatomic, strong) NSString* _fileName;
 @property (nonatomic, strong) NSMutableArray* structuredMemoryLog;
-//@property (nonatomic, strong) NSWindowController *_preferencesWindow;
 @property (nonatomic, strong) Prefs* _prefs;
 @property (nonatomic, strong) NSMutableSet *conflicts;
 

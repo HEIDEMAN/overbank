@@ -13,6 +13,7 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		AA0C5C2B186D941A003CA478 /* overbank.iconset in Resources */ = {isa = PBXBuildFile; fileRef = AA0C5C2A186D941A003CA478 /* overbank.iconset */; };
 		AA115C4316E34FAC004F9DA7 /* Accumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = AA115C4216E34FAC004F9DA7 /* Accumulator.m */; };
 		AA115C4416E34FAC004F9DA7 /* Accumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = AA115C4216E34FAC004F9DA7 /* Accumulator.m */; };
 		AA3121D61839455B000701D5 /* prefsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3121D41839455B000701D5 /* prefsViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -71,6 +72,7 @@
 		77C8280C06725ACE000B614F /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* overbank-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist.xml; fileEncoding = 4; path = "overbank-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* overbank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = overbank.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA0C5C2A186D941A003CA478 /* overbank.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = overbank.iconset; sourceTree = "<group>"; };
 		AA115C4116E34FAC004F9DA7 /* Accumulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Accumulator.h; sourceTree = "<group>"; };
 		AA115C4216E34FAC004F9DA7 /* Accumulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Accumulator.m; sourceTree = "<group>"; };
 		AA3121D31839455B000701D5 /* prefsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefsViewController.h; sourceTree = "<group>"; };
@@ -241,6 +243,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				AA0C5C2A186D941A003CA478 /* overbank.iconset */,
 				2F7446970DB6B7EA00F9684A /* MainMenu.xib */,
 				AA3121D918394618000701D5 /* MASPreferencesWindow.xib */,
 				AA3121D51839455B000701D5 /* prefsViewController.xib */,
@@ -275,8 +278,8 @@
 		AACE0B3014B0F33C004C07AE /* ValueTransformers */ = {
 			isa = PBXGroup;
 			children = (
-				AADCA32914B20C2A0065FAF7 /* stringToArrayTransformer.m */,
 				AADCA32A14B20C2A0065FAF7 /* stringToArrayTransformer.h */,
+				AADCA32914B20C2A0065FAF7 /* stringToArrayTransformer.m */,
 				AAC5218C14AF5982007FC279 /* tableColorTransformer.h */,
 				AAC5218D14AF5982007FC279 /* tableColorTransformer.m */,
 			);
@@ -383,6 +386,7 @@
 				AA3121DC18394618000701D5 /* MASPreferencesWindow.xib in Resources */,
 				AA3121D71839455B000701D5 /* prefsViewController.xib in Resources */,
 				AAB8C42E16E7CAC0004F4A7A /* TODO in Resources */,
+				AA0C5C2B186D941A003CA478 /* overbank.iconset in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

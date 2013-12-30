@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1080" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
@@ -141,12 +141,12 @@
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                                 </tableHeaderCell>
-                                                                <popUpButtonCell key="dataCell" type="bevel" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="bezel" imageScaling="proportionallyDown" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" id="772">
+                                                                <popUpButtonCell key="dataCell" type="bevel" title="Pop Up" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="bezel" imageScaling="proportionallyDown" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="774" id="772">
                                                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                                     <font key="font" metaFont="smallSystem"/>
                                                                     <menu key="menu" title="OtherViews" id="773">
                                                                         <items>
-                                                                            <menuItem title="Pop Up" id="774"/>
+                                                                            <menuItem title="Pop Up" state="on" id="774"/>
                                                                         </items>
                                                                     </menu>
                                                                     <connections>
@@ -1132,22 +1132,22 @@
         </menu>
         <customObject id="205" userLabel="ovb3_AppDelegate" customClass="AppDelegate">
             <connections>
+                <outlet property="_tabView" destination="522" id="JDU-hU-J4w"/>
+                <outlet property="_window" destination="21" id="0IQ-dJ-bMR"/>
                 <outlet property="bargraphView" destination="1036" id="1045"/>
                 <outlet property="categoriesController" destination="749" id="1049"/>
                 <outlet property="fromDatePick" destination="937" id="962"/>
                 <outlet property="pieChartView" destination="677" id="1147"/>
                 <outlet property="searchFieldOutlet" destination="620" id="965"/>
                 <outlet property="selectableCategoriesController" destination="1148" id="1156"/>
-                <outlet property="tabView" destination="522" id="934"/>
                 <outlet property="tableEntriesController" destination="527" id="1024"/>
                 <outlet property="tableView" destination="591" id="1025"/>
                 <outlet property="toDatePick" destination="939" id="963"/>
-                <outlet property="window" destination="21" id="208"/>
                 <outlet property="yearGraphView" destination="1046" id="1047"/>
             </connections>
         </customObject>
         <customObject id="392" customClass="NSFontManager"/>
-        <arrayController mode="entity" entityName="DBEntry" automaticallyPreparesContent="YES" id="527" userLabel="EntryController">
+        <arrayController mode="entity" entityName="DBEntry" automaticallyPreparesContent="YES" id="527" userLabel="Entries">
             <declaredKeys>
                 <string>importe</string>
                 <string>fechaValor</string>
@@ -1161,7 +1161,7 @@
                 <string>category.name</string>
             </declaredKeys>
             <connections>
-                <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="528"/>
+                <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="vh4-ua-FKW"/>
             </connections>
         </arrayController>
         <arrayController mode="entity" entityName="DBCategory" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="749" userLabel="CategoryController">
@@ -1172,7 +1172,7 @@
             </declaredKeys>
             <connections>
                 <binding destination="205" name="sortDescriptors" keyPath="categoriesSortDescriptors" id="927"/>
-                <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="756"/>
+                <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="UmO-A6-e2F"/>
             </connections>
         </arrayController>
         <arrayController mode="entity" entityName="DBCategory" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="1148" userLabel="SelectableCategoriesController" colorLabel="IBBuiltInLabel-Purple">
