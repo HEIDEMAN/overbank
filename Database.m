@@ -429,7 +429,8 @@
 	
 	dbEntry.categoryMatched = entry.matchingCategory.categoryMatched;
 	
-	NSLog(@"(updateCategoriesInDatabase) ~~~> Entering the creation of the relationship: %@", entry.matchingCategory.categoryMatched);
+	NSLog(@"(updateCategoriesInDatabase) ~~~> Entering the creation of the relationship: %@",
+          entry.matchingCategory.categoryMatched);
 	// create the entities (you could fetch these instead, if they already exist)
 	DBCategory *dbcategory = [self findCategory:entry.matchingCategory.categoryMatched
 						   managedObjectContext:managedObjectContext];
