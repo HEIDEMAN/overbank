@@ -54,7 +54,9 @@
 - (int) storeEntryInDatabase:(Entry *)entry managedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 - (int) storeCategoriesInDatabase:(NSArray *)categoryNames 
 			 managedObjectContext:(NSManagedObjectContext *)moc;
-
+- (int)saveMOC:(NSManagedObjectContext *)managedObjectContext;
+- (NSFetchRequest *)setEntryFetchRequest:(NSManagedObjectContext *)managedObjectContext;
+- (NSFetchRequest *)setCategoryFetchRequest:(NSManagedObjectContext *)managedObjectContext;
 - (NSArray *)findDatesInterval:(NSManagedObjectContext *)managedObjectContext;
 - (NSDictionary *) computeAggregatedCategories:(NSManagedObjectContext *)moc
                                        inArray:(NSArray *)selectedCategories

@@ -26,5 +26,7 @@
 - (void)addEntries:(NSSet *)value;
 - (void)removeEntries:(NSSet *)value;
 
+- (id)initInMOC:(NSManagedObjectContext*)context;
+
 @end
 

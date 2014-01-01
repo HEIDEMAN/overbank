@@ -22,4 +22,16 @@
 @dynamic importe;
 @dynamic category;
 
+- (id)initInMOC:(NSManagedObjectContext*)context
+{
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"DBEntry" inManagedObjectContext:context];
+    self = [super initWithEntity:entity insertIntoManagedObjectContext:context];
+    if (self != nil) {
+        
+        // Perform additional initialization.
+        
+    }
+    return self;
+}
+
 @end

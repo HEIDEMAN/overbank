@@ -24,6 +24,8 @@
 @property (nonatomic, strong) NSNumber * importe;
 @property (nonatomic, strong) DBCategory * category;
 
+- (id)initInMOC:(NSManagedObjectContext*)context;
+
 @end
 
 

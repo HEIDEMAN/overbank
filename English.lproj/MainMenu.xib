@@ -65,7 +65,7 @@
                                                         <tableViewGridLines key="gridStyleMask" vertical="YES" horizontal="YES"/>
                                                         <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                         <tableColumns>
-                                                            <tableColumn width="96.6123046875" minWidth="92.6123046875" maxWidth="3.4028234663852886e+38" id="617">
+                                                            <tableColumn width="100.6123046875" minWidth="92.6123046875" maxWidth="3.4028234663852886e+38" id="617">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="Fecha">
                                                                     <font key="font" metaFont="smallSystem"/>
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -82,7 +82,7 @@
                                                                     <binding destination="527" name="value" keyPath="arrangedObjects.fechaOperacion" id="619"/>
                                                                 </connections>
                                                             </tableColumn>
-                                                            <tableColumn width="399.53125" minWidth="54.75146484375" maxWidth="3.4028234663852886e+38" id="611">
+                                                            <tableColumn width="593.390625" minWidth="54.75146484375" maxWidth="3.4028234663852886e+38" id="611">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Concepto">
                                                                     <font key="font" metaFont="smallSystem"/>
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -107,7 +107,7 @@
                                                                     </binding>
                                                                 </connections>
                                                             </tableColumn>
-                                                            <tableColumn editable="NO" width="115.48828125" minWidth="45.8623046875" maxWidth="3.4028234663852886e+38" id="593">
+                                                            <tableColumn editable="NO" width="119.48828125" minWidth="45.8623046875" maxWidth="3.4028234663852886e+38" id="593">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Importe">
                                                                     <font key="font" metaFont="smallSystem"/>
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -135,7 +135,7 @@
                                                                     </binding>
                                                                 </connections>
                                                             </tableColumn>
-                                                            <tableColumn width="377.61669921875" minWidth="100.44873046875" maxWidth="3.4028234663852886e+38" id="608">
+                                                            <tableColumn width="177.17919921875" minWidth="100.44873046875" maxWidth="3.4028234663852886e+38" id="608">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Categoria">
                                                                     <font key="font" metaFont="smallSystem"/>
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -151,6 +151,9 @@
                                                                     </menu>
                                                                     <connections>
                                                                         <action selector="selectPopUpCellAction:" target="205" id="1029"/>
+                                                                        <binding destination="771" name="content" keyPath="arrangedObjects" id="auN-MM-L72"/>
+                                                                        <binding destination="771" name="contentValues" keyPath="arrangedObjects.name" previousBinding="auN-MM-L72" id="tgc-Ia-6dx"/>
+                                                                        <binding destination="527" name="selectedObject" keyPath="selection.category" previousBinding="tgc-Ia-6dx" id="jyX-eR-BAi"/>
                                                                     </connections>
                                                                 </popUpButtonCell>
                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
@@ -1164,7 +1167,7 @@
                 <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="vh4-ua-FKW"/>
             </connections>
         </arrayController>
-        <arrayController mode="entity" entityName="DBCategory" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="749" userLabel="CategoryController">
+        <arrayController mode="entity" entityName="DBCategory" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="749" userLabel="Categories">
             <declaredKeys>
                 <string>category</string>
                 <string>name</string>
@@ -1172,7 +1175,21 @@
             </declaredKeys>
             <connections>
                 <binding destination="205" name="sortDescriptors" keyPath="categoriesSortDescriptors" id="927"/>
-                <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="UmO-A6-e2F"/>
+                <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="4zB-BS-IQy">
+                    <dictionary key="options">
+                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                    </dictionary>
+                </binding>
+            </connections>
+        </arrayController>
+        <arrayController mode="entity" entityName="DBEntry" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="866" userLabel="EntriesByCategory">
+            <declaredKeys>
+                <string>@sum.importe</string>
+                <string>concepto</string>
+                <string>importe</string>
+            </declaredKeys>
+            <connections>
+                <binding destination="749" name="contentSet" keyPath="selection.entries" id="869"/>
             </connections>
         </arrayController>
         <arrayController mode="entity" entityName="DBCategory" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="1148" userLabel="SelectableCategoriesController" colorLabel="IBBuiltInLabel-Purple">
@@ -1188,17 +1205,11 @@
             </declaredKeys>
             <connections>
                 <binding destination="205" name="sortDescriptors" keyPath="categoriesSortDescriptors" id="925"/>
-                <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="778"/>
-            </connections>
-        </arrayController>
-        <arrayController mode="entity" entityName="DBEntry" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="866" userLabel="EntriesByCategoryController">
-            <declaredKeys>
-                <string>@sum.importe</string>
-                <string>concepto</string>
-                <string>importe</string>
-            </declaredKeys>
-            <connections>
-                <binding destination="749" name="contentSet" keyPath="selection.entries" id="869"/>
+                <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="Ayx-2B-d4a">
+                    <dictionary key="options">
+                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                    </dictionary>
+                </binding>
             </connections>
         </arrayController>
         <arrayController mode="entity" entityName="DBCategory" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="800" userLabel="CategoriesByEntryController">

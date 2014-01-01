@@ -216,7 +216,6 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
  store for the application to it.  (The directory for the store is created,
  if necessary.)
  */
-
 - (NSPersistentStoreCoordinator *) persistentStoreCoordinator {
 	
     if (persistentStoreCoordinator) return persistentStoreCoordinator;
@@ -257,11 +256,11 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
     return persistentStoreCoordinator;
 }
 
+
 /**
  Returns the managed object context for the application (which is already
  bound to the persistent store coordinator for the application.)
  */
-
 - (NSManagedObjectContext *) managedObjectContext {
 	
     if (managedObjectContext) return managedObjectContext;
@@ -275,6 +274,7 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
         [[NSApplication sharedApplication] presentError:error];
         return nil;
     }
+    
     managedObjectContext = [[NSManagedObjectContext alloc] init];
     [managedObjectContext setPersistentStoreCoordinator: coordinator];
 	
@@ -285,7 +285,6 @@ NSString * const MDFirstRunKey = @"MDFirstRun";
  Returns the NSUndoManager for the application.  In this case, the manager
  returned is that of the managed object context for the application.
  */
-
 - (NSUndoManager *)windowWillReturnUndoManager:(NSWindow *)window
 {
     return [[self managedObjectContext] undoManager];

@@ -15,4 +15,16 @@
 @dynamic name;
 @dynamic entries;
 
+- (id)initInMOC:(NSManagedObjectContext*)context
+{
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"DBCategory" inManagedObjectContext:context];
+    self = [super initWithEntity:entity insertIntoManagedObjectContext:context];
+    if (self != nil) {
+        
+        // Perform additional initialization.
+        
+    }
+    return self;
+}
+
 @end
